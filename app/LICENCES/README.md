@@ -10,8 +10,9 @@
 - Microsoft Windows SDK / Direct3D and C++ runtime: respective Microsoft terms.
 - Segoe fonts are loaded from the Windows installation, not redistributed.
 
-The application code has no project-wide distribution license selected yet.
-Dependency notices are preserved separately from that decision.
+CyGameSDK's original code, documentation and examples are licensed under the
+[MIT License](../../LICENSE). Third-party components retain their respective
+licenses; the project license does not replace their copyright or license notices.
 
 - ImGuizmo: official source snapshot at commit 105e4fde45e4e74aae8973d98750820ef7aca7e2,
   MIT. ImGuizmo-MIT.txt. Source and SHA-256 hashes: ../third_party/imguizmo/SOURCE.json.

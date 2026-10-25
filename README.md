@@ -171,8 +171,11 @@ French and six themes; those are bounded development results, not game compatibi
 or a guarantee for every display/layout combination. See each feature guide for
 its targeted commands and verification scope.
 
-## Component notices
+## License and component notices
 
-Dependency licenses and notices are in [app/LICENCES](app/LICENCES/README.md).
-No project-wide application distribution license has been selected. Dependency
-licenses do not grant additional rights to this application's own code.
+CyGameSDK's original code, documentation and examples are licensed under the
+[MIT License](LICENSE). Commercial use, modification and redistribution are
+permitted under its terms, including retention of the copyright and license notice.
+
+Third-party components retain their own licenses. Their notices are preserved in
+[app/LICENCES](app/LICENCES/README.md).
