@@ -1,0 +1,162 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "types": {
+      "enum.Faction": {
+        "kind": "enum",
+        "members": [
+          "Friendly",
+          "Hostile",
+          "Neutral"
+        ],
+        "default": "Neutral",
+        "customMetadata": {
+          "keep": true
+        }
+      },
+      "struct.Stats": {
+        "kind": "struct",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 100
+          },
+          "faction": {
+            "type": "enum.Faction",
+            "default": "Neutral"
+          }
+        }
+      }
+    },
+    "variables": {
+      "Stats": {
+        "type": "struct.Stats",
+        "default": {
+          "health": 100,
+          "faction": "Neutral"
+        }
+      }
+    },
+    "classes": {},
+    "functions": {},
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {}
+      },
+      {
+        "id": "make",
+        "type": "struct.make",
+        "position": [
+          20,
+          240
+        ],
+        "values": {
+          "health": 88,
+          "faction": "Hostile"
+        },
+        "typeRef": "struct.Stats"
+      },
+      {
+        "id": "break",
+        "type": "struct.break",
+        "position": [
+          300,
+          240
+        ],
+        "values": {
+          "value": {
+            "health": 100,
+            "faction": "Neutral"
+          }
+        },
+        "typeRef": "struct.Stats"
+      },
+      {
+        "id": "switch",
+        "type": "enum.switch",
+        "position": [
+          300,
+          20
+        ],
+        "values": {
+          "value": "Neutral"
+        },
+        "typeRef": "enum.Faction"
+      },
+      {
+        "id": "text",
+        "type": "convert.float_string",
+        "position": [
+          600,
+          320
+        ],
+        "values": {
+          "value": 0
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          600,
+          20
+        ],
+        "values": {
+          "text": ""
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "link0",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "switch",
+        "toPin": "exec"
+      },
+      {
+        "id": "link1",
+        "fromNode": "make",
+        "fromPin": "value",
+        "toNode": "break",
+        "toPin": "value"
+      },
+      {
+        "id": "link2",
+        "fromNode": "break",
+        "fromPin": "faction",
+        "toNode": "switch",
+        "toPin": "value"
+      },
+      {
+        "id": "link3",
+        "fromNode": "break",
+        "fromPin": "health",
+        "toNode": "text",
+        "toPin": "value"
+      },
+      {
+        "id": "link4",
+        "fromNode": "text",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      },
+      {
+        "id": "link5",
+        "fromNode": "switch",
+        "fromPin": "Hostile",
+        "toNode": "print",
+        "toPin": "exec"
+      }
+    ]
+  }
+}

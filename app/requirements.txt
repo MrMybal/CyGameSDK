@@ -1,0 +1,2 @@
+# Native host: CyUI / ImGui / Direct3D 11. No Python UI dependency.
+cytools-core[mcp]==0.10.1

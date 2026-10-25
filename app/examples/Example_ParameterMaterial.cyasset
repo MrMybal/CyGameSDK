@@ -1,0 +1,97 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "material",
+    "variables": {
+      "Tint": {
+        "type": "color",
+        "default": [
+          0.7,
+          0.12,
+          0.035
+        ]
+      },
+      "Roughness": {
+        "type": "float",
+        "default": 0.24
+      },
+      "Metallic": {
+        "type": "float",
+        "default": 0.72
+      }
+    },
+    "nodes": [
+      {
+        "id": "tint",
+        "type": "variable.get.color",
+        "position": [
+          20,
+          40
+        ],
+        "values": {},
+        "variable": "Tint"
+      },
+      {
+        "id": "rough",
+        "type": "variable.get.float",
+        "position": [
+          20,
+          225
+        ],
+        "values": {},
+        "variable": "Roughness"
+      },
+      {
+        "id": "metal",
+        "type": "variable.get.float",
+        "position": [
+          20,
+          410
+        ],
+        "values": {},
+        "variable": "Metallic"
+      },
+      {
+        "id": "surface",
+        "type": "material.output",
+        "position": [
+          340,
+          180
+        ],
+        "values": {
+          "baseColor": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "roughness": 0.5,
+          "metallic": 0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "tintLink",
+        "fromNode": "tint",
+        "fromPin": "value",
+        "toNode": "surface",
+        "toPin": "baseColor"
+      },
+      {
+        "id": "roughLink",
+        "fromNode": "rough",
+        "fromPin": "value",
+        "toNode": "surface",
+        "toPin": "roughness"
+      },
+      {
+        "id": "metalLink",
+        "fromNode": "metal",
+        "fromPin": "value",
+        "toNode": "surface",
+        "toPin": "metallic"
+      }
+    ]
+  }
+}

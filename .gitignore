@@ -1,0 +1,40 @@
+# Private runtime and local development artifacts
+/runtime/*
+!/runtime/active-release.json
+/data/
+*.exe
+*.dll
+*.pdb
+*.obj
+*.ilk
+*.exp
+*.lib
+*.pyc
+*.pyo
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+CMakeFiles/
+CMakeCache.txt
+.vs/
+.vscode/
+.idea/
+# Local configuration, credentials and sessions
+.env
+.env.*
+!.env.example
+*.local.json
+*.local.toml
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.key
+*.p12
+*.pfx
+*.pem
+# OS files
+Thumbs.db
+.DS_Store

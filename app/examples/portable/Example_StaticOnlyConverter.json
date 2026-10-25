@@ -1,0 +1,7 @@
+{
+  "id": "example.static-only",
+  "name": "Example static mesh target (declaration only)",
+  "targetFormat": "example.game.static-mesh",
+  "supportedFeatures": ["geometry"],
+  "supportedExtensions": []
+}

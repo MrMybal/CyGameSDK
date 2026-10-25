@@ -1,0 +1,38 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "links": [
+      {
+        "fromNode": "begin",
+        "fromPin": "then",
+        "id": "start",
+        "toNode": "print",
+        "toPin": "exec"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "begin",
+        "position": [
+          40.0,
+          90.0
+        ],
+        "type": "event.begin",
+        "values": {}
+      },
+      {
+        "id": "print",
+        "position": [
+          360.0,
+          90.0
+        ],
+        "type": "debug.print",
+        "values": {
+          "text": "Hello from the graph"
+        }
+      }
+    ]
+  }
+}

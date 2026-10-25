@@ -1,0 +1,223 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "classes": {
+      "Base": {
+        "parent": "",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 100
+          }
+        },
+        "methods": {
+          "Read": "ReadHealth"
+        }
+      },
+      "Character": {
+        "parent": "Base",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 150
+          }
+        },
+        "methods": {}
+      }
+    },
+    "functions": {
+      "ReadHealth": {
+        "domain": "function",
+        "mode": "pure",
+        "variables": {},
+        "inputs": {
+          "self": {
+            "type": "object",
+            "default": ""
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              80
+            ],
+            "values": {}
+          },
+          {
+            "id": "health",
+            "type": "object.get.float",
+            "position": [
+              250,
+              80
+            ],
+            "values": {
+              "object": "",
+              "field": "health"
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              500,
+              80
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "arguments_self_health_object",
+            "fromNode": "arguments",
+            "fromPin": "self",
+            "toNode": "health",
+            "toPin": "object"
+          },
+          {
+            "id": "health_value_return_result",
+            "fromNode": "health",
+            "fromPin": "value",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          60
+        ],
+        "values": {}
+      },
+      {
+        "id": "create",
+        "type": "object.new",
+        "position": [
+          230,
+          60
+        ],
+        "values": {
+          "class": "Character"
+        }
+      },
+      {
+        "id": "set",
+        "type": "object.set.float",
+        "position": [
+          450,
+          60
+        ],
+        "values": {
+          "object": "",
+          "field": "health",
+          "value": 275
+        }
+      },
+      {
+        "id": "read",
+        "type": "object.call",
+        "position": [
+          20,
+          340
+        ],
+        "values": {
+          "self": ""
+        },
+        "class": "Base",
+        "method": "Read",
+        "function": "ReadHealth"
+      },
+      {
+        "id": "text",
+        "type": "convert.float_string",
+        "position": [
+          250,
+          340
+        ],
+        "values": {
+          "value": 0
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          650,
+          60
+        ],
+        "values": {
+          "text": ""
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "begin_then_create_exec",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "create",
+        "toPin": "exec"
+      },
+      {
+        "id": "create_then_set_exec",
+        "fromNode": "create",
+        "fromPin": "then",
+        "toNode": "set",
+        "toPin": "exec"
+      },
+      {
+        "id": "set_then_print_exec",
+        "fromNode": "set",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "create_object_set_object",
+        "fromNode": "create",
+        "fromPin": "object",
+        "toNode": "set",
+        "toPin": "object"
+      },
+      {
+        "id": "create_object_read_self",
+        "fromNode": "create",
+        "fromPin": "object",
+        "toNode": "read",
+        "toPin": "self"
+      },
+      {
+        "id": "read_result_text_value",
+        "fromNode": "read",
+        "fromPin": "result",
+        "toNode": "text",
+        "toPin": "value"
+      },
+      {
+        "id": "text_value_print_text",
+        "fromNode": "text",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      }
+    ]
+  }
+}

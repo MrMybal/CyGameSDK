@@ -1,0 +1,129 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "metadata": {
+      "example": "Explicit signature migration; original fixture is never migrated on disk by QA."
+    },
+    "functions": {
+      "Echo": {
+        "domain": "function",
+        "variables": {},
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 2,
+            "description": "An authored parameter; preserve this metadata when renaming."
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              60
+            ],
+            "values": {}
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              360,
+              60
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "argument_to_return",
+            "fromNode": "arguments",
+            "fromPin": "x",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {}
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          640,
+          20
+        ],
+        "values": {
+          "text": ""
+        }
+      },
+      {
+        "id": "call",
+        "type": "function.call",
+        "position": [
+          20,
+          230
+        ],
+        "values": {
+          "x": 9
+        },
+        "function": "Echo"
+      },
+      {
+        "id": "convert",
+        "type": "convert.float_string",
+        "position": [
+          380,
+          230
+        ],
+        "values": {
+          "value": 0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "start",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "result_to_convert",
+        "fromNode": "call",
+        "fromPin": "result",
+        "toNode": "convert",
+        "toPin": "value"
+      },
+      {
+        "id": "text_to_print",
+        "fromNode": "convert",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      }
+    ]
+  }
+}

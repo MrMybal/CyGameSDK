@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cygame:portable-converter-profile:1",
+  "title": "Declarative portable export capability profile; not an implementation",
+  "type": "object", "additionalProperties": false,
+  "required": ["id", "name", "targetFormat", "supportedFeatures", "supportedExtensions"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-z][a-z0-9_.-]*$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 128},
+    "targetFormat": {"type": "string", "minLength": 1, "maxLength": 128},
+    "supportedFeatures": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"enum": ["geometry", "skinning", "animation", "materials", "textures", "morphTargets"]}},
+    "supportedExtensions": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 128}}
+  }
+}

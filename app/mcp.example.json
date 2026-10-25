@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "CyGameSDK": {
+      "command": "C:/path/to/CyGameSDK/runtime/python/Scripts/python.exe",
+      "args": [
+        "C:/path/to/CyGameSDK/app/tool.py",
+        "mcp"
+      ]
+    }
+  }
+}

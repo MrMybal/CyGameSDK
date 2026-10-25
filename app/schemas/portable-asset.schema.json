@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cygame:portable-asset:1",
+  "title": "CyGame portable asset envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schemaVersion",
+    "assetId",
+    "name",
+    "kind",
+    "space",
+    "payload",
+    "summary",
+    "extensions",
+    "provenance"
+  ],
+  "properties": {
+    "format": {
+      "const": "cygame-portable-asset"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "assetId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "const": "scene3d"
+    },
+    "space": {
+      "const": {
+        "handedness": "right",
+        "upAxis": "+Y",
+        "linearUnit": "meter",
+        "rotation": "quaternion-xyzw",
+        "timeUnit": "second"
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "mediaType",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "const": "asset.glb"
+        },
+        "mediaType": {
+          "const": "model/gltf-binary"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 67108864
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile",
+        "meshes",
+        "skins",
+        "animations",
+        "nodes",
+        "primitives",
+        "features",
+        "requiredExtensions",
+        "validationScope",
+        "semanticValidation",
+        "usedExtensions"
+      ],
+      "properties": {
+        "profile": {
+          "const": "self-contained-glb-v1"
+        },
+        "meshes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skins": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "animations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nodes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "primitives": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "geometry",
+              "skinning",
+              "animation",
+              "materials",
+              "textures",
+              "morphTargets"
+            ]
+          }
+        },
+        "requiredExtensions": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "validationScope": {
+          "const": "glb-framing-resource-bounds-and-declarations"
+        },
+        "semanticValidation": {
+          "const": "not-performed"
+        },
+        "usedExtensions": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceGame": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sourceFormat": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "converterId": {
+          "type": "string",
+          "maxLength": 128
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,479 @@
+{
+  "format": "cygame-scene3d",
+  "schemaVersion": 1,
+  "assetId": "260306b5-2fb0-4a28-b586-cffbe391d92d",
+  "name": "ChainMotion",
+  "space": {
+    "handedness": "right",
+    "upAxis": "+Y",
+    "linearUnit": "meter",
+    "rotation": "quaternion-xyzw",
+    "timeUnit": "second"
+  },
+  "nodes": [
+    {
+      "id": "node:0",
+      "name": "Triangle",
+      "parent": -1,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "mesh": 0,
+      "skin": 0
+    },
+    {
+      "id": "node:1",
+      "name": "Root",
+      "parent": -1,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "node:2",
+      "name": "Middle",
+      "parent": 1,
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "node:3",
+      "name": "End",
+      "parent": 2,
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Triangle",
+      "primitives": [
+        {
+          "sourceMesh": 0,
+          "sourcePrimitive": 0,
+          "positions": [
+            [
+              -0.1,
+              0,
+              0
+            ],
+            [
+              0.1,
+              0,
+              0
+            ],
+            [
+              -0.1,
+              1,
+              0
+            ],
+            [
+              0.1,
+              1,
+              0
+            ],
+            [
+              -0.1,
+              2,
+              0
+            ],
+            [
+              0.1,
+              2,
+              0
+            ]
+          ],
+          "indices": [
+            0,
+            1,
+            2,
+            1,
+            3,
+            2,
+            2,
+            3,
+            4,
+            3,
+            5,
+            4
+          ],
+          "material": -1,
+          "normals": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "joints": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0
+            ]
+          ],
+          "weights": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ]
+          ],
+          "uv": [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              0.0
+            ],
+            [
+              0,
+              0.5
+            ],
+            [
+              1,
+              0.5
+            ],
+            [
+              0,
+              1.0
+            ],
+            [
+              1,
+              1.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "name": "TwoBoneRig",
+      "joints": [
+        1,
+        2,
+        3
+      ],
+      "inverseBindMatrices": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -1.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -2,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "name": "Walk_Root",
+      "tracks": [
+        {
+          "node": 1,
+          "path": "translation",
+          "interpolation": "LINEAR",
+          "times": [
+            0,
+            1,
+            2
+          ],
+          "values": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0.2,
+              0
+            ],
+            [
+              2,
+              0,
+              0.5
+            ]
+          ]
+        },
+        {
+          "node": 1,
+          "path": "rotation",
+          "interpolation": "LINEAR",
+          "times": [
+            0,
+            1,
+            2
+          ],
+          "values": [
+            [
+              0,
+              0.0,
+              0,
+              1.0
+            ],
+            [
+              0,
+              0.14943813247359922,
+              0,
+              0.9887710779360422
+            ],
+            [
+              0,
+              0.29552020666133955,
+              0,
+              0.955336489125606
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "materials": [],
+  "extensions": {
+    "org.cygame.example": {
+      "originalFixture": true,
+      "purpose": "Three-joint IK chain and moving root"
+    }
+  },
+  "source": {
+    "glbBase64": "Z2xURgIAAAAAEQAA8AwAAEpTT057ImFzc2V0Ijp7InZlcnNpb24iOiIyLjAiLCJnZW5lcmF0b3IiOiJDeUdhbWVTREsgcG9ydGFibGUgY29udHJhY3QgZml4dHVyZXMifSwic2NlbmUiOjAsInNjZW5lcyI6W3sibm9kZXMiOlswLDFdfV0sIm5vZGVzIjpbeyJuYW1lIjoiVHJpYW5nbGUiLCJtZXNoIjowLCJza2luIjowLCJ0cmFuc2xhdGlvbiI6WzAsMCwwXSwicm90YXRpb24iOlswLDAsMCwxXSwic2NhbGUiOlsxLDEsMV19LHsibmFtZSI6IlJvb3QiLCJ0cmFuc2xhdGlvbiI6WzAsMCwwXSwicm90YXRpb24iOlswLDAsMCwxXSwic2NhbGUiOlsxLDEsMV0sImNoaWxkcmVuIjpbMl19LHsibmFtZSI6Ik1pZGRsZSIsInRyYW5zbGF0aW9uIjpbMCwxLDBdLCJyb3RhdGlvbiI6WzAsMCwwLDFdLCJzY2FsZSI6WzEsMSwxXSwiY2hpbGRyZW4iOlszXX0seyJuYW1lIjoiRW5kIiwidHJhbnNsYXRpb24iOlswLDEsMF0sInJvdGF0aW9uIjpbMCwwLDAsMV0sInNjYWxlIjpbMSwxLDFdfV0sIm1lc2hlcyI6W3sibmFtZSI6IlRyaWFuZ2xlIiwicHJpbWl0aXZlcyI6W3siYXR0cmlidXRlcyI6eyJQT1NJVElPTiI6OCwiTk9STUFMIjo5LCJKT0lOVFNfMCI6MTEsIldFSUdIVFNfMCI6MTIsIlRFWENPT1JEXzAiOjEwfSwiaW5kaWNlcyI6MTN9XX1dLCJza2lucyI6W3sibmFtZSI6IlR3b0JvbmVSaWciLCJza2VsZXRvbiI6MSwiam9pbnRzIjpbMSwyLDNdLCJpbnZlcnNlQmluZE1hdHJpY2VzIjoxNH1dLCJhbmltYXRpb25zIjpbeyJuYW1lIjoiV2Fsa19Sb290Iiwic2FtcGxlcnMiOlt7ImlucHV0IjoxNSwib3V0cHV0IjoxNiwiaW50ZXJwb2xhdGlvbiI6IkxJTkVBUiJ9LHsiaW5wdXQiOjE3LCJvdXRwdXQiOjE4LCJpbnRlcnBvbGF0aW9uIjoiTElORUFSIn1dLCJjaGFubmVscyI6W3sic2FtcGxlciI6MCwidGFyZ2V0Ijp7Im5vZGUiOjEsInBhdGgiOiJ0cmFuc2xhdGlvbiJ9fSx7InNhbXBsZXIiOjEsInRhcmdldCI6eyJub2RlIjoxLCJwYXRoIjoicm90YXRpb24ifX1dfV0sImJ1ZmZlcnMiOlt7ImJ5dGVMZW5ndGgiOjEwMTJ9XSwiYnVmZmVyVmlld3MiOlt7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6MCwiYnl0ZUxlbmd0aCI6MzYsInRhcmdldCI6MzQ5NjJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0IjozNiwiYnl0ZUxlbmd0aCI6MzYsInRhcmdldCI6MzQ5NjJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo3MiwiYnl0ZUxlbmd0aCI6NiwidGFyZ2V0IjozNDk2M30seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjgwLCJieXRlTGVuZ3RoIjoxMiwidGFyZ2V0IjozNDk2Mn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjkyLCJieXRlTGVuZ3RoIjo0OCwidGFyZ2V0IjozNDk2Mn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjE0MCwiYnl0ZUxlbmd0aCI6MTI4fSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6MjY4LCJieXRlTGVuZ3RoIjoxMn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjI4MCwiYnl0ZUxlbmd0aCI6NDh9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0IjozMjgsImJ5dGVMZW5ndGgiOjcyfSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6NDAwLCJieXRlTGVuZ3RoIjo3Mn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjQ3MiwiYnl0ZUxlbmd0aCI6NDh9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo1MjAsImJ5dGVMZW5ndGgiOjQ4fSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6NTY4LCJieXRlTGVuZ3RoIjo5Nn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjY2NCwiYnl0ZUxlbmd0aCI6NDh9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo3MTIsImJ5dGVMZW5ndGgiOjE5Mn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjkwNCwiYnl0ZUxlbmd0aCI6MTJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo5MTYsImJ5dGVMZW5ndGgiOjM2fSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6OTUyLCJieXRlTGVuZ3RoIjoxMn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjk2NCwiYnl0ZUxlbmd0aCI6NDh9XSwiYWNjZXNzb3JzIjpbeyJidWZmZXJWaWV3IjowLCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MywidHlwZSI6IlZFQzMiLCJtaW4iOlstMC41LDAsMF0sIm1heCI6WzAuNSwxLDBdfSx7ImJ1ZmZlclZpZXciOjEsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjozLCJ0eXBlIjoiVkVDMyJ9LHsiYnVmZmVyVmlldyI6MiwiY29tcG9uZW50VHlwZSI6NTEyMywiY291bnQiOjMsInR5cGUiOiJTQ0FMQVIifSx7ImJ1ZmZlclZpZXciOjMsImNvbXBvbmVudFR5cGUiOjUxMjEsImNvdW50IjozLCJ0eXBlIjoiVkVDNCJ9LHsiYnVmZmVyVmlldyI6NCwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUM0In0seyJidWZmZXJWaWV3Ijo1LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MiwidHlwZSI6Ik1BVDQifSx7ImJ1ZmZlclZpZXciOjYsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjozLCJ0eXBlIjoiU0NBTEFSIiwibWluIjpbMF0sIm1heCI6WzFdfSx7ImJ1ZmZlclZpZXciOjcsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjozLCJ0eXBlIjoiVkVDNCJ9LHsiYnVmZmVyVmlldyI6OCwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjYsInR5cGUiOiJWRUMzIiwibWluIjpbLTAuMSwwLDBdLCJtYXgiOlswLjEsMiwwXX0seyJidWZmZXJWaWV3Ijo5LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6NiwidHlwZSI6IlZFQzMifSx7ImJ1ZmZlclZpZXciOjEwLCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6NiwidHlwZSI6IlZFQzIifSx7ImJ1ZmZlclZpZXciOjExLCJjb21wb25lbnRUeXBlIjo1MTIzLCJjb3VudCI6NiwidHlwZSI6IlZFQzQifSx7ImJ1ZmZlclZpZXciOjEyLCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6NiwidHlwZSI6IlZFQzQifSx7ImJ1ZmZlclZpZXciOjEzLCJjb21wb25lbnRUeXBlIjo1MTI1LCJjb3VudCI6MTIsInR5cGUiOiJTQ0FMQVIifSx7ImJ1ZmZlclZpZXciOjE0LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MywidHlwZSI6Ik1BVDQifSx7ImJ1ZmZlclZpZXciOjE1LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MywidHlwZSI6IlNDQUxBUiIsIm1pbiI6WzBdLCJtYXgiOlsyXX0seyJidWZmZXJWaWV3IjoxNiwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUMzIn0seyJidWZmZXJWaWV3IjoxNywiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJTQ0FMQVIiLCJtaW4iOlswXSwibWF4IjpbMl19LHsiYnVmZmVyVmlldyI6MTgsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjozLCJ0eXBlIjoiVkVDNCJ9XX0gICD0AwAAQklOAAAAAL8AAAAAAAAAAAAAAD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAQACAAAAAAAAAAAAAAABAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAIC/AAAAAAAAgD8AAAAAAAAAPwAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAV78M+XoNsPwAAAAAAAAAAAAAAAAAAgD/NzMy9AAAAAAAAAADNzMw9AAAAAAAAAADNzMy9AACAPwAAAADNzMw9AACAPwAAAADNzMy9AAAAQAAAAADNzMw9AAAAQAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAAD8AAIA/AAAAPwAAAAAAAIA/AACAPwAAgD8AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAABAAAAAwAAAAIAAAACAAAAAwAAAAQAAAADAAAABQAAAAQAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAgL8AAAAAAACAPwAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAADAAAAAAAAAgD8AAAAAAACAPwAAAEAAAAAAAAAAAAAAAAAAAIA/zcxMPgAAAAAAAABAAAAAAAAAAD8AAAAAAACAPwAAAEAAAAAAAAAAAAAAAAAAAIA/AAAAAE8GGT4AAAAAGiB9PwAAAABtTpc+AAAAAO+QdD8=",
+    "manifest": {
+      "assetId": "ef7603e1-84f8-44b2-87da-a677412c462a",
+      "extensions": {
+        "org.cygame.examples": {
+          "originalFixture": true
+        }
+      },
+      "format": "cygame-portable-asset",
+      "kind": "scene3d",
+      "name": "AnimatedTriangle",
+      "payload": {
+        "bytes": 2008,
+        "mediaType": "model/gltf-binary",
+        "path": "asset.glb",
+        "sha256": "2ce5aa7f2e41ec15931736351e6964a36382e09cdce1b87d16c362bed6bb5402"
+      },
+      "provenance": {
+        "converterId": "gltf.glb.identity",
+        "sourceFormat": "glTF 2 GLB"
+      },
+      "schemaVersion": 1,
+      "space": {
+        "handedness": "right",
+        "linearUnit": "meter",
+        "rotation": "quaternion-xyzw",
+        "timeUnit": "second",
+        "upAxis": "+Y"
+      },
+      "summary": {
+        "animations": 1,
+        "features": [
+          "animation",
+          "geometry",
+          "skinning"
+        ],
+        "meshes": 1,
+        "nodes": 3,
+        "primitives": 1,
+        "profile": "self-contained-glb-v1",
+        "requiredExtensions": [],
+        "semanticValidation": "not-performed",
+        "skins": 1,
+        "usedExtensions": [],
+        "validationScope": "glb-framing-resource-bounds-and-declarations"
+      }
+    }
+  }
+}

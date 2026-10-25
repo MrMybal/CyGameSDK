@@ -1,0 +1,149 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "metadata": {
+      "example": "Select Add and Multiply, then Collapse selection. Before and after: Run graph prints 9."
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {},
+        "metadata": {
+          "keep": "begin"
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          740,
+          20
+        ],
+        "values": {
+          "text": ""
+        },
+        "metadata": {
+          "keep": "print"
+        }
+      },
+      {
+        "id": "source",
+        "type": "constant.float",
+        "position": [
+          20,
+          230
+        ],
+        "values": {
+          "value": 2
+        },
+        "metadata": {
+          "keep": "source"
+        }
+      },
+      {
+        "id": "add",
+        "type": "math.add",
+        "position": [
+          250,
+          230
+        ],
+        "values": {
+          "a": 0,
+          "b": 1
+        },
+        "metadata": {
+          "keep": "add"
+        }
+      },
+      {
+        "id": "multiply",
+        "type": "math.multiply",
+        "position": [
+          490,
+          230
+        ],
+        "values": {
+          "a": 0.5,
+          "b": 3
+        },
+        "metadata": {
+          "keep": "multiply"
+        }
+      },
+      {
+        "id": "text",
+        "type": "convert.float_string",
+        "position": [
+          740,
+          230
+        ],
+        "values": {
+          "value": 0
+        },
+        "metadata": {
+          "keep": "text"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "start",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec",
+        "metadata": {
+          "keep": "start"
+        }
+      },
+      {
+        "id": "source_to_add",
+        "fromNode": "source",
+        "fromPin": "value",
+        "toNode": "add",
+        "toPin": "a",
+        "metadata": {
+          "keep": "source_to_add"
+        }
+      },
+      {
+        "id": "add_to_multiply",
+        "fromNode": "add",
+        "fromPin": "value",
+        "toNode": "multiply",
+        "toPin": "a",
+        "metadata": {
+          "keep": "add_to_multiply"
+        }
+      },
+      {
+        "id": "multiply_to_text",
+        "fromNode": "multiply",
+        "fromPin": "value",
+        "toNode": "text",
+        "toPin": "value",
+        "metadata": {
+          "keep": "multiply_to_text"
+        }
+      },
+      {
+        "id": "text_to_print",
+        "fromNode": "text",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text",
+        "metadata": {
+          "keep": "text_to_print"
+        }
+      }
+    ]
+  }
+}

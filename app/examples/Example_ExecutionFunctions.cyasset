@@ -1,0 +1,304 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {
+      "Counter": {
+        "type": "float",
+        "default": 900
+      }
+    },
+    "functions": {
+      "Compute": {
+        "domain": "function",
+        "mode": "execution",
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "variables": {
+          "Counter": {
+            "type": "float",
+            "default": 100
+          }
+        },
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              50
+            ],
+            "values": {}
+          },
+          {
+            "id": "set",
+            "type": "variable.set.float",
+            "position": [
+              280,
+              50
+            ],
+            "values": {
+              "value": 0
+            },
+            "variable": "Counter"
+          },
+          {
+            "id": "get",
+            "type": "variable.get.float",
+            "position": [
+              20,
+              300
+            ],
+            "values": {},
+            "variable": "Counter"
+          },
+          {
+            "id": "add",
+            "type": "math.add",
+            "position": [
+              280,
+              300
+            ],
+            "values": {
+              "a": 0,
+              "b": 1
+            }
+          },
+          {
+            "id": "report",
+            "type": "function.call",
+            "position": [
+              570,
+              50
+            ],
+            "values": {
+              "x": 0
+            },
+            "function": "Report"
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              850,
+              50
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "entry",
+            "fromNode": "arguments",
+            "fromPin": "then",
+            "toNode": "set",
+            "toPin": "exec"
+          },
+          {
+            "id": "set",
+            "fromNode": "arguments",
+            "fromPin": "x",
+            "toNode": "set",
+            "toPin": "value"
+          },
+          {
+            "id": "report",
+            "fromNode": "set",
+            "fromPin": "then",
+            "toNode": "report",
+            "toPin": "exec"
+          },
+          {
+            "id": "done",
+            "fromNode": "report",
+            "fromPin": "then",
+            "toNode": "return",
+            "toPin": "exec"
+          },
+          {
+            "id": "read",
+            "fromNode": "get",
+            "fromPin": "value",
+            "toNode": "add",
+            "toPin": "a"
+          },
+          {
+            "id": "argument",
+            "fromNode": "add",
+            "fromPin": "value",
+            "toNode": "report",
+            "toPin": "x"
+          },
+          {
+            "id": "value",
+            "fromNode": "report",
+            "fromPin": "result",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      },
+      "Report": {
+        "domain": "function",
+        "mode": "execution",
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "variables": {},
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              50
+            ],
+            "values": {}
+          },
+          {
+            "id": "log",
+            "type": "debug.print",
+            "position": [
+              300,
+              50
+            ],
+            "values": {
+              "text": "Inside Report"
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              600,
+              50
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "entry",
+            "fromNode": "arguments",
+            "fromPin": "then",
+            "toNode": "log",
+            "toPin": "exec"
+          },
+          {
+            "id": "return",
+            "fromNode": "log",
+            "fromPin": "then",
+            "toNode": "return",
+            "toPin": "exec"
+          },
+          {
+            "id": "value",
+            "fromNode": "arguments",
+            "fromPin": "x",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          50
+        ],
+        "values": {}
+      },
+      {
+        "id": "compute",
+        "type": "function.call",
+        "position": [
+          300,
+          50
+        ],
+        "values": {
+          "x": 5
+        },
+        "function": "Compute"
+      },
+      {
+        "id": "convert",
+        "type": "convert.float_string",
+        "position": [
+          300,
+          300
+        ],
+        "values": {
+          "value": 0
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          600,
+          50
+        ],
+        "values": {
+          "text": ""
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "begin",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "compute",
+        "toPin": "exec"
+      },
+      {
+        "id": "print",
+        "fromNode": "compute",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "value",
+        "fromNode": "compute",
+        "fromPin": "result",
+        "toNode": "convert",
+        "toPin": "value"
+      },
+      {
+        "id": "text",
+        "fromNode": "convert",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      }
+    ]
+  }
+}

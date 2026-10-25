@@ -1,0 +1,175 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "material",
+    "variables": {
+      "Tile": {
+        "type": "float",
+        "default": 8
+      },
+      "TintA": {
+        "type": "color",
+        "default": [
+          0.025,
+          0.08,
+          0.18
+        ]
+      },
+      "TintB": {
+        "type": "color",
+        "default": [
+          0.95,
+          0.42,
+          0.045
+        ]
+      },
+      "Roughness": {
+        "type": "float",
+        "default": 0.3
+      }
+    },
+    "nodes": [
+      {
+        "id": "uv",
+        "type": "material.uv",
+        "position": [
+          20,
+          0
+        ],
+        "values": {}
+      },
+      {
+        "id": "tile",
+        "type": "variable.get.float",
+        "position": [
+          20,
+          170
+        ],
+        "values": {},
+        "variable": "Tile"
+      },
+      {
+        "id": "tintA",
+        "type": "variable.get.color",
+        "position": [
+          20,
+          280
+        ],
+        "values": {},
+        "variable": "TintA"
+      },
+      {
+        "id": "tintB",
+        "type": "variable.get.color",
+        "position": [
+          20,
+          390
+        ],
+        "values": {},
+        "variable": "TintB"
+      },
+      {
+        "id": "checker",
+        "type": "pattern.checker",
+        "position": [
+          310,
+          20
+        ],
+        "values": {
+          "u": 0.5,
+          "v": 0.5,
+          "scale": 8,
+          "a": [
+            0.05,
+            0.1,
+            0.2
+          ],
+          "b": [
+            0.8,
+            0.5,
+            0.1
+          ]
+        }
+      },
+      {
+        "id": "rough",
+        "type": "variable.get.float",
+        "position": [
+          310,
+          350
+        ],
+        "values": {},
+        "variable": "Roughness"
+      },
+      {
+        "id": "surface",
+        "type": "material.output",
+        "position": [
+          620,
+          50
+        ],
+        "values": {
+          "baseColor": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "roughness": 0.5,
+          "metallic": 0.1
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "u",
+        "fromNode": "uv",
+        "fromPin": "u",
+        "toNode": "checker",
+        "toPin": "u"
+      },
+      {
+        "id": "v",
+        "fromNode": "uv",
+        "fromPin": "v",
+        "toNode": "checker",
+        "toPin": "v"
+      },
+      {
+        "id": "tile",
+        "fromNode": "tile",
+        "fromPin": "value",
+        "toNode": "checker",
+        "toPin": "scale"
+      },
+      {
+        "id": "a",
+        "fromNode": "tintA",
+        "fromPin": "value",
+        "toNode": "checker",
+        "toPin": "a"
+      },
+      {
+        "id": "b",
+        "fromNode": "tintB",
+        "fromPin": "value",
+        "toNode": "checker",
+        "toPin": "b"
+      },
+      {
+        "id": "color",
+        "fromNode": "checker",
+        "fromPin": "value",
+        "toNode": "surface",
+        "toPin": "baseColor"
+      },
+      {
+        "id": "rough",
+        "fromNode": "rough",
+        "fromPin": "value",
+        "toNode": "surface",
+        "toPin": "roughness"
+      }
+    ]
+  }
+}

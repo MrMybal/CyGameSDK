@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "release": "0.28.0",
+  "adapter": "sandbox",
+  "features": [
+    {
+      "category": "Workspace",
+      "name": "Docking and detached windows",
+      "status": "Available",
+      "panel": "viewport",
+      "notes": "Dock tabs, detach windows and save named layouts."
+    },
+    {
+      "category": "Workspace",
+      "name": "Multiple viewports",
+      "status": "Available",
+      "panel": "viewport",
+      "notes": "Up to 16 independent cameras; Sandbox preview rendering."
+    },
+    {
+      "category": "Workspace",
+      "name": "Search and navigation",
+      "status": "Available",
+      "panel": "navigator",
+      "notes": "Ctrl+P, menu filters, properties, graph navigation and asset queries."
+    },
+    {
+      "category": "Workspace",
+      "name": "Language and themes",
+      "status": "Available",
+      "panel": "options",
+      "notes": "English by default, selectable French and six palettes."
+    },
+    {
+      "category": "Scene",
+      "name": "Level / map editor",
+      "status": "Foundation",
+      "panel": "viewport",
+      "notes": "Scene documents, selection, folders, locks and Undo; no game map codec."
+    },
+    {
+      "category": "Scene",
+      "name": "Transform tools",
+      "status": "Foundation",
+      "panel": "viewport",
+      "notes": "Move, rotate, scale, local/world and snapping; group translation only."
+    },
+    {
+      "category": "Scene",
+      "name": "Automatic properties",
+      "status": "Available",
+      "panel": "details",
+      "notes": "Adapter schemas generate fields; unknown game memory is not reflected."
+    },
+    {
+      "category": "Scene",
+      "name": "Engine viewport rendering",
+      "status": "Adapter required",
+      "panel": "",
+      "notes": "The game adapter must provide rendering, picking and engine integration."
+    },
+    {
+      "category": "Assets",
+      "name": "Content Browser",
+      "status": "Available",
+      "panel": "content",
+      "notes": "Folders, queries, type filters, favorites, tiles/list and file actions."
+    },
+    {
+      "category": "Assets",
+      "name": "Asset references and Trash",
+      "status": "Available",
+      "panel": "references",
+      "notes": "Declared graph dependencies, consumers and safe file restore."
+    },
+    {
+      "category": "Assets",
+      "name": "Graph asset editors",
+      "status": "Available",
+      "panel": "logic",
+      "notes": "Independent document tabs and local function subgraphs."
+    },
+    {
+      "category": "Assets",
+      "name": "Image / texture viewer",
+      "status": "Foundation",
+      "panel": "",
+      "notes": "PNG/JPEG/BMP channels, zoom and pan; no pixel painting or game texture codec."
+    },
+    {
+      "category": "Assets",
+      "name": "JSON documents",
+      "status": "Available",
+      "panel": "content",
+      "notes": "JSON tree editing, add/remove, Undo and guarded saves; 512 KiB / four open documents."
+    },
+    {
+      "category": "Assets",
+      "name": "Import / reimport and thumbnails",
+      "status": "Available",
+      "panel": "imports",
+      "notes": "PNG/JPEG/BMP copy and bounded GLB/CyPack conversion; source hashes, protected reimport and image thumbnails."
+    },
+    {
+      "category": "Assets",
+      "name": "Static mesh editor",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "DX11 geometry and vertex tools, bounded static LOD generation and collision shapes; no production topology or physics cooking."
+    },
+    {
+      "category": "Assets",
+      "name": "Skeleton and animation editors",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Hierarchy, skinning, clips/keys and reference-pose retarget baking; no IK or automatic humanoid rig solver."
+    },
+    {
+      "category": "Assets",
+      "name": "Portable cross-SDK assets",
+      "status": "Foundation",
+      "panel": "imports",
+      "notes": "Native .cy3d editing with GLB/CyPack import/export and portable UUID preservation; game codecs require providers."
+    },
+    {
+      "category": "Graphs",
+      "name": "Logic node authoring",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Typed wires, variables, local functions, clipboard and comment groups."
+    },
+    {
+      "category": "Graphs",
+      "name": "Graph debugger",
+      "status": "Available",
+      "panel": "debugger",
+      "notes": "Breakpoints, call stack, watches, step over/into/out and diagnostics."
+    },
+    {
+      "category": "Graphs",
+      "name": "Material authoring",
+      "status": "Foundation",
+      "panel": "material",
+      "notes": "Procedural and image nodes, instances and compiled DX11 sphere/plane previews."
+    },
+    {
+      "category": "Graphs",
+      "name": "Complete Blueprint feature set",
+      "status": "Not available",
+      "panel": "",
+      "notes": "Classes, methods, containers, macros, loops, events and delays now work; full engine semantics and Unreal compatibility remain work."
+    },
+    {
+      "category": "Graphs",
+      "name": "Material texture sampling",
+      "status": "Foundation",
+      "panel": "material",
+      "notes": "PNG/JPEG/BMP CPU and DX11 sampling, sRGB, bilinear repeat and eight texture bindings; preview shaders only."
+    },
+    {
+      "category": "Integration",
+      "name": "Editor plugins",
+      "status": "Source component",
+      "panel": "modules",
+      "notes": "Trusted source plugin lifecycle and editor registry; no dynamic DLL loader."
+    },
+    {
+      "category": "Integration",
+      "name": "Build and package",
+      "status": "Adapter required",
+      "panel": "build",
+      "notes": "Sandbox exports a document ZIP. A real game compiler requires a provider."
+    },
+    {
+      "category": "Integration",
+      "name": "Play in editor",
+      "status": "Not available",
+      "panel": "",
+      "notes": "No game runtime bridge is installed."
+    },
+    {
+      "category": "Integration",
+      "name": "Native AI access",
+      "status": "Available",
+      "panel": "operations",
+      "notes": "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs."
+    },
+    {
+      "category": "Integration",
+      "name": "Source control and profiling",
+      "status": "Not available",
+      "panel": "",
+      "notes": "No Git/Perforce UI, engine profiler, landscape or cinematic editor."
+    },
+    {
+      "category": "Graphs",
+      "name": "Blueprint classes and containers",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Typed fields, inheritance, virtual methods, shared references and bounded array/map/set operations."
+    },
+    {
+      "category": "Graphs",
+      "name": "Inline macros and function loops",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Compile-time macro expansion and typed execution-function iteration with early break."
+    },
+    {
+      "category": "Graphs",
+      "name": "Graph events and simulation time",
+      "status": "Foundation",
+      "panel": "debugger",
+      "notes": "Nonblocking delays, named events and explicit logical time; one execution lane, no engine event bridge."
+    },
+    {
+      "category": "Assets",
+      "name": "Generated static LODs",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Protected boundary/seam clustering, real preview/export, stale-state detection and regeneration."
+    },
+    {
+      "category": "Assets",
+      "name": "Collision shape authoring",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Conservative box/sphere/capsule fits, editable properties, wire preview and review markers."
+    },
+    {
+      "category": "Assets",
+      "name": "Reference-pose retargeting",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Explicit bone mapping, target proportions, orientation correction and sampled clip baking."
+    },
+    {
+      "category": "Integration",
+      "name": "Game codec providers",
+      "status": "Adapter required",
+      "panel": "codecs",
+      "notes": "Trusted executable registry, exact target/options, loss/hash/validation checks and Core jobs; no real game codec bundled."
+    },
+    {
+      "category": "Assets",
+      "name": "Offline chain IK",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Fixed-root FABRIK clip baking, optional pole and reachable/error reporting. Unit scale; no joint limits or contacts."
+    },
+    {
+      "category": "Assets",
+      "name": "Root motion extraction and reconstruction",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "Original retained, in-place clip and rigid delta curve, sampled reconstruction and fingerprint guards. No engine movement binding."
+    },
+    {
+      "category": "Assets",
+      "name": "Clip trimming and resampling",
+      "status": "Foundation",
+      "panel": "mesh",
+      "notes": "New clip, selected range, zero-based time and bounded LINEAR sampling; original clip retained."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Named enums",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Local nominal types, validated members/defaults, literal/equality/string/switch nodes and function/variable support."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Named structures",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Bounded acyclic records, make/break/set nodes, recursive properties, class fields, signatures and clipboard transfer."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Class interfaces",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Local method contracts, typed native designer, matching class bindings, dynamic dispatch and shared debugger. No engine reflection or silent message fallback."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Signature migration",
+      "status": "Foundation",
+      "panel": "signatureMigration",
+      "notes": "Explicit preview/apply, port rename maps, linked function/interface closure, preserved values and Undo; losses require acceptance. Current graph only, no automatic asset-load migration."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Enum and structure migration",
+      "status": "Foundation",
+      "panel": "typeMigration",
+      "notes": "Explicit field/member renames, nested defaults and typed values, reviewed resets/removals, hash-guarded apply and Undo. One owner only; referenced removed set-fields block."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Collapse selection to function or macro",
+      "status": "Foundation",
+      "panel": "logic",
+      "notes": "Preview and collapse a pure dependency region into a local function or macro, preserving nodes, fallback values, wire IDs and Undo. Execution, variable reads and non-uniform output dependencies reject."
+    },
+    {
+      "category": "Blueprint",
+      "name": "Expand pure calls",
+      "status": "Available",
+      "panel": "logic",
+      "notes": "Hash-guarded preview and one Undo; typed reroutes, retained definitions and source-call provenance. Execution calls reject."
+    }
+  ]
+}

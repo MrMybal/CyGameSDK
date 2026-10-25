@@ -1,0 +1,232 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "metadata": {
+      "example": "Select Calculate, then Expand call and preview/apply. Before and after: Run graph prints 9."
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {},
+        "metadata": {
+          "keep": "begin"
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          740,
+          20
+        ],
+        "values": {
+          "text": ""
+        },
+        "metadata": {
+          "keep": "print"
+        }
+      },
+      {
+        "id": "source",
+        "type": "constant.float",
+        "position": [
+          20,
+          230
+        ],
+        "values": {
+          "value": 2
+        },
+        "metadata": {
+          "keep": "source"
+        }
+      },
+      {
+        "id": "text",
+        "type": "convert.float_string",
+        "position": [
+          650,
+          370
+        ],
+        "values": {
+          "value": 0
+        },
+        "metadata": {
+          "keep": "text"
+        }
+      },
+      {
+        "id": "calculate",
+        "type": "function.call",
+        "function": "Calculate",
+        "position": [
+          60,
+          190
+        ],
+        "values": {
+          "x": 2
+        },
+        "comment": "Select this call, then Expand call.",
+        "metadata": {
+          "keep": "original call"
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "start",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec",
+        "metadata": {
+          "keep": "start"
+        }
+      },
+      {
+        "id": "source_to_add",
+        "fromNode": "source",
+        "fromPin": "value",
+        "toNode": "calculate",
+        "toPin": "x",
+        "metadata": {
+          "keep": "source_to_add"
+        }
+      },
+      {
+        "id": "multiply_to_text",
+        "fromNode": "calculate",
+        "fromPin": "result",
+        "toNode": "text",
+        "toPin": "value",
+        "metadata": {
+          "keep": "multiply_to_text"
+        }
+      },
+      {
+        "id": "text_to_print",
+        "fromNode": "text",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text",
+        "metadata": {
+          "keep": "text_to_print"
+        }
+      }
+    ],
+    "functions": {
+      "Calculate": {
+        "domain": "function",
+        "mode": "pure",
+        "kind": "function",
+        "variables": {},
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 2
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "nodes": [
+          {
+            "id": "add",
+            "type": "math.add",
+            "position": [
+              280,
+              90
+            ],
+            "values": {
+              "a": 0,
+              "b": 1
+            },
+            "metadata": {
+              "keep": "add"
+            }
+          },
+          {
+            "id": "multiply",
+            "type": "math.multiply",
+            "position": [
+              520,
+              90
+            ],
+            "values": {
+              "a": 0.5,
+              "b": 3
+            },
+            "metadata": {
+              "keep": "multiply"
+            }
+          },
+          {
+            "id": "args",
+            "type": "function.input",
+            "position": [
+              40,
+              90
+            ],
+            "values": {}
+          },
+          {
+            "id": "result",
+            "type": "function.output",
+            "position": [
+              760,
+              90
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "input",
+            "fromNode": "args",
+            "fromPin": "x",
+            "toNode": "add",
+            "toPin": "a",
+            "metadata": {
+              "keep": "source_to_add"
+            }
+          },
+          {
+            "id": "add_to_multiply",
+            "fromNode": "add",
+            "fromPin": "value",
+            "toNode": "multiply",
+            "toPin": "a",
+            "metadata": {
+              "keep": "add_to_multiply"
+            }
+          },
+          {
+            "id": "output",
+            "fromNode": "multiply",
+            "fromPin": "value",
+            "toNode": "result",
+            "toPin": "result",
+            "metadata": {
+              "keep": "multiply_to_text"
+            }
+          }
+        ],
+        "metadata": {
+          "keep": "local helper"
+        }
+      }
+    }
+  }
+}

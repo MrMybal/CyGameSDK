@@ -1,0 +1,50 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "material",
+    "links": [
+      {
+        "fromNode": "color",
+        "fromPin": "value",
+        "id": "color_link",
+        "toNode": "surface",
+        "toPin": "baseColor"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "color",
+        "position": [
+          40.0,
+          90.0
+        ],
+        "type": "constant.color",
+        "values": {
+          "value": [
+            0.2,
+            0.45,
+            0.8
+          ]
+        }
+      },
+      {
+        "id": "surface",
+        "position": [
+          360.0,
+          90.0
+        ],
+        "type": "material.output",
+        "values": {
+          "baseColor": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "metallic": 0.0,
+          "roughness": 0.5
+        }
+      }
+    ]
+  }
+}

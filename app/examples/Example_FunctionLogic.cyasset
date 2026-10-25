@@ -1,0 +1,162 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "functions": {
+      "Double": {
+        "domain": "function",
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "variables": {},
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              80
+            ],
+            "values": {}
+          },
+          {
+            "id": "multiply",
+            "type": "math.multiply",
+            "position": [
+              310,
+              80
+            ],
+            "values": {
+              "a": 0,
+              "b": 2
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              600,
+              80
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "input",
+            "fromNode": "arguments",
+            "fromPin": "x",
+            "toNode": "multiply",
+            "toPin": "a"
+          },
+          {
+            "id": "output",
+            "fromNode": "multiply",
+            "fromPin": "value",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      }
+    },
+    "references": [
+      "Examples/Example_PlayerLogic.cyasset"
+    ],
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          30,
+          50
+        ],
+        "values": {}
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          600,
+          50
+        ],
+        "values": {
+          "text": "Result"
+        }
+      },
+      {
+        "id": "call",
+        "type": "function.call",
+        "position": [
+          30,
+          270
+        ],
+        "values": {
+          "x": 3
+        },
+        "function": "Double",
+        "comment": "Select the call, then use Open function in its properties."
+      },
+      {
+        "id": "convert",
+        "type": "convert.float_string",
+        "position": [
+          320,
+          270
+        ],
+        "values": {
+          "value": 0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "start",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "result",
+        "fromNode": "call",
+        "fromPin": "result",
+        "toNode": "convert",
+        "toPin": "value"
+      },
+      {
+        "id": "text",
+        "fromNode": "convert",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      }
+    ],
+    "comments": [
+      {
+        "id": "startupGroup",
+        "text": "Reusable pure function — prints 6",
+        "position": [
+          10,
+          10
+        ],
+        "size": [
+          820,
+          440
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "types": {
+      "enum.Team": {
+        "kind": "enum",
+        "members": [
+          "Friendly",
+          "Hostile"
+        ],
+        "default": "Friendly",
+        "metadata": {
+          "origin": "portable editor example"
+        }
+      },
+      "struct.Stats": {
+        "kind": "struct",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 1,
+            "hint": "Retain authored values and unknown field metadata."
+          },
+          "team": {
+            "type": "enum.Team",
+            "default": "Friendly"
+          }
+        },
+        "metadata": {
+          "keep": true
+        }
+      }
+    },
+    "variables": {
+      "Record": {
+        "type": "struct.Stats",
+        "default": {
+          "health": 9,
+          "team": "Hostile"
+        }
+      }
+    },
+    "metadata": {
+      "example": "Explicit enum and structure migration; QA keeps this source fixture unchanged."
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {}
+      },
+      {
+        "id": "switch",
+        "type": "enum.switch",
+        "position": [
+          270,
+          20
+        ],
+        "values": {
+          "value": "Friendly"
+        },
+        "typeRef": "enum.Team"
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          740,
+          20
+        ],
+        "values": {
+          "text": ""
+        }
+      },
+      {
+        "id": "record",
+        "type": "typed.get",
+        "position": [
+          20,
+          230
+        ],
+        "values": {},
+        "typeRef": "struct.Stats",
+        "variable": "Record"
+      },
+      {
+        "id": "break",
+        "type": "struct.break",
+        "position": [
+          270,
+          230
+        ],
+        "values": {
+          "value": {
+            "health": 1,
+            "team": "Friendly"
+          }
+        },
+        "typeRef": "struct.Stats"
+      },
+      {
+        "id": "convert",
+        "type": "convert.float_string",
+        "position": [
+          510,
+          230
+        ],
+        "values": {
+          "value": 0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "start",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "switch",
+        "toPin": "exec",
+        "metadata": {
+          "keep": "start"
+        }
+      },
+      {
+        "id": "branch",
+        "fromNode": "switch",
+        "fromPin": "Hostile",
+        "toNode": "print",
+        "toPin": "exec",
+        "metadata": {
+          "keep": "branch"
+        }
+      },
+      {
+        "id": "record_to_break",
+        "fromNode": "record",
+        "fromPin": "value",
+        "toNode": "break",
+        "toPin": "value",
+        "metadata": {
+          "keep": "record_to_break"
+        }
+      },
+      {
+        "id": "team_to_switch",
+        "fromNode": "break",
+        "fromPin": "team",
+        "toNode": "switch",
+        "toPin": "value",
+        "metadata": {
+          "keep": "team_to_switch"
+        }
+      },
+      {
+        "id": "health_to_convert",
+        "fromNode": "break",
+        "fromPin": "health",
+        "toNode": "convert",
+        "toPin": "value",
+        "metadata": {
+          "keep": "health_to_convert"
+        }
+      },
+      {
+        "id": "text_to_print",
+        "fromNode": "convert",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text",
+        "metadata": {
+          "keep": "text_to_print"
+        }
+      }
+    ]
+  }
+}

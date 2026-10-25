@@ -1,0 +1,4846 @@
+{
+  "File": {
+    "en": "File",
+    "fr": "Fichier"
+  },
+  "Edit": {
+    "en": "Edit",
+    "fr": "Modifier"
+  },
+  "Window": {
+    "en": "Window",
+    "fr": "Fenetres"
+  },
+  "Tools": {
+    "en": "Tools",
+    "fr": "Outils"
+  },
+  "Save project": {
+    "en": "Save project",
+    "fr": "Enregistrer le projet"
+  },
+  "Load project": {
+    "en": "Load project",
+    "fr": "Charger le projet"
+  },
+  "Exit": {
+    "en": "Exit",
+    "fr": "Quitter"
+  },
+  "Filter menu": {
+    "en": "Filter menu",
+    "fr": "Filtrer le menu"
+  },
+  "Undo": {
+    "en": "Undo",
+    "fr": "Annuler"
+  },
+  "Redo": {
+    "en": "Redo",
+    "fr": "Retablir"
+  },
+  "Search everything": {
+    "en": "Search everything",
+    "fr": "Tout rechercher"
+  },
+  "New viewport": {
+    "en": "New viewport",
+    "fr": "Nouveau viewport"
+  },
+  "Reset layout": {
+    "en": "Reset layout",
+    "fr": "Reinitialiser l'agencement"
+  },
+  "Options": {
+    "en": "Options",
+    "fr": "Options"
+  },
+  "Add cube": {
+    "en": "Add cube",
+    "fr": "Ajouter un cube"
+  },
+  "Validate scene": {
+    "en": "Validate scene",
+    "fr": "Valider la scene"
+  },
+  "Build": {
+    "en": "Build",
+    "fr": "Compiler"
+  },
+  "Save project (Ctrl+S)": {
+    "en": "Save project (Ctrl+S)",
+    "fr": "Enregistrer le projet (Ctrl+S)"
+  },
+  "Undo (Ctrl+Z)": {
+    "en": "Undo (Ctrl+Z)",
+    "fr": "Annuler (Ctrl+Z)"
+  },
+  "Redo (Ctrl+Y)": {
+    "en": "Redo (Ctrl+Y)",
+    "fr": "Retablir (Ctrl+Y)"
+  },
+  "Play: requires a game adapter": {
+    "en": "Play: requires a game adapter",
+    "fr": "Jouer : adaptateur de jeu requis"
+  },
+  "The Sandbox adapter has no game runtime or compiler.": {
+    "en": "The Sandbox adapter has no game runtime or compiler.",
+    "fr": "L'adaptateur Sandbox ne fournit ni runtime de jeu ni compilateur."
+  },
+  "Search everything   Ctrl+P": {
+    "en": "Search everything   Ctrl+P",
+    "fr": "Tout rechercher   Ctrl+P"
+  },
+  "Viewport": {
+    "en": "Viewport",
+    "fr": "Viewport"
+  },
+  "World Outliner": {
+    "en": "World Outliner",
+    "fr": "Hierarchie"
+  },
+  "Details": {
+    "en": "Details",
+    "fr": "Proprietes"
+  },
+  "Content Browser": {
+    "en": "Content Browser",
+    "fr": "Explorateur de contenu"
+  },
+  "Output Log": {
+    "en": "Output Log",
+    "fr": "Journal de sortie"
+  },
+  "Modules": {
+    "en": "Modules",
+    "fr": "Modules"
+  },
+  "Logic Graph": {
+    "en": "Logic Graph",
+    "fr": "Graphe logique"
+  },
+  "Material Graph": {
+    "en": "Material Graph",
+    "fr": "Graphe de materiau"
+  },
+  "MCP / Operations": {
+    "en": "MCP / Operations",
+    "fr": "MCP / Operations"
+  },
+  "Asset Editor": {
+    "en": "Asset Editor",
+    "fr": "Editeur d'asset"
+  },
+  "Diagnostics": {
+    "en": "Diagnostics",
+    "fr": "Diagnostics"
+  },
+  "Perspective": {
+    "en": "Perspective",
+    "fr": "Perspective"
+  },
+  "Top": {
+    "en": "Top",
+    "fr": "Dessus"
+  },
+  "Front": {
+    "en": "Front",
+    "fr": "Face"
+  },
+  "SANDBOX PREVIEW": {
+    "en": "SANDBOX PREVIEW",
+    "fr": "APERCU SANDBOX"
+  },
+  "Focus selection": {
+    "en": "Focus selection",
+    "fr": "Cadrer la selection"
+  },
+  "RMB orbit | MMB pan | Wheel zoom | F focus": {
+    "en": "RMB orbit | MMB pan | Wheel zoom | F focus",
+    "fr": "Clic droit : orbite | Milieu : deplacer | Molette : zoom | F : cadrer"
+  },
+  "Z up  /  units: metres  /  preview renderer": {
+    "en": "Z up  /  units: metres  /  preview renderer",
+    "fr": "Z vertical / unites : metres / rendu d'apercu"
+  },
+  "Search objects": {
+    "en": "Search objects",
+    "fr": "Rechercher un objet"
+  },
+  "objects": {
+    "en": "objects",
+    "fr": "objets"
+  },
+  "Label": {
+    "en": "Label",
+    "fr": "Nom"
+  },
+  "Type": {
+    "en": "Type",
+    "fr": "Type"
+  },
+  "No selection": {
+    "en": "No selection",
+    "fr": "Aucune selection"
+  },
+  "Select an object in the viewport or outliner.": {
+    "en": "Select an object in the viewport or outliner.",
+    "fr": "Selectionnez un objet dans le viewport ou la hierarchie."
+  },
+  "Search properties": {
+    "en": "Search properties",
+    "fr": "Rechercher une propriete"
+  },
+  "Object": {
+    "en": "Object",
+    "fr": "Objet"
+  },
+  "Transform": {
+    "en": "Transform",
+    "fr": "Transformation"
+  },
+  "Rendering": {
+    "en": "Rendering",
+    "fr": "Rendu"
+  },
+  "Enabled": {
+    "en": "Enabled",
+    "fr": "Actif"
+  },
+  "Mobility": {
+    "en": "Mobility",
+    "fr": "Mobilite"
+  },
+  "Name": {
+    "en": "Name",
+    "fr": "Nom"
+  },
+  "Position": {
+    "en": "Position",
+    "fr": "Position"
+  },
+  "Rotation": {
+    "en": "Rotation",
+    "fr": "Rotation"
+  },
+  "Scale": {
+    "en": "Scale",
+    "fr": "Echelle"
+  },
+  "Tint": {
+    "en": "Tint",
+    "fr": "Teinte"
+  },
+  "Delete object": {
+    "en": "Delete object",
+    "fr": "Supprimer l'objet"
+  },
+  "PROJECT": {
+    "en": "PROJECT",
+    "fr": "PROJET"
+  },
+  "Common editor foundation": {
+    "en": "Common editor foundation",
+    "fr": "Socle commun d'editeur"
+  },
+  "Create": {
+    "en": "Create",
+    "fr": "Creer"
+  },
+  "Cube": {
+    "en": "Cube",
+    "fr": "Cube"
+  },
+  "Game adapter": {
+    "en": "Game adapter",
+    "fr": "Adaptateur de jeu"
+  },
+  "Scene, properties and preview are available. Connect a game adapter for engine formats, build and play.": {
+    "en": "Scene, properties and preview are available. Connect a game adapter for engine formats, build and play.",
+    "fr": "Scene, proprietes et apercu disponibles. Branchez un adaptateur pour les formats du moteur, la compilation et le jeu."
+  },
+  "Editor plugins": {
+    "en": "Editor plugins",
+    "fr": "Extensions de l'editeur"
+  },
+  "Source plugin": {
+    "en": "Source plugin",
+    "fr": "Extension source"
+  },
+  "Open diagnostics": {
+    "en": "Open diagnostics",
+    "fr": "Ouvrir le diagnostic"
+  },
+  "Search assets": {
+    "en": "Search assets",
+    "fr": "Rechercher un asset"
+  },
+  "Refresh assets": {
+    "en": "Refresh assets",
+    "fr": "Actualiser les assets"
+  },
+  "All": {
+    "en": "All",
+    "fr": "Tous"
+  },
+  "Graph": {
+    "en": "Graph",
+    "fr": "Graphe"
+  },
+  "Texture": {
+    "en": "Texture",
+    "fr": "Texture"
+  },
+  "Mesh": {
+    "en": "Mesh",
+    "fr": "Maillage"
+  },
+  "Audio": {
+    "en": "Audio",
+    "fr": "Audio"
+  },
+  "Other": {
+    "en": "Other",
+    "fr": "Autre"
+  },
+  "All content": {
+    "en": "All content",
+    "fr": "Tout le contenu"
+  },
+  "No matching assets": {
+    "en": "No matching assets",
+    "fr": "Aucun asset correspondant"
+  },
+  "Save a graph as an asset, or add files to data/assets.": {
+    "en": "Save a graph as an asset, or add files to data/assets.",
+    "fr": "Enregistrez un graphe ou ajoutez des fichiers dans data/assets."
+  },
+  "Asset": {
+    "en": "Asset",
+    "fr": "Asset"
+  },
+  "Size": {
+    "en": "Size",
+    "fr": "Taille"
+  },
+  "New graph asset": {
+    "en": "New graph asset",
+    "fr": "Nouvel asset nodal"
+  },
+  "Logic": {
+    "en": "Logic",
+    "fr": "Logique"
+  },
+  "Material": {
+    "en": "Material",
+    "fr": "Matériau"
+  },
+  "Graph assets open in their specialized editor. Other formats expose metadata until their game adapter registers an editor.": {
+    "en": "Graph assets open in their specialized editor. Other formats expose metadata until their game adapter registers an editor.",
+    "fr": "Les graphes s'ouvrent dans leur editeur specialise. Les autres formats affichent leurs metadonnees en attendant leur adaptateur."
+  },
+  "Add node": {
+    "en": "Add node",
+    "fr": "Ajouter un noeud"
+  },
+  "Validate": {
+    "en": "Validate",
+    "fr": "Valider"
+  },
+  "Run graph": {
+    "en": "Run graph",
+    "fr": "Executer le graphe"
+  },
+  "Preview material": {
+    "en": "Preview material",
+    "fr": "Apercu du materiau"
+  },
+  "Save asset": {
+    "en": "Save asset",
+    "fr": "Enregistrer l'asset"
+  },
+  "LOGIC": {
+    "en": "LOGIC",
+    "fr": "LOGIQUE"
+  },
+  "MATERIAL": {
+    "en": "MATERIAL",
+    "fr": "MATERIAU"
+  },
+  "Search nodes": {
+    "en": "Search nodes",
+    "fr": "Rechercher un noeud"
+  },
+  "MMB pan | Wheel zoom | Click pins to connect | RMB add": {
+    "en": "MMB pan | Wheel zoom | Click pins to connect | RMB add",
+    "fr": "Milieu : deplacer | Molette : zoom | Clic sur broches : relier | Droit : ajouter"
+  },
+  "Node properties": {
+    "en": "Node properties",
+    "fr": "Proprietes du noeud"
+  },
+  "Select a node to edit its values.": {
+    "en": "Select a node to edit its values.",
+    "fr": "Selectionnez un noeud pour modifier ses valeurs."
+  },
+  "Delete node": {
+    "en": "Delete node",
+    "fr": "Supprimer le noeud"
+  },
+  "Connections": {
+    "en": "Connections",
+    "fr": "Connexions"
+  },
+  "Disconnect": {
+    "en": "Disconnect",
+    "fr": "Deconnecter"
+  },
+  "Parameter preview": {
+    "en": "Parameter preview",
+    "fr": "Apercu des parametres"
+  },
+  "Roughness": {
+    "en": "Roughness",
+    "fr": "Rugosite"
+  },
+  "Metallic": {
+    "en": "Metallic",
+    "fr": "Metallique"
+  },
+  "Shader compilation is supplied by the game adapter.": {
+    "en": "Shader compilation is supplied by the game adapter.",
+    "fr": "L'adaptateur de jeu fournit la compilation des shaders."
+  },
+  "Result": {
+    "en": "Result",
+    "fr": "Resultat"
+  },
+  "Begin play": {
+    "en": "Begin play",
+    "fr": "Debut du jeu"
+  },
+  "Print string": {
+    "en": "Print string",
+    "fr": "Afficher un texte"
+  },
+  "Branch": {
+    "en": "Branch",
+    "fr": "Condition"
+  },
+  "Float": {
+    "en": "Float",
+    "fr": "Nombre decimal"
+  },
+  "Boolean": {
+    "en": "Boolean",
+    "fr": "Booleen"
+  },
+  "Color": {
+    "en": "Color",
+    "fr": "Couleur"
+  },
+  "Add": {
+    "en": "Add",
+    "fr": "Ajouter"
+  },
+  "Multiply": {
+    "en": "Multiply",
+    "fr": "Multiplication"
+  },
+  "Material output": {
+    "en": "Material output",
+    "fr": "Sortie du materiau"
+  },
+  "Copy log": {
+    "en": "Copy log",
+    "fr": "Copier le journal"
+  },
+  "Pause": {
+    "en": "Pause",
+    "fr": "Pause"
+  },
+  "Done": {
+    "en": "Done",
+    "fr": "Termine"
+  },
+  "Configuration saved": {
+    "en": "Configuration saved",
+    "fr": "Configuration enregistree"
+  },
+  "Configuration loaded without execution": {
+    "en": "Configuration loaded without execution",
+    "fr": "Configuration chargee sans execution"
+  },
+  "CyToolsCore provides MCP, SDK, validation, jobs and transports.": {
+    "en": "CyToolsCore provides MCP, SDK, validation, jobs and transports.",
+    "fr": "CyToolsCore fournit MCP, SDK, validation, taches et transports."
+  },
+  "Execute": {
+    "en": "Execute",
+    "fr": "Executer"
+  },
+  "Copy contract": {
+    "en": "Copy contract",
+    "fr": "Copier le contrat"
+  },
+  "Parameters (JSON)": {
+    "en": "Parameters (JSON)",
+    "fr": "Parametres (JSON)"
+  },
+  "Save configuration": {
+    "en": "Save configuration",
+    "fr": "Enregistrer la configuration"
+  },
+  "Load configuration": {
+    "en": "Load configuration",
+    "fr": "Charger la configuration"
+  },
+  "Language": {
+    "en": "Language",
+    "fr": "Langue"
+  },
+  "Theme": {
+    "en": "Theme",
+    "fr": "Theme"
+  },
+  "Text size": {
+    "en": "Text size",
+    "fr": "Taille du texte"
+  },
+  "Autosave configurations": {
+    "en": "Autosave configurations",
+    "fr": "Configurations automatiques"
+  },
+  "Configuration": {
+    "en": "Configuration",
+    "fr": "Configuration"
+  },
+  "Licenses": {
+    "en": "Licenses",
+    "fr": "Licences"
+  },
+  "Full notices: app/LICENCES": {
+    "en": "Full notices: app/LICENCES",
+    "fr": "Textes complets : app/LICENCES"
+  },
+  "Development status": {
+    "en": "Development status",
+    "fr": "Etat du developpement"
+  },
+  "Windows foundation. Sandbox only. No game compiler, binary plugin loader, shader compiler or Blueprint compatibility yet.": {
+    "en": "Windows foundation. Sandbox only. No game compiler, binary plugin loader, shader compiler or Blueprint compatibility yet.",
+    "fr": "Base Windows avec Sandbox. Compilateur de jeu, extensions binaires, compilation de shaders et compatibilite Blueprint a implementer."
+  },
+  "Commands, panels, objects, properties, nodes...": {
+    "en": "Commands, panels, objects, properties, nodes...",
+    "fr": "Commandes, panneaux, objets, proprietes, noeuds..."
+  },
+  "No results": {
+    "en": "No results",
+    "fr": "Aucun resultat"
+  },
+  "EDITOR API READY": {
+    "en": "EDITOR API READY",
+    "fr": "API EDITEUR PRETE"
+  },
+  "CyToolsCore MCP / SDK": {
+    "en": "CyToolsCore MCP / SDK",
+    "fr": "CyToolsCore MCP / SDK"
+  },
+  "Unsaved changes": {
+    "en": "Unsaved changes",
+    "fr": "Modifications non enregistrees"
+  },
+  "Saved": {
+    "en": "Saved",
+    "fr": "Enregistre"
+  },
+  "Close editor?": {
+    "en": "Close editor?",
+    "fr": "Fermer l'editeur ?"
+  },
+  "The project has unsaved changes.": {
+    "en": "The project has unsaved changes.",
+    "fr": "Le projet contient des modifications non enregistrees."
+  },
+  "Save and close": {
+    "en": "Save and close",
+    "fr": "Enregistrer et fermer"
+  },
+  "Close without saving": {
+    "en": "Close without saving",
+    "fr": "Fermer sans enregistrer"
+  },
+  "Cancel": {
+    "en": "Cancel",
+    "fr": "Annuler"
+  },
+  "Editor status": {
+    "en": "Editor status",
+    "fr": "Etat de l'editeur"
+  },
+  "List scene objects": {
+    "en": "List scene objects",
+    "fr": "Lister les objets"
+  },
+  "Select object": {
+    "en": "Select object",
+    "fr": "Selectionner un objet"
+  },
+  "Create cube": {
+    "en": "Create cube",
+    "fr": "Creer un cube"
+  },
+  "Set property": {
+    "en": "Set property",
+    "fr": "Modifier une propriete"
+  },
+  "Focus object": {
+    "en": "Focus object",
+    "fr": "Cadrer un objet"
+  },
+  "Search editor": {
+    "en": "Search editor",
+    "fr": "Rechercher dans l'editeur"
+  },
+  "Open panel": {
+    "en": "Open panel",
+    "fr": "Ouvrir un panneau"
+  },
+  "Enable editor plugin": {
+    "en": "Enable editor plugin",
+    "fr": "Activer une extension"
+  },
+  "List assets": {
+    "en": "List assets",
+    "fr": "Lister les assets"
+  },
+  "Describe graph": {
+    "en": "Describe graph",
+    "fr": "Decrire le graphe"
+  },
+  "Validate graph": {
+    "en": "Validate graph",
+    "fr": "Valider le graphe"
+  },
+  "Run sandbox graph": {
+    "en": "Run sandbox graph",
+    "fr": "Executer le graphe sandbox"
+  },
+  "Add graph node": {
+    "en": "Add graph node",
+    "fr": "Ajouter un noeud"
+  },
+  "Move graph node": {
+    "en": "Move graph node",
+    "fr": "Deplacer un noeud"
+  },
+  "Remove graph node": {
+    "en": "Remove graph node",
+    "fr": "Supprimer un noeud"
+  },
+  "Set node value": {
+    "en": "Set node value",
+    "fr": "Modifier la valeur du noeud"
+  },
+  "Connect graph pins": {
+    "en": "Connect graph pins",
+    "fr": "Relier des broches"
+  },
+  "Remove graph connection": {
+    "en": "Remove graph connection",
+    "fr": "Supprimer une connexion"
+  },
+  "Save graph asset": {
+    "en": "Save graph asset",
+    "fr": "Enregistrer un asset nodal"
+  },
+  "Open asset": {
+    "en": "Open asset",
+    "fr": "Ouvrir un asset"
+  },
+  "Create graph asset": {
+    "en": "Create graph asset",
+    "fr": "Creer un asset nodal"
+  },
+  "This asset is not loaded in the current project.": {
+    "en": "This asset is not loaded in the current project.",
+    "fr": "Cet asset n'est pas charge dans le projet actuel."
+  },
+  "The adapter must register a viewport renderer.": {
+    "en": "The adapter must register a viewport renderer.",
+    "fr": "L'adaptateur doit enregistrer un moteur de rendu pour le viewport."
+  },
+  "Autosave": {
+    "en": "Autosave",
+    "fr": "Sauvegarde auto"
+  },
+  "Save executed operation parameters from the Operations panel.": {
+    "en": "Save executed operation parameters from the Operations panel.",
+    "fr": "Enregistrer les parametres executes depuis le panneau Operations."
+  },
+  "Assets moved to Trash will appear here.": {
+    "en": "Assets moved to Trash will appear here.",
+    "fr": "Les assets placés dans la corbeille apparaîtront ici."
+  },
+  "Breakpoint   F9": {
+    "en": "Breakpoint   F9",
+    "fr": "Point d'arrêt   F9"
+  },
+  "Check graph": {
+    "en": "Check graph",
+    "fr": "Vérifier le graphe"
+  },
+  "Comment": {
+    "en": "Comment",
+    "fr": "Commentaire"
+  },
+  "Content": {
+    "en": "Content",
+    "fr": "Contenu"
+  },
+  "Content Drawer": {
+    "en": "Content Drawer",
+    "fr": "Tiroir de contenu"
+  },
+  "Content Drawer   Ctrl+Space": {
+    "en": "Content Drawer   Ctrl+Space",
+    "fr": "Tiroir de contenu   Ctrl+Espace"
+  },
+  "Continue": {
+    "en": "Continue",
+    "fr": "Continuer"
+  },
+  "Continue   F5": {
+    "en": "Continue   F5",
+    "fr": "Continuer   F5"
+  },
+  "Create an asset, change the filters, or drop a file into the content root.": {
+    "en": "Create an asset, change the filters, or drop a file into the content root.",
+    "fr": "Créez un asset, modifiez les filtres ou ajoutez un fichier au dossier de contenu."
+  },
+  "Debug": {
+    "en": "Debug",
+    "fr": "Déboguer"
+  },
+  "Declare values shared by nodes.": {
+    "en": "Declare values shared by nodes.",
+    "fr": "Déclarez des valeurs partagées entre les nœuds."
+  },
+  "Delete selection": {
+    "en": "Delete selection",
+    "fr": "Supprimer la sélection"
+  },
+  "Deleted assets can be restored without overwriting existing files.": {
+    "en": "Deleted assets can be restored without overwriting existing files.",
+    "fr": "Les assets supprimés peuvent être restaurés sans écraser les fichiers existants."
+  },
+  "Destination": {
+    "en": "Destination",
+    "fr": "Destination"
+  },
+  "Duplicate node": {
+    "en": "Duplicate node",
+    "fr": "Dupliquer le nœud"
+  },
+  "Duplicate selected objects": {
+    "en": "Duplicate selected objects",
+    "fr": "Dupliquer les objets sélectionnés"
+  },
+  "E Rotate": {
+    "en": "E Rotate",
+    "fr": "E Rotation"
+  },
+  "Event Graph": {
+    "en": "Event Graph",
+    "fr": "Graphe événementiel"
+  },
+  "Execution trace": {
+    "en": "Execution trace",
+    "fr": "Trace d'exécution"
+  },
+  "Favorites": {
+    "en": "Favorites",
+    "fr": "Favoris"
+  },
+  "Folder name": {
+    "en": "Folder name",
+    "fr": "Nom du dossier"
+  },
+  "Get": {
+    "en": "Get",
+    "fr": "Lire"
+  },
+  "Graph messages": {
+    "en": "Graph messages",
+    "fr": "Messages du graphe"
+  },
+  "Graphs": {
+    "en": "Graphs",
+    "fr": "Graphes"
+  },
+  "Grid": {
+    "en": "Grid",
+    "fr": "Grille"
+  },
+  "Group: translation": {
+    "en": "Group: translation",
+    "fr": "Groupe : déplacement"
+  },
+  "Layout name": {
+    "en": "Layout name",
+    "fr": "Nom de l'agencement"
+  },
+  "Lit parameter preview. Game shader generation is provided by the adapter.": {
+    "en": "Lit parameter preview. Game shader generation is provided by the adapter.",
+    "fr": "Aperçu éclairé des paramètres. La génération du shader du jeu dépend de l'adaptateur."
+  },
+  "Load layout": {
+    "en": "Load layout",
+    "fr": "Charger l'agencement"
+  },
+  "Local": {
+    "en": "Local",
+    "fr": "Local"
+  },
+  "Locked": {
+    "en": "Locked",
+    "fr": "Verrouillé"
+  },
+  "Material preview": {
+    "en": "Material preview",
+    "fr": "Aperçu du matériau"
+  },
+  "Move to Trash": {
+    "en": "Move to Trash",
+    "fr": "Placer dans la corbeille"
+  },
+  "Multiple selection: properties below show the primary object.": {
+    "en": "Multiple selection: properties below show the primary object.",
+    "fr": "Sélection multiple : les propriétés ci-dessous concernent l'objet principal."
+  },
+  "My Graph": {
+    "en": "My Graph",
+    "fr": "Mon graphe"
+  },
+  "New folder": {
+    "en": "New folder",
+    "fr": "Nouveau dossier"
+  },
+  "New variable": {
+    "en": "New variable",
+    "fr": "Nouvelle variable"
+  },
+  "No edits yet": {
+    "en": "No edits yet",
+    "fr": "Aucune modification"
+  },
+  "No graph diagnostics": {
+    "en": "No graph diagnostics",
+    "fr": "Aucun diagnostic de graphe"
+  },
+  "Observed values": {
+    "en": "Observed values",
+    "fr": "Valeurs observées"
+  },
+  "Outliner folder": {
+    "en": "Outliner folder",
+    "fr": "Dossier dans la hiérarchie"
+  },
+  "Q Select": {
+    "en": "Q Select",
+    "fr": "Q Sélection"
+  },
+  "R Scale": {
+    "en": "R Scale",
+    "fr": "R Échelle"
+  },
+  "Redo history": {
+    "en": "Redo history",
+    "fr": "Historique des rétablissements"
+  },
+  "Reload from disk": {
+    "en": "Reload from disk",
+    "fr": "Recharger depuis le disque"
+  },
+  "Remove variable": {
+    "en": "Remove variable",
+    "fr": "Supprimer la variable"
+  },
+  "Restore": {
+    "en": "Restore",
+    "fr": "Restaurer"
+  },
+  "Runtime variables": {
+    "en": "Runtime variables",
+    "fr": "Variables en cours d'exécution"
+  },
+  "SOURCES": {
+    "en": "SOURCES",
+    "fr": "SOURCES"
+  },
+  "Save layout": {
+    "en": "Save layout",
+    "fr": "Enregistrer l'agencement"
+  },
+  "Search content: type:Graph domain:material": {
+    "en": "Search content: type:Graph domain:material",
+    "fr": "Rechercher : type:Graph domain:material"
+  },
+  "Set": {
+    "en": "Set",
+    "fr": "Affecter"
+  },
+  "Snap": {
+    "en": "Snap",
+    "fr": "Aimantation"
+  },
+  "Solid": {
+    "en": "Solid",
+    "fr": "Plein"
+  },
+  "Start debugging": {
+    "en": "Start debugging",
+    "fr": "Démarrer le débogage"
+  },
+  "Step": {
+    "en": "Step",
+    "fr": "Pas à pas"
+  },
+  "Step   F10": {
+    "en": "Step   F10",
+    "fr": "Pas à pas   F10"
+  },
+  "Stop": {
+    "en": "Stop",
+    "fr": "Arrêter"
+  },
+  "Transform cancelled because the document changed.": {
+    "en": "Transform cancelled because the document changed.",
+    "fr": "Transformation annulée car le document a changé."
+  },
+  "Trash": {
+    "en": "Trash",
+    "fr": "Corbeille"
+  },
+  "Trash is empty": {
+    "en": "Trash is empty",
+    "fr": "La corbeille est vide"
+  },
+  "Undo history": {
+    "en": "Undo history",
+    "fr": "Historique des annulations"
+  },
+  "Variable": {
+    "en": "Variable",
+    "fr": "Variable"
+  },
+  "Variables": {
+    "en": "Variables",
+    "fr": "Variables"
+  },
+  "W Move": {
+    "en": "W Move",
+    "fr": "W Déplacement"
+  },
+  "Wireframe": {
+    "en": "Wireframe",
+    "fr": "Fil de fer"
+  },
+  "Workspace": {
+    "en": "Workspace",
+    "fr": "Espace de travail"
+  },
+  "World": {
+    "en": "World",
+    "fr": "Monde"
+  },
+  "selected": {
+    "en": "selected",
+    "fr": "sélectionnés"
+  },
+  "Level": {
+    "en": "Level",
+    "fr": "Niveau"
+  },
+  "Scripting": {
+    "en": "Scripting",
+    "fr": "Logique"
+  },
+  "Materials": {
+    "en": "Materials",
+    "fr": "Matériaux"
+  },
+  "Graph Debugger": {
+    "en": "Graph Debugger",
+    "fr": "Débogueur de graphe"
+  },
+  "Graph Diagnostics": {
+    "en": "Graph Diagnostics",
+    "fr": "Diagnostics du graphe"
+  },
+  "History": {
+    "en": "History",
+    "fr": "Historique"
+  },
+  "Add favorite": {
+    "en": "Add favorite",
+    "fr": "Ajouter aux favoris"
+  },
+  "Remove favorite": {
+    "en": "Remove favorite",
+    "fr": "Retirer des favoris"
+  },
+  "Duplicate asset": {
+    "en": "Duplicate asset",
+    "fr": "Dupliquer l'asset"
+  },
+  "Rename / Move": {
+    "en": "Rename / Move",
+    "fr": "Renommer / Déplacer"
+  },
+  "List": {
+    "en": "List",
+    "fr": "Liste"
+  },
+  "Tiles": {
+    "en": "Tiles",
+    "fr": "Vignettes"
+  },
+  "Idle": {
+    "en": "Idle",
+    "fr": "Inactif"
+  },
+  "Paused": {
+    "en": "Paused",
+    "fr": "En pause"
+  },
+  "Running": {
+    "en": "Running",
+    "fr": "En cours"
+  },
+  "Breakpoint": {
+    "en": "Breakpoint",
+    "fr": "Point d'arrêt"
+  },
+  "Completed": {
+    "en": "Completed",
+    "fr": "Terminé"
+  },
+  "Failed": {
+    "en": "Failed",
+    "fr": "Échec"
+  },
+  "Stale": {
+    "en": "Stale",
+    "fr": "Programme modifié"
+  },
+  "Warning": {
+    "en": "Warning",
+    "fr": "Avertissement"
+  },
+  "Info": {
+    "en": "Info",
+    "fr": "Information"
+  },
+  "Node is disconnected": {
+    "en": "Node is disconnected",
+    "fr": "Le nœud est déconnecté"
+  },
+  "Logic graph requires a Begin play event": {
+    "en": "Logic graph requires a Begin play event",
+    "fr": "Le graphe logique nécessite un événement de départ"
+  },
+  "Material graph requires exactly one output node": {
+    "en": "Material graph requires exactly one output node",
+    "fr": "Le graphe de matériau nécessite exactement une sortie"
+  },
+  "Graph changed: restart debugging": {
+    "en": "Graph changed: restart debugging",
+    "fr": "Graphe modifié : redémarrez le débogage"
+  },
+  "Get float": {
+    "en": "Get float",
+    "fr": "Lire float"
+  },
+  "Get bool": {
+    "en": "Get bool",
+    "fr": "Lire bool"
+  },
+  "Get string": {
+    "en": "Get string",
+    "fr": "Lire string"
+  },
+  "Get color": {
+    "en": "Get color",
+    "fr": "Lire color"
+  },
+  "Set float": {
+    "en": "Set float",
+    "fr": "Écrire float"
+  },
+  "Set bool": {
+    "en": "Set bool",
+    "fr": "Écrire bool"
+  },
+  "Set string": {
+    "en": "Set string",
+    "fr": "Écrire string"
+  },
+  "Set color": {
+    "en": "Set color",
+    "fr": "Écrire color"
+  },
+  "Float to string": {
+    "en": "Float to string",
+    "fr": "Nombre vers texte"
+  },
+  "String": {
+    "en": "String",
+    "fr": "Texte"
+  },
+  "Sequence": {
+    "en": "Sequence",
+    "fr": "Séquence"
+  },
+  "subtract": {
+    "en": "subtract",
+    "fr": "Soustraire"
+  },
+  "divide": {
+    "en": "divide",
+    "fr": "Diviser"
+  },
+  "less": {
+    "en": "less",
+    "fr": "Inférieur"
+  },
+  "greater": {
+    "en": "greater",
+    "fr": "Supérieur"
+  },
+  "equal": {
+    "en": "equal",
+    "fr": "Égal"
+  },
+  "Multiply color": {
+    "en": "Multiply color",
+    "fr": "Multiplier la couleur"
+  },
+  "Mix colors": {
+    "en": "Mix colors",
+    "fr": "Mélanger les couleurs"
+  },
+  "Rename variable": {
+    "en": "Rename variable",
+    "fr": "Renommer la variable"
+  },
+  "New name": {
+    "en": "New name",
+    "fr": "Nouveau nom"
+  },
+  "Add graph variable": {
+    "en": "Add graph variable",
+    "fr": "Ajouter une variable au graphe"
+  },
+  "Set variable default": {
+    "en": "Set variable default",
+    "fr": "Modifier la valeur par défaut"
+  },
+  "Remove graph variable": {
+    "en": "Remove graph variable",
+    "fr": "Supprimer une variable du graphe"
+  },
+  "Rename graph variable": {
+    "en": "Rename graph variable",
+    "fr": "Renommer une variable du graphe"
+  },
+  "Set graph breakpoint": {
+    "en": "Set graph breakpoint",
+    "fr": "Définir un point d'arrêt"
+  },
+  "Comment graph node": {
+    "en": "Comment graph node",
+    "fr": "Commenter un nœud"
+  },
+  "Duplicate graph nodes": {
+    "en": "Duplicate graph nodes",
+    "fr": "Dupliquer les nœuds"
+  },
+  "Start graph debugging": {
+    "en": "Start graph debugging",
+    "fr": "Démarrer le débogage"
+  },
+  "Step graph debugging": {
+    "en": "Step graph debugging",
+    "fr": "Avancer d'un pas"
+  },
+  "Continue graph debugging": {
+    "en": "Continue graph debugging",
+    "fr": "Continuer le débogage"
+  },
+  "Stop graph debugging": {
+    "en": "Stop graph debugging",
+    "fr": "Arrêter le débogage"
+  },
+  "Status graph debugging": {
+    "en": "Status graph debugging",
+    "fr": "État du débogage"
+  },
+  "Select objects": {
+    "en": "Select objects",
+    "fr": "Sélectionner les objets"
+  },
+  "Delete selected objects": {
+    "en": "Delete selected objects",
+    "fr": "Supprimer les objets sélectionnés"
+  },
+  "Move objects to outliner folder": {
+    "en": "Move objects to outliner folder",
+    "fr": "Déplacer les objets dans un dossier"
+  },
+  "Lock objects": {
+    "en": "Lock objects",
+    "fr": "Verrouiller les objets"
+  },
+  "Set object transform": {
+    "en": "Set object transform",
+    "fr": "Transformer un objet"
+  },
+  "Transform objects atomically": {
+    "en": "Transform objects atomically",
+    "fr": "Transformer les objets en une opération"
+  },
+  "Inspect edit history": {
+    "en": "Inspect edit history",
+    "fr": "Consulter l'historique"
+  },
+  "Favorite asset": {
+    "en": "Favorite asset",
+    "fr": "Modifier les favoris"
+  },
+  "Reload asset": {
+    "en": "Reload asset",
+    "fr": "Recharger l'asset"
+  },
+  "List recoverable assets": {
+    "en": "List recoverable assets",
+    "fr": "Lister les assets récupérables"
+  },
+  "Restore asset": {
+    "en": "Restore asset",
+    "fr": "Restaurer l'asset"
+  },
+  "Create content folder": {
+    "en": "Create content folder",
+    "fr": "Créer un dossier de contenu"
+  },
+  "Move or rename asset": {
+    "en": "Move or rename asset",
+    "fr": "Déplacer ou renommer l'asset"
+  },
+  "Switch workspace": {
+    "en": "Switch workspace",
+    "fr": "Changer d'espace de travail"
+  },
+  "Save workspace layout": {
+    "en": "Save workspace layout",
+    "fr": "Enregistrer l'espace de travail"
+  },
+  "Load workspace layout": {
+    "en": "Load workspace layout",
+    "fr": "Charger l'espace de travail"
+  },
+  "Toggle Content Drawer": {
+    "en": "Toggle Content Drawer",
+    "fr": "Ouvrir / fermer le tiroir de contenu"
+  },
+  "value": {
+    "en": "value",
+    "fr": "Valeur"
+  },
+  "then": {
+    "en": "then",
+    "fr": "Suite"
+  },
+  "then0": {
+    "en": "then0",
+    "fr": "Suite 0"
+  },
+  "then1": {
+    "en": "then1",
+    "fr": "Suite 1"
+  },
+  "then2": {
+    "en": "then2",
+    "fr": "Suite 2"
+  },
+  "exec": {
+    "en": "exec",
+    "fr": "Exécution"
+  },
+  "condition": {
+    "en": "condition",
+    "fr": "Condition"
+  },
+  "text": {
+    "en": "text",
+    "fr": "Texte"
+  },
+  "baseColor": {
+    "en": "baseColor",
+    "fr": "Couleur de base"
+  },
+  "roughness": {
+    "en": "roughness",
+    "fr": "Rugosité"
+  },
+  "metallic": {
+    "en": "metallic",
+    "fr": "Métal"
+  },
+  "factor": {
+    "en": "factor",
+    "fr": "Facteur"
+  },
+  "color": {
+    "en": "color",
+    "fr": "Couleur"
+  },
+  "true": {
+    "en": "true",
+    "fr": "Vrai"
+  },
+  "false": {
+    "en": "false",
+    "fr": "Faux"
+  },
+  "Apply": {
+    "en": "Apply",
+    "fr": "Appliquer"
+  },
+  "Frame all   Home": {
+    "en": "Frame all   Home",
+    "fr": "Tout cadrer   Début"
+  },
+  "Add port": {
+    "en": "Add port",
+    "fr": "Ajouter une broche"
+  },
+  "Add reference": {
+    "en": "Add reference",
+    "fr": "Ajouter une référence"
+  },
+  "Align left": {
+    "en": "Align left",
+    "fr": "Aligner à gauche"
+  },
+  "Apply signature": {
+    "en": "Apply signature",
+    "fr": "Appliquer la signature"
+  },
+  "Asset path": {
+    "en": "Asset path",
+    "fr": "Chemin de l'asset"
+  },
+  "Call function": {
+    "en": "Call function",
+    "fr": "Appeler la fonction"
+  },
+  "Comment group": {
+    "en": "Comment group",
+    "fr": "Groupe de commentaires"
+  },
+  "Comment groups": {
+    "en": "Comment groups",
+    "fr": "Groupes de commentaires"
+  },
+  "Copy nodes   Ctrl+C": {
+    "en": "Copy nodes   Ctrl+C",
+    "fr": "Copier les nœuds   Ctrl+C"
+  },
+  "Declared references": {
+    "en": "Declared references",
+    "fr": "Références déclarées"
+  },
+  "Duplicate selection": {
+    "en": "Duplicate selection",
+    "fr": "Dupliquer la sélection"
+  },
+  "Function signature": {
+    "en": "Function signature",
+    "fr": "Signature de la fonction"
+  },
+  "Functions": {
+    "en": "Functions",
+    "fr": "Fonctions"
+  },
+  "Main graph": {
+    "en": "Main graph",
+    "fr": "Graphe principal"
+  },
+  "Missing": {
+    "en": "Missing",
+    "fr": "Manquant"
+  },
+  "New function": {
+    "en": "New function",
+    "fr": "Nouvelle fonction"
+  },
+  "No asset selected": {
+    "en": "No asset selected",
+    "fr": "Aucun asset sélectionné"
+  },
+  "Open References from an asset context menu.": {
+    "en": "Open References from an asset context menu.",
+    "fr": "Ouvrez Références dans le menu contextuel d'un asset."
+  },
+  "Open function": {
+    "en": "Open function",
+    "fr": "Ouvrir la fonction"
+  },
+  "Output port": {
+    "en": "Output port",
+    "fr": "Broche de sortie"
+  },
+  "Paste nodes   Ctrl+V": {
+    "en": "Paste nodes   Ctrl+V",
+    "fr": "Coller les nœuds   Ctrl+V"
+  },
+  "Pure function; changes apply to every call.": {
+    "en": "Pure function; changes apply to every call.",
+    "fr": "Fonction pure : les changements s'appliquent à tous ses appels."
+  },
+  "Reference Viewer": {
+    "en": "Reference Viewer",
+    "fr": "Visualiseur de références"
+  },
+  "Reference scan incomplete. File moves are blocked until errors or limits are resolved.": {
+    "en": "Reference scan incomplete. File moves are blocked until errors or limits are resolved.",
+    "fr": "Analyse des références incomplète. Les déplacements sont bloqués tant que les erreurs ou limites ne sont pas résolues."
+  },
+  "Reference target": {
+    "en": "Reference target",
+    "fr": "Asset référencé"
+  },
+  "References": {
+    "en": "References",
+    "fr": "Références"
+  },
+  "References combine saved assets and live edits. Save consumers after changing their references.": {
+    "en": "References combine saved assets and live edits. Save consumers after changing their references.",
+    "fr": "Les références incluent les assets enregistrés et les modifications en mémoire. Enregistrez les consommateurs après modification."
+  },
+  "Refresh": {
+    "en": "Refresh",
+    "fr": "Actualiser"
+  },
+  "Reload signature": {
+    "en": "Reload signature",
+    "fr": "Recharger la signature"
+  },
+  "Remove function": {
+    "en": "Remove function",
+    "fr": "Supprimer la fonction"
+  },
+  "Remove group": {
+    "en": "Remove group",
+    "fr": "Supprimer le groupe"
+  },
+  "Remove port": {
+    "en": "Remove port",
+    "fr": "Supprimer la broche"
+  },
+  "Remove reference": {
+    "en": "Remove reference",
+    "fr": "Retirer la référence"
+  },
+  "Rename function": {
+    "en": "Rename function",
+    "fr": "Renommer la fonction"
+  },
+  "Function inputs": {
+    "en": "Function inputs",
+    "fr": "Entrées de fonction"
+  },
+  "Function outputs": {
+    "en": "Function outputs",
+    "fr": "Sorties de fonction"
+  },
+  "FUNCTION": {
+    "en": "FUNCTION",
+    "fr": "FONCTION"
+  },
+  "Evaluate function": {
+    "en": "Evaluate function",
+    "fr": "Évaluer la fonction"
+  },
+  "inputs": {
+    "en": "inputs",
+    "fr": "Entrées"
+  },
+  "outputs": {
+    "en": "outputs",
+    "fr": "Sorties"
+  },
+  "referencers": {
+    "en": "referencers",
+    "fr": "Assets utilisateurs"
+  },
+  "dependencies": {
+    "en": "dependencies",
+    "fr": "Dépendances"
+  },
+  "Create function": {
+    "en": "Create function",
+    "fr": "Créer une fonction"
+  },
+  "Edit function signature": {
+    "en": "Edit function signature",
+    "fr": "Modifier la signature"
+  },
+  "Move graph nodes": {
+    "en": "Move graph nodes",
+    "fr": "Déplacer les nœuds"
+  },
+  "Remove graph nodes": {
+    "en": "Remove graph nodes",
+    "fr": "Supprimer les nœuds"
+  },
+  "Copy graph selection": {
+    "en": "Copy graph selection",
+    "fr": "Copier la sélection nodale"
+  },
+  "Paste graph selection": {
+    "en": "Paste graph selection",
+    "fr": "Coller la sélection nodale"
+  },
+  "Create comment group": {
+    "en": "Create comment group",
+    "fr": "Créer un groupe de commentaires"
+  },
+  "Remove comment group": {
+    "en": "Remove comment group",
+    "fr": "Supprimer un groupe de commentaires"
+  },
+  "Inspect asset references": {
+    "en": "Inspect asset references",
+    "fr": "Inspecter les références"
+  },
+  "Edit asset references": {
+    "en": "Edit asset references",
+    "fr": "Modifier les références"
+  },
+  "Open Reference Viewer": {
+    "en": "Open Reference Viewer",
+    "fr": "Ouvrir le visualiseur de références"
+  },
+  "Search graphs, functions, variables": {
+    "en": "Search graphs, functions, variables",
+    "fr": "Rechercher graphes, fonctions, variables"
+  },
+  "All loaded graphs": {
+    "en": "All loaded graphs",
+    "fr": "Tous les graphes chargés"
+  },
+  "Bookmark this view": {
+    "en": "Bookmark this view",
+    "fr": "Mémoriser cette vue"
+  },
+  "Bookmarks": {
+    "en": "Bookmarks",
+    "fr": "Vues mémorisées"
+  },
+  "Build / Package": {
+    "en": "Build / Package",
+    "fr": "Construire / Exporter"
+  },
+  "Build and Package": {
+    "en": "Build and Package",
+    "fr": "Construction et export"
+  },
+  "Build diagnostics": {
+    "en": "Build diagnostics",
+    "fr": "Diagnostics de construction"
+  },
+  "Cancel job": {
+    "en": "Cancel job",
+    "fr": "Annuler le job"
+  },
+  "Copy package path": {
+    "en": "Copy package path",
+    "fr": "Copier le chemin de l’archive"
+  },
+  "Create material instance": {
+    "en": "Create material instance",
+    "fr": "Créer une instance de matériau"
+  },
+  "Declare variables in the parent material to expose editable parameters.": {
+    "en": "Declare variables in the parent material to expose editable parameters.",
+    "fr": "Déclarez des variables dans le matériau parent pour exposer ses paramètres."
+  },
+  "Enable an override to change a value. Disable it to inherit the parent.": {
+    "en": "Enable an override to change a value. Disable it to inherit the parent.",
+    "fr": "Activez une surcharge pour modifier une valeur. Désactivez-la pour hériter du parent."
+  },
+  "Export package": {
+    "en": "Export package",
+    "fr": "Exporter l’archive"
+  },
+  "Exports an immutable document archive. It does not produce a game executable.": {
+    "en": "Exports an immutable document archive. It does not produce a game executable.",
+    "fr": "Exporte une archive du document à une révision donnée. Aucun exécutable de jeu n’est généré."
+  },
+  "Find in graph   Ctrl+F": {
+    "en": "Find in graph   Ctrl+F",
+    "fr": "Rechercher dans le graphe   Ctrl+F"
+  },
+  "Find nodes, values, variables, comments": {
+    "en": "Find nodes, values, variables, comments",
+    "fr": "Nœuds, valeurs, variables, commentaires"
+  },
+  "Graph Navigator": {
+    "en": "Graph Navigator",
+    "fr": "Navigation des graphes"
+  },
+  "Inherited": {
+    "en": "Inherited",
+    "fr": "Hérité"
+  },
+  "Insert reroute": {
+    "en": "Insert reroute",
+    "fr": "Insérer un reroutage"
+  },
+  "Job": {
+    "en": "Job",
+    "fr": "Job"
+  },
+  "MATERIAL INSTANCE": {
+    "en": "MATERIAL INSTANCE",
+    "fr": "INSTANCE DE MATÉRIAU"
+  },
+  "Material instance": {
+    "en": "Material instance",
+    "fr": "Instance de matériau"
+  },
+  "Material parameters": {
+    "en": "Material parameters",
+    "fr": "Paramètres du matériau"
+  },
+  "No build diagnostics": {
+    "en": "No build diagnostics",
+    "fr": "Aucun diagnostic de construction"
+  },
+  "No build targets": {
+    "en": "No build targets",
+    "fr": "Aucune cible de construction"
+  },
+  "No material parameters": {
+    "en": "No material parameters",
+    "fr": "Aucun paramètre de matériau"
+  },
+  "Open parent": {
+    "en": "Open parent",
+    "fr": "Ouvrir le parent"
+  },
+  "Package ready": {
+    "en": "Package ready",
+    "fr": "Archive disponible"
+  },
+  "Parent": {
+    "en": "Parent",
+    "fr": "Parent"
+  },
+  "Parent chain": {
+    "en": "Parent chain",
+    "fr": "Chaîne de parents"
+  },
+  "Refresh material": {
+    "en": "Refresh material",
+    "fr": "Actualiser le matériau"
+  },
+  "Remove": {
+    "en": "Remove",
+    "fr": "Retirer"
+  },
+  "Remove override": {
+    "en": "Remove override",
+    "fr": "Retirer la surcharge"
+  },
+  "Save": {
+    "en": "Save",
+    "fr": "Enregistrer"
+  },
+  "Search": {
+    "en": "Search",
+    "fr": "Rechercher"
+  },
+  "Search by node type, value, variable name or comment.": {
+    "en": "Search by node type, value, variable name or comment.",
+    "fr": "Recherchez un type de nœud, une valeur, une variable ou un commentaire."
+  },
+  "Snapshot revision": {
+    "en": "Snapshot revision",
+    "fr": "Révision exportée"
+  },
+  "Target": {
+    "en": "Target",
+    "fr": "Cible"
+  },
+  "This game adapter has not registered a build provider.": {
+    "en": "This game adapter has not registered a build provider.",
+    "fr": "Cet adaptateur n’a enregistré aucun fournisseur de construction."
+  },
+  "Validate request": {
+    "en": "Validate request",
+    "fr": "Valider la demande"
+  },
+  "Sandbox document archive": {
+    "en": "Sandbox document archive",
+    "fr": "Archive de document Sandbox"
+  },
+  "compression": {
+    "en": "compression",
+    "fr": "Compression"
+  },
+  "includeMaterialValues": {
+    "en": "includeMaterialValues",
+    "fr": "Inclure les valeurs des matériaux"
+  },
+  "Stored": {
+    "en": "Stored",
+    "fr": "Sans compression"
+  },
+  "Deflated": {
+    "en": "Deflated",
+    "fr": "Compressé"
+  },
+  "Development": {
+    "en": "Development",
+    "fr": "Développement"
+  },
+  "Created": {
+    "en": "Created",
+    "fr": "Créé"
+  },
+  "Interrupted": {
+    "en": "Interrupted",
+    "fr": "Interrompu"
+  },
+  "Reroute": {
+    "en": "Reroute",
+    "fr": "Reroutage"
+  },
+  "size": {
+    "en": "size",
+    "fr": "Taille"
+  },
+  "Find graph nodes": {
+    "en": "Find graph nodes",
+    "fr": "Rechercher des nœuds"
+  },
+  "Bookmark graph view": {
+    "en": "Bookmark graph view",
+    "fr": "Mémoriser une vue nodale"
+  },
+  "Remove graph bookmark": {
+    "en": "Remove graph bookmark",
+    "fr": "Retirer une vue mémorisée"
+  },
+  "Edit comment group": {
+    "en": "Edit comment group",
+    "fr": "Modifier un groupe de commentaires"
+  },
+  "Inspect material parameters": {
+    "en": "Inspect material parameters",
+    "fr": "Consulter les paramètres du matériau"
+  },
+  "Override material parameter": {
+    "en": "Override material parameter",
+    "fr": "Surcharger un paramètre du matériau"
+  },
+  "Inherit material parameter": {
+    "en": "Inherit material parameter",
+    "fr": "Hériter d’un paramètre du matériau"
+  },
+  "Change material parent": {
+    "en": "Change material parent",
+    "fr": "Changer le parent du matériau"
+  },
+  "List adapter build targets": {
+    "en": "List adapter build targets",
+    "fr": "Lister les cibles de construction"
+  },
+  "Validate build request": {
+    "en": "Validate build request",
+    "fr": "Valider une demande de construction"
+  },
+  "Export adapter package": {
+    "en": "Export adapter package",
+    "fr": "Exporter via l’adaptateur"
+  },
+  "Start editor build job": {
+    "en": "Start editor build job",
+    "fr": "Démarrer un job de construction"
+  },
+  "Inspect editor build job": {
+    "en": "Inspect editor build job",
+    "fr": "Consulter le job de construction"
+  },
+  "Cancel editor build job": {
+    "en": "Cancel editor build job",
+    "fr": "Annuler le job de construction"
+  },
+  "The document has changed since this validation.": {
+    "en": "The document has changed since this validation.",
+    "fr": "Le document a changé depuis cette validation."
+  },
+  "position": {
+    "en": "Position",
+    "fr": "Position"
+  },
+  "float": {
+    "en": "float",
+    "fr": "Nombre"
+  },
+  "bool": {
+    "en": "bool",
+    "fr": "Booléen"
+  },
+  "string": {
+    "en": "string",
+    "fr": "Texte"
+  },
+  "Results limited to 2000 nodes. Refine the search.": {
+    "en": "Results limited to 2000 nodes. Refine the search.",
+    "fr": "Résultats limités à 2 000 nœuds. Précisez la recherche."
+  },
+  "Arguments": {
+    "en": "Arguments",
+    "fr": "Arguments"
+  },
+  "Baseline": {
+    "en": "Baseline",
+    "fr": "Référence"
+  },
+  "Call stack": {
+    "en": "Call stack",
+    "fr": "Pile d’appels"
+  },
+  "Compare saved": {
+    "en": "Compare saved",
+    "fr": "Comparer à la sauvegarde"
+  },
+  "Comparison details are limited. The summary counts all changes.": {
+    "en": "Comparison details are limited. The summary counts all changes.",
+    "fr": "Le détail est limité. Le résumé compte toutes les modifications."
+  },
+  "Execution": {
+    "en": "Execution",
+    "fr": "Exécution"
+  },
+  "Execution function": {
+    "en": "Execution function",
+    "fr": "Fonction avec exécution"
+  },
+  "Follow active frame": {
+    "en": "Follow active frame",
+    "fr": "Suivre l’appel actif"
+  },
+  "Graph Changes": {
+    "en": "Graph Changes",
+    "fr": "Modifications du graphe"
+  },
+  "Ignore layout and comments": {
+    "en": "Ignore layout and comments",
+    "fr": "Ignorer l’agencement et les commentaires"
+  },
+  "Locate current node": {
+    "en": "Locate current node",
+    "fr": "Localiser le nœud actuel"
+  },
+  "No saved differences": {
+    "en": "No saved differences",
+    "fr": "Aucune différence avec la sauvegarde"
+  },
+  "Refresh comparison": {
+    "en": "Refresh comparison",
+    "fr": "Actualiser la comparaison"
+  },
+  "Select a change to inspect its saved and current values.": {
+    "en": "Select a change to inspect its saved and current values.",
+    "fr": "Sélectionnez une modification pour comparer les valeurs enregistrées et actuelles."
+  },
+  "Step into   F11": {
+    "en": "Step into   F11",
+    "fr": "Entrer dans l’appel   F11"
+  },
+  "Step out   Shift+F11": {
+    "en": "Step out   Shift+F11",
+    "fr": "Sortir de l’appel   Maj+F11"
+  },
+  "Step over   F10": {
+    "en": "Step over   F10",
+    "fr": "Passer l’appel   F10"
+  },
+  "The current graph matches the selected baseline.": {
+    "en": "The current graph matches the selected baseline.",
+    "fr": "Le graphe actuel correspond à la référence sélectionnée."
+  },
+  "The file on disk changed since it was loaded or saved.": {
+    "en": "The file on disk changed since it was loaded or saved.",
+    "fr": "Le fichier sur disque a changé depuis son chargement ou son enregistrement."
+  },
+  "Execution function; local variables are isolated per call.": {
+    "en": "Execution function; local variables are isolated per call.",
+    "fr": "Fonction avec exécution ; les variables locales sont isolées pour chaque appel."
+  },
+  "Saved version": {
+    "en": "Saved version",
+    "fr": "Version enregistrée"
+  },
+  "Current version": {
+    "en": "Current version",
+    "fr": "Version actuelle"
+  },
+  "Disk": {
+    "en": "Disk",
+    "fr": "Disque"
+  },
+  "Session": {
+    "en": "Session",
+    "fr": "Session"
+  },
+  "Added": {
+    "en": "Added",
+    "fr": "Ajouté"
+  },
+  "Removed": {
+    "en": "Removed",
+    "fr": "Retiré"
+  },
+  "Changed": {
+    "en": "Changed",
+    "fr": "Modifié"
+  },
+  "nodes": {
+    "en": "Nodes",
+    "fr": "Nœuds"
+  },
+  "links": {
+    "en": "Connections",
+    "fr": "Connexions"
+  },
+  "comments": {
+    "en": "Comments",
+    "fr": "Commentaires"
+  },
+  "bookmarks": {
+    "en": "Bookmarks",
+    "fr": "Vues mémorisées"
+  },
+  "variables": {
+    "en": "Variables",
+    "fr": "Variables"
+  },
+  "properties": {
+    "en": "Properties",
+    "fr": "Propriétés"
+  },
+  "functions": {
+    "en": "Functions",
+    "fr": "Fonctions"
+  },
+  "Execution function requires a connected return": {
+    "en": "Execution function requires a connected return",
+    "fr": "Une fonction avec exécution doit relier son nœud de retour."
+  },
+  "Step into function": {
+    "en": "Step into function",
+    "fr": "Entrer dans une fonction"
+  },
+  "Step out of function": {
+    "en": "Step out of function",
+    "fr": "Sortir d’une fonction"
+  },
+  "Compare saved graph": {
+    "en": "Compare saved graph",
+    "fr": "Comparer un graphe à sa sauvegarde"
+  },
+  "Open Graph Changes": {
+    "en": "Open Graph Changes",
+    "fr": "Ouvrir les modifications du graphe"
+  },
+  "Local variables": {
+    "en": "Local variables",
+    "fr": "Variables locales"
+  },
+  "ordering": {
+    "en": "Ordering",
+    "fr": "Ordre"
+  },
+  "Image preview unavailable": {
+    "en": "Image preview unavailable",
+    "fr": "Aperçu d’image indisponible"
+  },
+  "u": {
+    "en": "u",
+    "fr": "U"
+  },
+  "Current shader": {
+    "en": "Current shader",
+    "fr": "Shader à jour"
+  },
+  "offsetU": {
+    "en": "offsetU",
+    "fr": "Décalage U"
+  },
+  "Reload image": {
+    "en": "Reload image",
+    "fr": "Recharger l’image"
+  },
+  "UV center sample": {
+    "en": "UV center sample",
+    "fr": "Échantillon au centre UV"
+  },
+  "Compile a supported material to inspect its shader source.": {
+    "en": "Compile a supported material to inspect its shader source.",
+    "fr": "Compiler un matériau pris en charge pour consulter sa source."
+  },
+  "clamp": {
+    "en": "clamp",
+    "fr": "Limiter entre 0 et 1"
+  },
+  "Zoom out": {
+    "en": "Zoom out",
+    "fr": "Réduire"
+  },
+  "GPU graph preview": {
+    "en": "GPU graph preview",
+    "fr": "Aperçu GPU du graphe"
+  },
+  "g": {
+    "en": "g",
+    "fr": "V"
+  },
+  "Compose color": {
+    "en": "Compose color",
+    "fr": "Composer une couleur"
+  },
+  "Sphere": {
+    "en": "Sphere",
+    "fr": "Sphère"
+  },
+  "sine": {
+    "en": "sine",
+    "fr": "Sinus"
+  },
+  "Material Compiler": {
+    "en": "Material Compiler",
+    "fr": "Compilateur de matériaux"
+  },
+  "UV transform": {
+    "en": "UV transform",
+    "fr": "Transformation UV"
+  },
+  "Checker pattern": {
+    "en": "Checker pattern",
+    "fr": "Damier"
+  },
+  "offsetV": {
+    "en": "offsetV",
+    "fr": "Décalage V"
+  },
+  "Connect an image renderer for this platform.": {
+    "en": "Connect an image renderer for this platform.",
+    "fr": "Brancher un moteur d’aperçu d’image pour cette plateforme."
+  },
+  "Surface": {
+    "en": "Surface",
+    "fr": "Surface"
+  },
+  "Compile to preview the graph across the surface. Material parameters then update live.": {
+    "en": "Compile to preview the graph across the surface. Material parameters then update live.",
+    "fr": "Compiler pour afficher le graphe sur la surface. Les paramètres du matériau se mettent ensuite à jour en direct."
+  },
+  "Shader source and diagnostics": {
+    "en": "Shader source and diagnostics",
+    "fr": "Source du shader et diagnostics"
+  },
+  "Fit image": {
+    "en": "Fit image",
+    "fr": "Ajuster l’image"
+  },
+  "Plane": {
+    "en": "Plane",
+    "fr": "Plan"
+  },
+  "tileU": {
+    "en": "tileU",
+    "fr": "Répétition U"
+  },
+  "Windows foundation. Sandbox adapter, preview shaders and source plugins. Game compilation and Blueprint compatibility require further development.": {
+    "en": "Windows foundation. Sandbox adapter, preview shaders and source plugins. Game compilation and Blueprint compatibility require further development.",
+    "fr": "Base Windows. Adaptateur Sandbox, shaders d’aperçu et plugins source. La compilation de jeux et la compatibilité Blueprint restent à développer."
+  },
+  "Compile required": {
+    "en": "Compile required",
+    "fr": "Compilation nécessaire"
+  },
+  "UV gradient": {
+    "en": "UV gradient",
+    "fr": "Dégradé UV"
+  },
+  "Zoom in": {
+    "en": "Zoom in",
+    "fr": "Agrandir"
+  },
+  "v": {
+    "en": "v",
+    "fr": "V"
+  },
+  "tileV": {
+    "en": "tileV",
+    "fr": "Répétition V"
+  },
+  "Compile preview": {
+    "en": "Compile preview",
+    "fr": "Compiler l’aperçu"
+  },
+  "Texture coordinates": {
+    "en": "Texture coordinates",
+    "fr": "Coordonnées de texture"
+  },
+  "Generated HLSL": {
+    "en": "Generated HLSL",
+    "fr": "HLSL généré"
+  },
+  "b": {
+    "en": "b",
+    "fr": "B"
+  },
+  "fract": {
+    "en": "fract",
+    "fr": "Partie fractionnaire"
+  },
+  "r": {
+    "en": "r",
+    "fr": "R"
+  },
+  "scale": {
+    "en": "scale",
+    "fr": "échelle"
+  },
+  "Prepare preview shader": {
+    "en": "Prepare preview shader",
+    "fr": "Préparer le shader d’aperçu"
+  },
+  "Sample material at UV": {
+    "en": "Sample material at UV",
+    "fr": "Échantillonner le matériau en UV"
+  },
+  "Compile preview shader": {
+    "en": "Compile preview shader",
+    "fr": "Compiler le shader d’aperçu"
+  },
+  "Start preview shader job": {
+    "en": "Start preview shader job",
+    "fr": "Lancer la compilation d’aperçu"
+  },
+  "Inspect preview shader job": {
+    "en": "Inspect preview shader job",
+    "fr": "Consulter la compilation d’aperçu"
+  },
+  "Cancel preview shader job": {
+    "en": "Cancel preview shader job",
+    "fr": "Annuler la compilation d’aperçu"
+  },
+  "Use compiled preview shader": {
+    "en": "Use compiled preview shader",
+    "fr": "Appliquer le shader d’aperçu"
+  },
+  "Open Material Compiler": {
+    "en": "Open Material Compiler",
+    "fr": "Ouvrir le compilateur de matériaux"
+  },
+  "Inspect image asset": {
+    "en": "Inspect image asset",
+    "fr": "Consulter les métadonnées de l’image"
+  },
+  "Open image asset editor": {
+    "en": "Open image asset editor",
+    "fr": "Ouvrir l’éditeur d’image"
+  },
+  "Set preview surface": {
+    "en": "Set preview surface",
+    "fr": "Choisir la surface d’aperçu"
+  },
+  "Set image view": {
+    "en": "Set image view",
+    "fr": "Régler la vue de l’image"
+  },
+  "Move asset to Trash": {
+    "en": "Move asset to Trash",
+    "fr": "Déplacer l’asset dans la corbeille"
+  },
+  "Help": {
+    "en": "Help",
+    "fr": "Aide"
+  },
+  "Editor Overview": {
+    "en": "Editor Overview",
+    "fr": "Vue d’ensemble de l’éditeur"
+  },
+  "Dock in Layout": {
+    "en": "Dock in Layout",
+    "fr": "Ancrer dans l’agencement"
+  },
+  "panels": {
+    "en": "panels",
+    "fr": "panneaux"
+  },
+  "Filter operations": {
+    "en": "Filter operations",
+    "fr": "Filtrer les opérations"
+  },
+  "Unreal-inspired Dark": {
+    "en": "Unreal-inspired Dark",
+    "fr": "Sombre inspiré d’Unreal"
+  },
+  "Mid grey (CyDAW)": {
+    "en": "Mid grey (CyDAW)",
+    "fr": "Gris moyen (CyDAW)"
+  },
+  "Light grey (CyDAW)": {
+    "en": "Light grey (CyDAW)",
+    "fr": "Gris clair (CyDAW)"
+  },
+  "Amber night (CyDAW)": {
+    "en": "Amber night (CyDAW)",
+    "fr": "Nuit ambrée (CyDAW)"
+  },
+  "Navy (CyEngineHub)": {
+    "en": "Navy (CyEngineHub)",
+    "fr": "Bleu nuit (CyEngineHub)"
+  },
+  "Violet (Shaderixel)": {
+    "en": "Violet (Shaderixel)",
+    "fr": "Violet (Shaderixel)"
+  },
+  "Reusable editor foundation. This inventory describes the shipped Sandbox; adapters supply game-specific capabilities.": {
+    "en": "Reusable editor foundation. This inventory describes the shipped Sandbox; adapters supply game-specific capabilities.",
+    "fr": "Base d’éditeur réutilisable. Cet inventaire décrit le Sandbox livré ; les adaptateurs apportent les capacités propres à chaque jeu."
+  },
+  "Search features, status or limitations": {
+    "en": "Search features, status or limitations",
+    "fr": "Rechercher une fonction, un état ou une limite"
+  },
+  "Inventory unavailable": {
+    "en": "Inventory unavailable",
+    "fr": "Inventaire indisponible"
+  },
+  "Restore app/interface_features.json from this release.": {
+    "en": "Restore app/interface_features.json from this release.",
+    "fr": "Restaurer app/interface_features.json depuis cette version."
+  },
+  "Available": {
+    "en": "Available",
+    "fr": "Disponible"
+  },
+  "Foundation": {
+    "en": "Foundation",
+    "fr": "Base disponible"
+  },
+  "Adapter required": {
+    "en": "Adapter required",
+    "fr": "Adaptateur requis"
+  },
+  "Not available": {
+    "en": "Not available",
+    "fr": "Indisponible"
+  },
+  "Source component": {
+    "en": "Source component",
+    "fr": "Composant source"
+  },
+  "Scene": {
+    "en": "Scene",
+    "fr": "Scène"
+  },
+  "Assets": {
+    "en": "Assets",
+    "fr": "Assets"
+  },
+  "Integration": {
+    "en": "Integration",
+    "fr": "Intégration"
+  },
+  "Docking and detached windows": {
+    "en": "Docking and detached windows",
+    "fr": "Ancrage et fenêtres détachées"
+  },
+  "Multiple viewports": {
+    "en": "Multiple viewports",
+    "fr": "Vues multiples"
+  },
+  "Search and navigation": {
+    "en": "Search and navigation",
+    "fr": "Recherche et navigation"
+  },
+  "Language and themes": {
+    "en": "Language and themes",
+    "fr": "Langues et thèmes"
+  },
+  "Level / map editor": {
+    "en": "Level / map editor",
+    "fr": "Éditeur de niveau / carte"
+  },
+  "Transform tools": {
+    "en": "Transform tools",
+    "fr": "Outils de transformation"
+  },
+  "Automatic properties": {
+    "en": "Automatic properties",
+    "fr": "Propriétés automatiques"
+  },
+  "Engine viewport rendering": {
+    "en": "Engine viewport rendering",
+    "fr": "Rendu du moteur dans la vue"
+  },
+  "Asset references and Trash": {
+    "en": "Asset references and Trash",
+    "fr": "Références et corbeille"
+  },
+  "Graph asset editors": {
+    "en": "Graph asset editors",
+    "fr": "Éditeurs d’assets nodaux"
+  },
+  "Image / texture viewer": {
+    "en": "Image / texture viewer",
+    "fr": "Visualiseur d’image / texture"
+  },
+  "JSON documents": {
+    "en": "JSON documents",
+    "fr": "Documents JSON"
+  },
+  "Import / reimport and thumbnails": {
+    "en": "Import / reimport and thumbnails",
+    "fr": "Import / réimport et vignettes"
+  },
+  "Static mesh editor": {
+    "en": "Static mesh editor",
+    "fr": "Éditeur de mesh statique"
+  },
+  "Skeleton and animation editors": {
+    "en": "Skeleton and animation editors",
+    "fr": "Éditeurs de squelette et d’animation"
+  },
+  "Portable cross-SDK assets": {
+    "en": "Portable cross-SDK assets",
+    "fr": "Assets portables entre SDK"
+  },
+  "Logic node authoring": {
+    "en": "Logic node authoring",
+    "fr": "Création de graphes logiques"
+  },
+  "Graph debugger": {
+    "en": "Graph debugger",
+    "fr": "Débogueur nodal"
+  },
+  "Material authoring": {
+    "en": "Material authoring",
+    "fr": "Création de matériaux"
+  },
+  "Complete Blueprint feature set": {
+    "en": "Complete Blueprint feature set",
+    "fr": "Ensemble complet des fonctions Blueprint"
+  },
+  "Material texture sampling": {
+    "en": "Material texture sampling",
+    "fr": "Échantillonnage de textures dans les matériaux"
+  },
+  "Build and package": {
+    "en": "Build and package",
+    "fr": "Construction et export"
+  },
+  "Play in editor": {
+    "en": "Play in editor",
+    "fr": "Jouer dans l’éditeur"
+  },
+  "Native AI access": {
+    "en": "Native AI access",
+    "fr": "Accès IA natif"
+  },
+  "Source control and profiling": {
+    "en": "Source control and profiling",
+    "fr": "Contrôle de versions et profilage"
+  },
+  "Dock tabs, detach windows and save named layouts.": {
+    "en": "Dock tabs, detach windows and save named layouts.",
+    "fr": "Ancrer les onglets, détacher des fenêtres et enregistrer des agencements nommés."
+  },
+  "Up to 16 independent cameras; Sandbox preview rendering.": {
+    "en": "Up to 16 independent cameras; Sandbox preview rendering.",
+    "fr": "Jusqu’à 16 caméras indépendantes ; rendu d’aperçu Sandbox."
+  },
+  "Ctrl+P, menu filters, properties, graph navigation and asset queries.": {
+    "en": "Ctrl+P, menu filters, properties, graph navigation and asset queries.",
+    "fr": "Ctrl+P, filtres de menus, propriétés, navigation nodale et requêtes d’assets."
+  },
+  "English by default, selectable French and six palettes.": {
+    "en": "English by default, selectable French and six palettes.",
+    "fr": "Anglais par défaut, français sélectionnable et six palettes."
+  },
+  "Scene documents, selection, folders, locks and Undo; no game map codec.": {
+    "en": "Scene documents, selection, folders, locks and Undo; no game map codec.",
+    "fr": "Documents de scène, sélection, dossiers, verrous et annulation ; aucun codec de carte de jeu."
+  },
+  "Move, rotate, scale, local/world and snapping; group translation only.": {
+    "en": "Move, rotate, scale, local/world and snapping; group translation only.",
+    "fr": "Déplacement, rotation, échelle, repères local/monde et aimantation ; déplacement groupé uniquement."
+  },
+  "Adapter schemas generate fields; unknown game memory is not reflected.": {
+    "en": "Adapter schemas generate fields; unknown game memory is not reflected.",
+    "fr": "Les schémas de l’adaptateur génèrent les champs ; aucune réflexion de la mémoire d’un jeu inconnu."
+  },
+  "The game adapter must provide rendering, picking and engine integration.": {
+    "en": "The game adapter must provide rendering, picking and engine integration.",
+    "fr": "L’adaptateur du jeu doit fournir le rendu, le picking et l’intégration du moteur."
+  },
+  "Folders, queries, type filters, favorites, tiles/list and file actions.": {
+    "en": "Folders, queries, type filters, favorites, tiles/list and file actions.",
+    "fr": "Dossiers, requêtes, filtres par type, favoris, tuiles/liste et opérations sur fichiers."
+  },
+  "Declared graph dependencies, consumers and safe file restore.": {
+    "en": "Declared graph dependencies, consumers and safe file restore.",
+    "fr": "Dépendances déclarées des graphes, consommateurs et restauration sûre des fichiers."
+  },
+  "Independent document tabs and local function subgraphs.": {
+    "en": "Independent document tabs and local function subgraphs.",
+    "fr": "Onglets de documents indépendants et sous-graphes de fonctions locales."
+  },
+  "PNG/JPEG/BMP channels, zoom and pan; no pixel painting or game texture codec.": {
+    "en": "PNG/JPEG/BMP channels, zoom and pan; no pixel painting or game texture codec.",
+    "fr": "Canaux PNG/JPEG/BMP, zoom et déplacement ; aucune peinture de pixels ni codec de texture de jeu."
+  },
+  "Project/graph/configuration JSON and metadata inspection; no general JSON tree editor.": {
+    "en": "Project/graph/configuration JSON and metadata inspection; no general JSON tree editor.",
+    "fr": "JSON de projet/graphe/configuration et inspection de métadonnées ; aucun éditeur JSON arborescent général."
+  },
+  "Preserved 0.19 candidate only; not installed in this release.": {
+    "en": "Preserved 0.19 candidate only; not installed in this release.",
+    "fr": "Uniquement dans le candidat 0.19 conservé ; non installé dans cette version."
+  },
+  "No native mesh document editor, LOD or collision authoring yet.": {
+    "en": "No native mesh document editor, LOD or collision authoring yet.",
+    "fr": "Aucun éditeur natif de document mesh, ni création de LOD ou de collisions actuellement."
+  },
+  "No visual rig, skinning, animation timeline or retargeting editor yet.": {
+    "en": "No visual rig, skinning, animation timeline or retargeting editor yet.",
+    "fr": "Aucun éditeur visuel de rig, skinning, timeline d’animation ou retargeting actuellement."
+  },
+  "Independent .cypack / GLB library and CLI; not exposed in this native UI.": {
+    "en": "Independent .cypack / GLB library and CLI; not exposed in this native UI.",
+    "fr": "Bibliothèque et CLI .cypack / GLB indépendantes ; non exposées dans cette interface native."
+  },
+  "Typed wires, variables, local functions, clipboard and comment groups.": {
+    "en": "Typed wires, variables, local functions, clipboard and comment groups.",
+    "fr": "Connexions typées, variables, fonctions locales, presse-papiers et commentaires de groupe."
+  },
+  "Breakpoints, call stack, watches, step over/into/out and diagnostics.": {
+    "en": "Breakpoints, call stack, watches, step over/into/out and diagnostics.",
+    "fr": "Points d’arrêt, pile d’appels, valeurs observées, pas à pas entrant/sortant et diagnostics."
+  },
+  "Procedural nodes, instances and DX11 sphere/plane preview shaders.": {
+    "en": "Procedural nodes, instances and DX11 sphere/plane preview shaders.",
+    "fr": "Nœuds procéduraux, instances et shaders d’aperçu sphère/plan DX11."
+  },
+  "Macros, classes, containers, latent execution and engine compilation remain work.": {
+    "en": "Macros, classes, containers, latent execution and engine compilation remain work.",
+    "fr": "Macros, classes, conteneurs, exécution latente et compilation moteur restent à développer."
+  },
+  "Image viewing does not supply material samplers or engine shader export.": {
+    "en": "Image viewing does not supply material samplers or engine shader export.",
+    "fr": "La visualisation d’images ne fournit ni samplers de matériaux ni export de shaders moteur."
+  },
+  "Trusted source plugin lifecycle and editor registry; no dynamic DLL loader.": {
+    "en": "Trusted source plugin lifecycle and editor registry; no dynamic DLL loader.",
+    "fr": "Cycle de vie de plugins sources de confiance et registre d’éditeurs ; aucun chargement dynamique de DLL."
+  },
+  "Sandbox exports a document ZIP. A real game compiler requires a provider.": {
+    "en": "Sandbox exports a document ZIP. A real game compiler requires a provider.",
+    "fr": "Sandbox exporte un ZIP du document. Un compilateur de jeu réel exige un fournisseur."
+  },
+  "No game runtime bridge is installed.": {
+    "en": "No game runtime bridge is installed.",
+    "fr": "Aucun pont vers un runtime de jeu installé."
+  },
+  "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs.": {
+    "en": "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs.",
+    "fr": "MCP/SDK CyToolsCore existant, dispatcher commun et jobs officiels sur workers."
+  },
+  "No Git/Perforce UI, engine profiler, landscape or cinematic editor.": {
+    "en": "No Git/Perforce UI, engine profiler, landscape or cinematic editor.",
+    "fr": "Aucune interface Git/Perforce, aucun profileur moteur ni éditeur de terrain ou cinématique."
+  },
+  "Graph and supported image assets have specialized views. Other formats expose metadata until an adapter registers an editor.": {
+    "en": "Graph and supported image assets have specialized views. Other formats expose metadata until an adapter registers an editor.",
+    "fr": "Les graphes et images pris en charge ont des vues spécialisées. Les autres formats exposent leurs métadonnées jusqu’à l’enregistrement d’un éditeur par un adaptateur."
+  },
+  "Asset Import": {
+    "en": "Asset Import",
+    "fr": "Import d’assets"
+  },
+  "Import a source file into the project. Original files remain unchanged.": {
+    "en": "Import a source file into the project. Original files remain unchanged.",
+    "fr": "Importer un fichier source dans le projet. Les originaux restent inchangés."
+  },
+  "Reimport existing asset": {
+    "en": "Reimport existing asset",
+    "fr": "Réimporter un asset existant"
+  },
+  "Source file": {
+    "en": "Source file",
+    "fr": "Fichier source"
+  },
+  "Destination asset": {
+    "en": "Destination asset",
+    "fr": "Asset de destination"
+  },
+  "Browse source...": {
+    "en": "Browse source...",
+    "fr": "Parcourir les sources..."
+  },
+  "Validate import": {
+    "en": "Validate import",
+    "fr": "Vérifier l’import"
+  },
+  "Import asset": {
+    "en": "Import asset",
+    "fr": "Importer l’asset"
+  },
+  "Reimport asset": {
+    "en": "Reimport asset",
+    "fr": "Réimporter l’asset"
+  },
+  "Check source": {
+    "en": "Check source",
+    "fr": "Vérifier la source"
+  },
+  "Import details": {
+    "en": "Import details",
+    "fr": "Détails de l’import"
+  },
+  "Registered importers": {
+    "en": "Registered importers",
+    "fr": "Importeurs enregistrés"
+  },
+  "Importer": {
+    "en": "Importer",
+    "fr": "Importeur"
+  },
+  "Imported at": {
+    "en": "Imported at",
+    "fr": "Date d’import"
+  },
+  "Dimensions": {
+    "en": "Dimensions",
+    "fr": "Dimensions"
+  },
+  "Format": {
+    "en": "Format",
+    "fr": "Format"
+  },
+  "Image (original file)": {
+    "en": "Image (original file)",
+    "fr": "Image (fichier original)"
+  },
+  "Import settings / Reimport": {
+    "en": "Import settings / Reimport",
+    "fr": "Paramètres d’import / Réimporter"
+  },
+  "Import source file...": {
+    "en": "Import source file...",
+    "fr": "Importer un fichier source..."
+  },
+  "Up to date": {
+    "en": "Up to date",
+    "fr": "À jour"
+  },
+  "Source changed": {
+    "en": "Source changed",
+    "fr": "Source modifiée"
+  },
+  "Local changes": {
+    "en": "Local changes",
+    "fr": "Modifications locales"
+  },
+  "Source missing": {
+    "en": "Source missing",
+    "fr": "Source absente"
+  },
+  "Asset missing": {
+    "en": "Asset missing",
+    "fr": "Asset absent"
+  },
+  "Untracked": {
+    "en": "Untracked",
+    "fr": "Sans suivi"
+  },
+  "List asset importers": {
+    "en": "List asset importers",
+    "fr": "Lister les importeurs d’assets"
+  },
+  "Prepare asset import": {
+    "en": "Prepare asset import",
+    "fr": "Préparer l’import d’asset"
+  },
+  "Commit prepared import": {
+    "en": "Commit prepared import",
+    "fr": "Appliquer l’import préparé"
+  },
+  "Inspect import source": {
+    "en": "Inspect import source",
+    "fr": "Consulter la source d’import"
+  },
+  "Check import source": {
+    "en": "Check import source",
+    "fr": "Vérifier la source d’import"
+  },
+  "Start asset import job": {
+    "en": "Start asset import job",
+    "fr": "Lancer un job d’import"
+  },
+  "Inspect asset import job": {
+    "en": "Inspect asset import job",
+    "fr": "Consulter le job d’import"
+  },
+  "Cancel asset import job": {
+    "en": "Cancel asset import job",
+    "fr": "Annuler le job d’import"
+  },
+  "Open Asset Import": {
+    "en": "Open Asset Import",
+    "fr": "Ouvrir l’import d’assets"
+  },
+  "Automatic": {
+    "en": "Automatic",
+    "fr": "Automatique"
+  },
+  "Image files": {
+    "en": "Image files",
+    "fr": "Fichiers image"
+  },
+  "All files": {
+    "en": "All files",
+    "fr": "Tous les fichiers"
+  },
+  "Set Content Browser view": {
+    "en": "Set Content Browser view",
+    "fr": "Régler l’explorateur de contenu"
+  },
+  "Reimport is blocked because this asset was edited locally.": {
+    "en": "Reimport is blocked because this asset was edited locally.",
+    "fr": "Le réimport est bloqué car cet asset a été modifié localement."
+  },
+  "Restore the source file to reimport this asset.": {
+    "en": "Restore the source file to reimport this asset.",
+    "fr": "Rétablissez le fichier source pour réimporter cet asset."
+  },
+  "3D Assets": {
+    "en": "3D Assets",
+    "fr": "Assets 3D"
+  },
+  "3D asset files": {
+    "en": "3D asset files",
+    "fr": "Fichiers d’assets 3D"
+  },
+  "3D document closed": {
+    "en": "3D document closed",
+    "fr": "Document 3D fermé"
+  },
+  "3D preview unavailable": {
+    "en": "3D preview unavailable",
+    "fr": "Aperçu 3D indisponible"
+  },
+  "Animation": {
+    "en": "Animation",
+    "fr": "Animation"
+  },
+  "Close document": {
+    "en": "Close document",
+    "fr": "Fermer le document"
+  },
+  "Copy JSON": {
+    "en": "Copy JSON",
+    "fr": "Copier le JSON"
+  },
+  "Export CyPack": {
+    "en": "Export CyPack",
+    "fr": "Exporter en CyPack"
+  },
+  "Export GLB": {
+    "en": "Export GLB",
+    "fr": "Exporter en GLB"
+  },
+  "Filter JSON keys": {
+    "en": "Filter JSON keys",
+    "fr": "Filtrer les clés JSON"
+  },
+  "Frame all": {
+    "en": "Frame all",
+    "fr": "Tout cadrer"
+  },
+  "JSON document unavailable": {
+    "en": "JSON document unavailable",
+    "fr": "Document JSON indisponible"
+  },
+  "Key time": {
+    "en": "Key time",
+    "fr": "Temps de la clé"
+  },
+  "Keyframe": {
+    "en": "Keyframe",
+    "fr": "Image clé"
+  },
+  "Loop": {
+    "en": "Loop",
+    "fr": "Boucle"
+  },
+  "Mesh index": {
+    "en": "Mesh index",
+    "fr": "Index du mesh"
+  },
+  "No 3D documents loaded": {
+    "en": "No 3D documents loaded",
+    "fr": "Aucun document 3D chargé"
+  },
+  "Node hierarchy": {
+    "en": "Node hierarchy",
+    "fr": "Hiérarchie des nœuds"
+  },
+  "Parent node": {
+    "en": "Parent node",
+    "fr": "Nœud parent"
+  },
+  "Primitive": {
+    "en": "Primitive",
+    "fr": "Primitive"
+  },
+  "Reference pose": {
+    "en": "Reference pose",
+    "fr": "Pose de référence"
+  },
+  "Root": {
+    "en": "Root",
+    "fr": "Racine"
+  },
+  "Save JSON": {
+    "en": "Save JSON",
+    "fr": "Enregistrer le JSON"
+  },
+  "Skeleton": {
+    "en": "Skeleton",
+    "fr": "Squelette"
+  },
+  "Skeleton overlay": {
+    "en": "Skeleton overlay",
+    "fr": "Afficher le squelette"
+  },
+  "Time (seconds)": {
+    "en": "Time (seconds)",
+    "fr": "Temps (secondes)"
+  },
+  "Timeline": {
+    "en": "Timeline",
+    "fr": "Timeline"
+  },
+  "Track": {
+    "en": "Track",
+    "fr": "Piste"
+  },
+  "Value": {
+    "en": "Value",
+    "fr": "Valeur"
+  },
+  "Value (JSON)": {
+    "en": "Value (JSON)",
+    "fr": "Valeur (JSON)"
+  },
+  "Vertex": {
+    "en": "Vertex",
+    "fr": "Vertex"
+  },
+  "meshes": {
+    "en": "meshes",
+    "fr": "meshes"
+  },
+  "skeletons": {
+    "en": "skeletons",
+    "fr": "squelettes"
+  },
+  "triangles": {
+    "en": "triangles",
+    "fr": "triangles"
+  },
+  "vertices": {
+    "en": "vertices",
+    "fr": "vertices"
+  },
+  "Play clip": {
+    "en": "Play clip",
+    "fr": "Lire le clip"
+  },
+  "Translation": {
+    "en": "Translation",
+    "fr": "Translation"
+  },
+  "Normal": {
+    "en": "Normal",
+    "fr": "Normale"
+  },
+  "UV": {
+    "en": "UV",
+    "fr": "UV"
+  },
+  "Joint indices": {
+    "en": "Joint indices",
+    "fr": "Indices des os"
+  },
+  "Skin weights": {
+    "en": "Skin weights",
+    "fr": "Poids de skinning"
+  },
+  "Import a self-contained GLB or CyPack to edit meshes, skeletons and animation clips.": {
+    "en": "Import a self-contained GLB or CyPack to edit meshes, skeletons and animation clips.",
+    "fr": "Importer un GLB autonome ou un CyPack pour modifier les meshes, squelettes et clips d’animation."
+  },
+  "Open a .cy3d asset from the Content Browser.": {
+    "en": "Open a .cy3d asset from the Content Browser.",
+    "fr": "Ouvrir un asset .cy3d depuis l’explorateur de contenu."
+  },
+  "Matrix node: transform editing requires decomposition.": {
+    "en": "Matrix node: transform editing requires decomposition.",
+    "fr": "Nœud matriciel : décomposer la matrice avant de modifier ses transformations."
+  },
+  "Register a mesh renderer for this platform.": {
+    "en": "Register a mesh renderer for this platform.",
+    "fr": "Enregistrer un moteur de rendu de mesh pour cette plateforme."
+  },
+  "This asset has no animation clips.": {
+    "en": "This asset has no animation clips.",
+    "fr": "Cet asset ne contient aucun clip d’animation."
+  },
+  "Add JSON value": {
+    "en": "Add JSON value",
+    "fr": "Ajouter une valeur JSON"
+  },
+  "Remove JSON value": {
+    "en": "Remove JSON value",
+    "fr": "Supprimer la valeur JSON"
+  },
+  "New clip": {
+    "en": "New clip",
+    "fr": "Nouveau clip"
+  },
+  "Add track for selected node": {
+    "en": "Add track for selected node",
+    "fr": "Ajouter une piste pour le nœud sélectionné"
+  },
+  "Add key at current time": {
+    "en": "Add key at current time",
+    "fr": "Ajouter une clé au temps courant"
+  },
+  "Remove key": {
+    "en": "Remove key",
+    "fr": "Supprimer la clé"
+  },
+  "Texture sample": {
+    "en": "Texture sample",
+    "fr": "Échantillonner une texture"
+  },
+  "Portable 3D (GLB / CyPack)": {
+    "en": "Portable 3D (GLB / CyPack)",
+    "fr": "3D portable (GLB / CyPack)"
+  },
+  "translation": {
+    "en": "translation",
+    "fr": "translation"
+  },
+  "rotation": {
+    "en": "Rotation",
+    "fr": "Rotation"
+  },
+  "Open 3D document": {
+    "en": "Open 3D document",
+    "fr": "Ouvrir un document 3D"
+  },
+  "Describe 3D document": {
+    "en": "Describe 3D document",
+    "fr": "Décrire un document 3D"
+  },
+  "Prepare 3D export": {
+    "en": "Prepare 3D export",
+    "fr": "Préparer l’export 3D"
+  },
+  "Edit skeleton or scene node": {
+    "en": "Edit skeleton or scene node",
+    "fr": "Modifier un nœud de scène ou de squelette"
+  },
+  "Edit mesh vertex": {
+    "en": "Edit mesh vertex",
+    "fr": "Modifier un vertex du mesh"
+  },
+  "Edit animation key": {
+    "en": "Edit animation key",
+    "fr": "Modifier une clé d’animation"
+  },
+  "Sample mesh and animated pose": {
+    "en": "Sample mesh and animated pose",
+    "fr": "Échantillonner le mesh et la pose animée"
+  },
+  "Save 3D document": {
+    "en": "Save 3D document",
+    "fr": "Enregistrer le document 3D"
+  },
+  "Close saved 3D document": {
+    "en": "Close saved 3D document",
+    "fr": "Fermer un document 3D enregistré"
+  },
+  "Export GLB or CyPack": {
+    "en": "Export GLB or CyPack",
+    "fr": "Exporter en GLB ou CyPack"
+  },
+  "Open JSON document": {
+    "en": "Open JSON document",
+    "fr": "Ouvrir un document JSON"
+  },
+  "Describe JSON document": {
+    "en": "Describe JSON document",
+    "fr": "Décrire un document JSON"
+  },
+  "Edit JSON value": {
+    "en": "Edit JSON value",
+    "fr": "Modifier une valeur JSON"
+  },
+  "Add JSON property or array item": {
+    "en": "Add JSON property or array item",
+    "fr": "Ajouter une propriété ou un élément JSON"
+  },
+  "Save JSON document": {
+    "en": "Save JSON document",
+    "fr": "Enregistrer le document JSON"
+  },
+  "Reload saved 3D document": {
+    "en": "Reload saved 3D document",
+    "fr": "Recharger le document 3D enregistré"
+  },
+  "Set 3D preview playback": {
+    "en": "Set 3D preview playback",
+    "fr": "Régler la lecture de l’aperçu 3D"
+  },
+  "Create animation clip": {
+    "en": "Create animation clip",
+    "fr": "Créer un clip d’animation"
+  },
+  "Add animation track": {
+    "en": "Add animation track",
+    "fr": "Ajouter une piste d’animation"
+  },
+  "Add animation key": {
+    "en": "Add animation key",
+    "fr": "Ajouter une clé d’animation"
+  },
+  "Remove animation key": {
+    "en": "Remove animation key",
+    "fr": "Supprimer une clé d’animation"
+  },
+  "Close saved JSON document": {
+    "en": "Close saved JSON document",
+    "fr": "Fermer un document JSON enregistré"
+  },
+  "Supported source files": {
+    "en": "Supported source files",
+    "fr": "Fichiers sources pris en charge"
+  },
+  "Large string (read-only in this view)": {
+    "en": "Large string (read-only in this view)",
+    "fr": "Chaîne longue (lecture seule dans cette vue)"
+  },
+  "Copy JSON value": {
+    "en": "Copy JSON value",
+    "fr": "Copier la valeur JSON"
+  },
+  "Invalid JSON value": {
+    "en": "Invalid JSON value",
+    "fr": "Valeur JSON invalide"
+  },
+  "List loaded 3D documents": {
+    "en": "List loaded 3D documents",
+    "fr": "Lister les documents 3D chargés"
+  },
+  "JSON tree editing, add/remove, Undo and guarded saves; 512 KiB / four open documents.": {
+    "en": "JSON tree editing, add/remove, Undo and guarded saves; 512 KiB / four open documents.",
+    "fr": "Arbre JSON modifiable, ajout/suppression, annulation et sauvegarde protégée ; 512 Kio / quatre documents ouverts."
+  },
+  "PNG/JPEG/BMP copy and bounded GLB/CyPack conversion; source hashes, protected reimport and image thumbnails.": {
+    "en": "PNG/JPEG/BMP copy and bounded GLB/CyPack conversion; source hashes, protected reimport and image thumbnails.",
+    "fr": "Copie PNG/JPEG/BMP et conversion GLB/CyPack bornée ; empreintes, réimport protégé et vignettes d’images."
+  },
+  "Real DX11 preview, vertex/normal/UV/weight properties and GLB export; no topology, LOD or collision authoring.": {
+    "en": "Real DX11 preview, vertex/normal/UV/weight properties and GLB export; no topology, LOD or collision authoring.",
+    "fr": "Aperçu DX11 réel, propriétés des sommets/normales/UV/poids et export GLB ; topologie, LOD et collisions à développer."
+  },
+  "Hierarchy, TRS, skinned playback, clips/tracks/keys and timeline; no retargeting or rig solver.": {
+    "en": "Hierarchy, TRS, skinned playback, clips/tracks/keys and timeline; no retargeting or rig solver.",
+    "fr": "Hiérarchie, TRS, lecture skinnée, clips/pistes/clés et timeline ; retargeting et solveur de rig à développer."
+  },
+  "Native .cy3d editing with GLB/CyPack import/export and portable UUID preservation; game codecs require providers.": {
+    "en": "Native .cy3d editing with GLB/CyPack import/export and portable UUID preservation; game codecs require providers.",
+    "fr": "Édition native .cy3d, import/export GLB/CyPack et conservation des UUID ; codecs de jeux fournis par adaptateur."
+  },
+  "Procedural and image nodes, instances and compiled DX11 sphere/plane previews.": {
+    "en": "Procedural and image nodes, instances and compiled DX11 sphere/plane previews.",
+    "fr": "Nœuds procéduraux et images, instances et aperçus DX11 compilés sur sphère/plan."
+  },
+  "PNG/JPEG/BMP CPU and DX11 sampling, sRGB, bilinear repeat and eight texture bindings; preview shaders only.": {
+    "en": "PNG/JPEG/BMP CPU and DX11 sampling, sRGB, bilinear repeat and eight texture bindings; preview shaders only.",
+    "fr": "Échantillonnage CPU et DX11 PNG/JPEG/BMP, sRGB, répétition bilinéaire et huit textures ; shaders d’aperçu."
+  },
+  "LODs": {
+    "en": "LODs",
+    "fr": "LODs"
+  },
+  "Collision": {
+    "en": "Collision",
+    "fr": "Collision"
+  },
+  "Retarget": {
+    "en": "Retarget",
+    "fr": "Retargeting"
+  },
+  "Static vertex clustering; boundaries and seams are protected.": {
+    "en": "Static vertex clustering; boundaries and seams are protected.",
+    "fr": "Regroupement des sommets statiques ; frontières et coutures protégées."
+  },
+  "Preview LOD": {
+    "en": "Preview LOD",
+    "fr": "LOD affiché"
+  },
+  "Triangle ratio": {
+    "en": "Triangle ratio",
+    "fr": "Proportion de triangles"
+  },
+  "Generate LOD": {
+    "en": "Generate LOD",
+    "fr": "Générer un LOD"
+  },
+  "Maximum vertex displacement": {
+    "en": "Maximum vertex displacement",
+    "fr": "Déplacement maximal d’un sommet"
+  },
+  "Remove LOD": {
+    "en": "Remove LOD",
+    "fr": "Supprimer le LOD"
+  },
+  "Regenerate LOD": {
+    "en": "Regenerate LOD",
+    "fr": "Régénérer le LOD"
+  },
+  "Export preview LOD": {
+    "en": "Export preview LOD",
+    "fr": "Exporter le LOD affiché"
+  },
+  "Show collision": {
+    "en": "Show collision",
+    "fr": "Afficher les collisions"
+  },
+  "Box": {
+    "en": "Box",
+    "fr": "Boîte"
+  },
+  "Capsule": {
+    "en": "Capsule",
+    "fr": "Capsule"
+  },
+  "Fit collision shape": {
+    "en": "Fit collision shape",
+    "fr": "Ajuster une collision"
+  },
+  "Asset reference space; engine physics cooking requires a provider.": {
+    "en": "Asset reference space; engine physics cooking requires a provider.",
+    "fr": "Repère de référence de l’asset ; préparation physique du jeu fournie par adaptateur."
+  },
+  "Remove collision": {
+    "en": "Remove collision",
+    "fr": "Supprimer la collision"
+  },
+  "Transfer a baked clip using reference-pose bone mapping. No IK solver.": {
+    "en": "Transfer a baked clip using reference-pose bone mapping. No IK solver.",
+    "fr": "Transférer un clip échantillonné par correspondance des os et poses de référence. Sans solveur IK."
+  },
+  "Source model": {
+    "en": "Source model",
+    "fr": "Modèle source"
+  },
+  "Choose a source": {
+    "en": "Choose a source",
+    "fr": "Choisir une source"
+  },
+  "Source clip": {
+    "en": "Source clip",
+    "fr": "Clip source"
+  },
+  "Bake FPS": {
+    "en": "Bake FPS",
+    "fr": "Fréquence d’échantillonnage"
+  },
+  "Translation scale": {
+    "en": "Translation scale",
+    "fr": "Échelle des translations"
+  },
+  "Translation mode": {
+    "en": "Translation mode",
+    "fr": "Mode de translation"
+  },
+  "Bind pose": {
+    "en": "Bind pose",
+    "fr": "Pose de référence"
+  },
+  "Root scaled": {
+    "en": "Root scaled",
+    "fr": "Racine ajustée"
+  },
+  "All scaled": {
+    "en": "All scaled",
+    "fr": "Toutes ajustées"
+  },
+  "Bake retargeted clip": {
+    "en": "Bake retargeted clip",
+    "fr": "Créer le clip transféré"
+  },
+  "Bone mapping": {
+    "en": "Bone mapping",
+    "fr": "Correspondance des os"
+  },
+  "Filter bones": {
+    "en": "Filter bones",
+    "fr": "Filtrer les os"
+  },
+  "Unmapped": {
+    "en": "Unmapped",
+    "fr": "Non associé"
+  },
+  "Classes": {
+    "en": "Classes",
+    "fr": "Classes"
+  },
+  "Define class": {
+    "en": "Define class",
+    "fr": "Définir une classe"
+  },
+  "Construct": {
+    "en": "Construct",
+    "fr": "Instancier"
+  },
+  "Remove class": {
+    "en": "Remove class",
+    "fr": "Supprimer la classe"
+  },
+  "Parent class": {
+    "en": "Parent class",
+    "fr": "Classe parente"
+  },
+  "Typed fields (JSON)": {
+    "en": "Typed fields (JSON)",
+    "fr": "Champs typés (JSON)"
+  },
+  "Method to function bindings (JSON)": {
+    "en": "Method to function bindings (JSON)",
+    "fr": "Liaisons méthodes/fonctions (JSON)"
+  },
+  "Methods require a typed object input named self.": {
+    "en": "Methods require a typed object input named self.",
+    "fr": "Les méthodes nécessitent une entrée de type object nommée self."
+  },
+  "Apply class": {
+    "en": "Apply class",
+    "fr": "Appliquer la classe"
+  },
+  "Inline macro": {
+    "en": "Inline macro",
+    "fr": "Macro intégrée"
+  },
+  "Macro": {
+    "en": "Macro",
+    "fr": "Macro"
+  },
+  "For each": {
+    "en": "For each",
+    "fr": "Pour chaque élément"
+  },
+  "For each (execution function)": {
+    "en": "For each (execution function)",
+    "fr": "Pour chaque élément (fonction avec exécution)"
+  },
+  "Definition": {
+    "en": "Definition",
+    "fr": "Définition"
+  },
+  "Simulation delta": {
+    "en": "Simulation delta",
+    "fr": "Pas de simulation"
+  },
+  "Advance time": {
+    "en": "Advance time",
+    "fr": "Avancer le temps"
+  },
+  "Custom event": {
+    "en": "Custom event",
+    "fr": "Événement personnalisé"
+  },
+  "Emit event": {
+    "en": "Emit event",
+    "fr": "Déclencher l’événement"
+  },
+  "Simulation time": {
+    "en": "Simulation time",
+    "fr": "Temps de simulation"
+  },
+  "Runtime objects": {
+    "en": "Runtime objects",
+    "fr": "Objets à l’exécution"
+  },
+  "Waiting": {
+    "en": "Waiting",
+    "fr": "En attente"
+  },
+  "Large JSON value (use SDK to edit)": {
+    "en": "Large JSON value (use SDK to edit)",
+    "fr": "Valeur JSON volumineuse (modifiable par SDK)"
+  },
+  "Game Codecs": {
+    "en": "Game Codecs",
+    "fr": "Codecs de jeux"
+  },
+  "Refresh codec providers": {
+    "en": "Refresh codec providers",
+    "fr": "Actualiser les fournisseurs de codecs"
+  },
+  "No game codec registered": {
+    "en": "No game codec registered",
+    "fr": "Aucun codec de jeu enregistré"
+  },
+  "Choose a game, exact version and real fixtures, then register its trusted source provider.": {
+    "en": "Choose a game, exact version and real fixtures, then register its trusted source provider.",
+    "fr": "Choisir un jeu, sa version et des fichiers réels, puis enregistrer son fournisseur source de confiance."
+  },
+  "3D asset": {
+    "en": "3D asset",
+    "fr": "Asset 3D"
+  },
+  "Game version": {
+    "en": "Game version",
+    "fr": "Version du jeu"
+  },
+  "Codec options (JSON)": {
+    "en": "Codec options (JSON)",
+    "fr": "Options du codec (JSON)"
+  },
+  "Accepted conversion losses (JSON array)": {
+    "en": "Accepted conversion losses (JSON array)",
+    "fr": "Pertes de conversion acceptées (tableau JSON)"
+  },
+  "Require verified output": {
+    "en": "Require verified output",
+    "fr": "Exiger un résultat vérifié"
+  },
+  "Export through game codec": {
+    "en": "Export through game codec",
+    "fr": "Exporter avec le codec du jeu"
+  },
+  "Generated data needs review after geometry changes.": {
+    "en": "Generated data needs review after geometry changes.",
+    "fr": "Données générées à revoir après modification de la géométrie."
+  },
+  "Review this collision fit after geometry changes.": {
+    "en": "Review this collision fit after geometry changes.",
+    "fr": "Revoir cette collision après modification de la géométrie."
+  },
+  "Confirm collision fit": {
+    "en": "Confirm collision fit",
+    "fr": "Confirmer la collision"
+  },
+  "center": {
+    "en": "Center",
+    "fr": "Centre"
+  },
+  "halfExtents": {
+    "en": "Half extents",
+    "fr": "Demi-dimensions"
+  },
+  "radius": {
+    "en": "Radius",
+    "fr": "Rayon"
+  },
+  "halfHeight": {
+    "en": "Half height",
+    "fr": "Demi-hauteur"
+  },
+  "Prepare model authoring job": {
+    "en": "Prepare model authoring job",
+    "fr": "Préparer le traitement d’un modèle"
+  },
+  "Process model authoring job": {
+    "en": "Process model authoring job",
+    "fr": "Traiter un modèle"
+  },
+  "Apply model authoring result": {
+    "en": "Apply model authoring result",
+    "fr": "Appliquer le résultat du traitement"
+  },
+  "Remove generated LOD": {
+    "en": "Remove generated LOD",
+    "fr": "Supprimer un LOD généré"
+  },
+  "Remove collision shape": {
+    "en": "Remove collision shape",
+    "fr": "Supprimer une forme de collision"
+  },
+  "Edit collision shape": {
+    "en": "Edit collision shape",
+    "fr": "Modifier une forme de collision"
+  },
+  "Define Blueprint class": {
+    "en": "Define Blueprint class",
+    "fr": "Définir une classe Blueprint"
+  },
+  "Remove Blueprint class": {
+    "en": "Remove Blueprint class",
+    "fr": "Supprimer une classe Blueprint"
+  },
+  "Advance graph simulation time": {
+    "en": "Advance graph simulation time",
+    "fr": "Avancer le temps de simulation du graphe"
+  },
+  "Emit graph custom event": {
+    "en": "Emit graph custom event",
+    "fr": "Déclencher un événement du graphe"
+  },
+  "Edit runtime object field": {
+    "en": "Edit runtime object field",
+    "fr": "Modifier un champ d’objet à l’exécution"
+  },
+  "Describe adapter codec declarations": {
+    "en": "Describe adapter codec declarations",
+    "fr": "Décrire les codecs déclarés par l’adaptateur"
+  },
+  "List executable game codecs": {
+    "en": "List executable game codecs",
+    "fr": "Lister les codecs de jeux exécutables"
+  },
+  "Export asset through game codec": {
+    "en": "Export asset through game codec",
+    "fr": "Exporter un asset avec un codec de jeu"
+  },
+  "Open graph runtime debugger": {
+    "en": "Open graph runtime debugger",
+    "fr": "Ouvrir le débogueur d’exécution du graphe"
+  },
+  "Integer to string": {
+    "en": "Integer to string",
+    "fr": "Entier vers texte"
+  },
+  "Add vectors": {
+    "en": "Add vectors",
+    "fr": "Additionner les vecteurs"
+  },
+  "Dot product": {
+    "en": "Dot product",
+    "fr": "Produit scalaire"
+  },
+  "Delay": {
+    "en": "Delay",
+    "fr": "Délai"
+  },
+  "Construct object": {
+    "en": "Construct object",
+    "fr": "Instancier un objet"
+  },
+  "Destroy object": {
+    "en": "Destroy object",
+    "fr": "Détruire un objet"
+  },
+  "Is valid object": {
+    "en": "Is valid object",
+    "fr": "Vérifier la référence d’objet"
+  },
+  "Call method": {
+    "en": "Call method",
+    "fr": "Appeler une méthode"
+  },
+  "Emit custom event": {
+    "en": "Emit custom event",
+    "fr": "Déclencher un événement personnalisé"
+  },
+  "Literal float": {
+    "en": "Literal float",
+    "fr": "Valeur float"
+  },
+  "Get field float": {
+    "en": "Get field float",
+    "fr": "Lire le champ float"
+  },
+  "Set field float": {
+    "en": "Set field float",
+    "fr": "Écrire le champ float"
+  },
+  "Literal bool": {
+    "en": "Literal bool",
+    "fr": "Valeur bool"
+  },
+  "Get field bool": {
+    "en": "Get field bool",
+    "fr": "Lire le champ bool"
+  },
+  "Set field bool": {
+    "en": "Set field bool",
+    "fr": "Écrire le champ bool"
+  },
+  "Literal string": {
+    "en": "Literal string",
+    "fr": "Valeur string"
+  },
+  "Get field string": {
+    "en": "Get field string",
+    "fr": "Lire le champ string"
+  },
+  "Set field string": {
+    "en": "Set field string",
+    "fr": "Écrire le champ string"
+  },
+  "Literal color": {
+    "en": "Literal color",
+    "fr": "Valeur color"
+  },
+  "Get field color": {
+    "en": "Get field color",
+    "fr": "Lire le champ color"
+  },
+  "Set field color": {
+    "en": "Set field color",
+    "fr": "Écrire le champ color"
+  },
+  "Literal int": {
+    "en": "Literal int",
+    "fr": "Valeur int"
+  },
+  "Get int": {
+    "en": "Get int",
+    "fr": "Lire int"
+  },
+  "Set int": {
+    "en": "Set int",
+    "fr": "Écrire int"
+  },
+  "Get field int": {
+    "en": "Get field int",
+    "fr": "Lire le champ int"
+  },
+  "Set field int": {
+    "en": "Set field int",
+    "fr": "Écrire le champ int"
+  },
+  "Literal vector3": {
+    "en": "Literal vector3",
+    "fr": "Valeur vector3"
+  },
+  "Get vector3": {
+    "en": "Get vector3",
+    "fr": "Lire vector3"
+  },
+  "Set vector3": {
+    "en": "Set vector3",
+    "fr": "Écrire vector3"
+  },
+  "Get field vector3": {
+    "en": "Get field vector3",
+    "fr": "Lire le champ vector3"
+  },
+  "Set field vector3": {
+    "en": "Set field vector3",
+    "fr": "Écrire le champ vector3"
+  },
+  "Literal object": {
+    "en": "Literal object",
+    "fr": "Valeur object"
+  },
+  "Get object": {
+    "en": "Get object",
+    "fr": "Lire object"
+  },
+  "Set object": {
+    "en": "Set object",
+    "fr": "Écrire object"
+  },
+  "Get field object": {
+    "en": "Get field object",
+    "fr": "Lire le champ object"
+  },
+  "Set field object": {
+    "en": "Set field object",
+    "fr": "Écrire le champ object"
+  },
+  "Literal array.float": {
+    "en": "Literal array.float",
+    "fr": "Valeur array.float"
+  },
+  "Get array.float": {
+    "en": "Get array.float",
+    "fr": "Lire array.float"
+  },
+  "Set array.float": {
+    "en": "Set array.float",
+    "fr": "Écrire array.float"
+  },
+  "Get field array.float": {
+    "en": "Get field array.float",
+    "fr": "Lire le champ array.float"
+  },
+  "Set field array.float": {
+    "en": "Set field array.float",
+    "fr": "Écrire le champ array.float"
+  },
+  "length array.float": {
+    "en": "length array.float",
+    "fr": "taille array.float"
+  },
+  "contains array.float": {
+    "en": "contains array.float",
+    "fr": "contient array.float"
+  },
+  "get array.float": {
+    "en": "get array.float",
+    "fr": "lire array.float"
+  },
+  "set array.float": {
+    "en": "set array.float",
+    "fr": "écrire array.float"
+  },
+  "add array.float": {
+    "en": "add array.float",
+    "fr": "ajouter array.float"
+  },
+  "remove array.float": {
+    "en": "remove array.float",
+    "fr": "supprimer array.float"
+  },
+  "Literal array.int": {
+    "en": "Literal array.int",
+    "fr": "Valeur array.int"
+  },
+  "Get array.int": {
+    "en": "Get array.int",
+    "fr": "Lire array.int"
+  },
+  "Set array.int": {
+    "en": "Set array.int",
+    "fr": "Écrire array.int"
+  },
+  "Get field array.int": {
+    "en": "Get field array.int",
+    "fr": "Lire le champ array.int"
+  },
+  "Set field array.int": {
+    "en": "Set field array.int",
+    "fr": "Écrire le champ array.int"
+  },
+  "length array.int": {
+    "en": "length array.int",
+    "fr": "taille array.int"
+  },
+  "contains array.int": {
+    "en": "contains array.int",
+    "fr": "contient array.int"
+  },
+  "get array.int": {
+    "en": "get array.int",
+    "fr": "lire array.int"
+  },
+  "set array.int": {
+    "en": "set array.int",
+    "fr": "écrire array.int"
+  },
+  "add array.int": {
+    "en": "add array.int",
+    "fr": "ajouter array.int"
+  },
+  "remove array.int": {
+    "en": "remove array.int",
+    "fr": "supprimer array.int"
+  },
+  "Literal array.string": {
+    "en": "Literal array.string",
+    "fr": "Valeur array.string"
+  },
+  "Get array.string": {
+    "en": "Get array.string",
+    "fr": "Lire array.string"
+  },
+  "Set array.string": {
+    "en": "Set array.string",
+    "fr": "Écrire array.string"
+  },
+  "Get field array.string": {
+    "en": "Get field array.string",
+    "fr": "Lire le champ array.string"
+  },
+  "Set field array.string": {
+    "en": "Set field array.string",
+    "fr": "Écrire le champ array.string"
+  },
+  "length array.string": {
+    "en": "length array.string",
+    "fr": "taille array.string"
+  },
+  "contains array.string": {
+    "en": "contains array.string",
+    "fr": "contient array.string"
+  },
+  "get array.string": {
+    "en": "get array.string",
+    "fr": "lire array.string"
+  },
+  "set array.string": {
+    "en": "set array.string",
+    "fr": "écrire array.string"
+  },
+  "add array.string": {
+    "en": "add array.string",
+    "fr": "ajouter array.string"
+  },
+  "remove array.string": {
+    "en": "remove array.string",
+    "fr": "supprimer array.string"
+  },
+  "Literal array.bool": {
+    "en": "Literal array.bool",
+    "fr": "Valeur array.bool"
+  },
+  "Get array.bool": {
+    "en": "Get array.bool",
+    "fr": "Lire array.bool"
+  },
+  "Set array.bool": {
+    "en": "Set array.bool",
+    "fr": "Écrire array.bool"
+  },
+  "Get field array.bool": {
+    "en": "Get field array.bool",
+    "fr": "Lire le champ array.bool"
+  },
+  "Set field array.bool": {
+    "en": "Set field array.bool",
+    "fr": "Écrire le champ array.bool"
+  },
+  "length array.bool": {
+    "en": "length array.bool",
+    "fr": "taille array.bool"
+  },
+  "contains array.bool": {
+    "en": "contains array.bool",
+    "fr": "contient array.bool"
+  },
+  "get array.bool": {
+    "en": "get array.bool",
+    "fr": "lire array.bool"
+  },
+  "set array.bool": {
+    "en": "set array.bool",
+    "fr": "écrire array.bool"
+  },
+  "add array.bool": {
+    "en": "add array.bool",
+    "fr": "ajouter array.bool"
+  },
+  "remove array.bool": {
+    "en": "remove array.bool",
+    "fr": "supprimer array.bool"
+  },
+  "Literal array.object": {
+    "en": "Literal array.object",
+    "fr": "Valeur array.object"
+  },
+  "Get array.object": {
+    "en": "Get array.object",
+    "fr": "Lire array.object"
+  },
+  "Set array.object": {
+    "en": "Set array.object",
+    "fr": "Écrire array.object"
+  },
+  "Get field array.object": {
+    "en": "Get field array.object",
+    "fr": "Lire le champ array.object"
+  },
+  "Set field array.object": {
+    "en": "Set field array.object",
+    "fr": "Écrire le champ array.object"
+  },
+  "length array.object": {
+    "en": "length array.object",
+    "fr": "taille array.object"
+  },
+  "contains array.object": {
+    "en": "contains array.object",
+    "fr": "contient array.object"
+  },
+  "get array.object": {
+    "en": "get array.object",
+    "fr": "lire array.object"
+  },
+  "set array.object": {
+    "en": "set array.object",
+    "fr": "écrire array.object"
+  },
+  "add array.object": {
+    "en": "add array.object",
+    "fr": "ajouter array.object"
+  },
+  "remove array.object": {
+    "en": "remove array.object",
+    "fr": "supprimer array.object"
+  },
+  "Literal array.vector3": {
+    "en": "Literal array.vector3",
+    "fr": "Valeur array.vector3"
+  },
+  "Get array.vector3": {
+    "en": "Get array.vector3",
+    "fr": "Lire array.vector3"
+  },
+  "Set array.vector3": {
+    "en": "Set array.vector3",
+    "fr": "Écrire array.vector3"
+  },
+  "Get field array.vector3": {
+    "en": "Get field array.vector3",
+    "fr": "Lire le champ array.vector3"
+  },
+  "Set field array.vector3": {
+    "en": "Set field array.vector3",
+    "fr": "Écrire le champ array.vector3"
+  },
+  "length array.vector3": {
+    "en": "length array.vector3",
+    "fr": "taille array.vector3"
+  },
+  "contains array.vector3": {
+    "en": "contains array.vector3",
+    "fr": "contient array.vector3"
+  },
+  "get array.vector3": {
+    "en": "get array.vector3",
+    "fr": "lire array.vector3"
+  },
+  "set array.vector3": {
+    "en": "set array.vector3",
+    "fr": "écrire array.vector3"
+  },
+  "add array.vector3": {
+    "en": "add array.vector3",
+    "fr": "ajouter array.vector3"
+  },
+  "remove array.vector3": {
+    "en": "remove array.vector3",
+    "fr": "supprimer array.vector3"
+  },
+  "Literal map.float": {
+    "en": "Literal map.float",
+    "fr": "Valeur map.float"
+  },
+  "Get map.float": {
+    "en": "Get map.float",
+    "fr": "Lire map.float"
+  },
+  "Set map.float": {
+    "en": "Set map.float",
+    "fr": "Écrire map.float"
+  },
+  "Get field map.float": {
+    "en": "Get field map.float",
+    "fr": "Lire le champ map.float"
+  },
+  "Set field map.float": {
+    "en": "Set field map.float",
+    "fr": "Écrire le champ map.float"
+  },
+  "length map.float": {
+    "en": "length map.float",
+    "fr": "taille map.float"
+  },
+  "contains map.float": {
+    "en": "contains map.float",
+    "fr": "contient map.float"
+  },
+  "get map.float": {
+    "en": "get map.float",
+    "fr": "lire map.float"
+  },
+  "set map.float": {
+    "en": "set map.float",
+    "fr": "écrire map.float"
+  },
+  "add map.float": {
+    "en": "add map.float",
+    "fr": "ajouter map.float"
+  },
+  "remove map.float": {
+    "en": "remove map.float",
+    "fr": "supprimer map.float"
+  },
+  "Literal map.string": {
+    "en": "Literal map.string",
+    "fr": "Valeur map.string"
+  },
+  "Get map.string": {
+    "en": "Get map.string",
+    "fr": "Lire map.string"
+  },
+  "Set map.string": {
+    "en": "Set map.string",
+    "fr": "Écrire map.string"
+  },
+  "Get field map.string": {
+    "en": "Get field map.string",
+    "fr": "Lire le champ map.string"
+  },
+  "Set field map.string": {
+    "en": "Set field map.string",
+    "fr": "Écrire le champ map.string"
+  },
+  "length map.string": {
+    "en": "length map.string",
+    "fr": "taille map.string"
+  },
+  "contains map.string": {
+    "en": "contains map.string",
+    "fr": "contient map.string"
+  },
+  "get map.string": {
+    "en": "get map.string",
+    "fr": "lire map.string"
+  },
+  "set map.string": {
+    "en": "set map.string",
+    "fr": "écrire map.string"
+  },
+  "add map.string": {
+    "en": "add map.string",
+    "fr": "ajouter map.string"
+  },
+  "remove map.string": {
+    "en": "remove map.string",
+    "fr": "supprimer map.string"
+  },
+  "Literal map.object": {
+    "en": "Literal map.object",
+    "fr": "Valeur map.object"
+  },
+  "Get map.object": {
+    "en": "Get map.object",
+    "fr": "Lire map.object"
+  },
+  "Set map.object": {
+    "en": "Set map.object",
+    "fr": "Écrire map.object"
+  },
+  "Get field map.object": {
+    "en": "Get field map.object",
+    "fr": "Lire le champ map.object"
+  },
+  "Set field map.object": {
+    "en": "Set field map.object",
+    "fr": "Écrire le champ map.object"
+  },
+  "length map.object": {
+    "en": "length map.object",
+    "fr": "taille map.object"
+  },
+  "contains map.object": {
+    "en": "contains map.object",
+    "fr": "contient map.object"
+  },
+  "get map.object": {
+    "en": "get map.object",
+    "fr": "lire map.object"
+  },
+  "set map.object": {
+    "en": "set map.object",
+    "fr": "écrire map.object"
+  },
+  "add map.object": {
+    "en": "add map.object",
+    "fr": "ajouter map.object"
+  },
+  "remove map.object": {
+    "en": "remove map.object",
+    "fr": "supprimer map.object"
+  },
+  "Literal set.string": {
+    "en": "Literal set.string",
+    "fr": "Valeur set.string"
+  },
+  "Get set.string": {
+    "en": "Get set.string",
+    "fr": "Lire set.string"
+  },
+  "Set set.string": {
+    "en": "Set set.string",
+    "fr": "Écrire set.string"
+  },
+  "Get field set.string": {
+    "en": "Get field set.string",
+    "fr": "Lire le champ set.string"
+  },
+  "Set field set.string": {
+    "en": "Set field set.string",
+    "fr": "Écrire le champ set.string"
+  },
+  "length set.string": {
+    "en": "length set.string",
+    "fr": "taille set.string"
+  },
+  "contains set.string": {
+    "en": "contains set.string",
+    "fr": "contient set.string"
+  },
+  "get set.string": {
+    "en": "get set.string",
+    "fr": "lire set.string"
+  },
+  "set set.string": {
+    "en": "set set.string",
+    "fr": "écrire set.string"
+  },
+  "add set.string": {
+    "en": "add set.string",
+    "fr": "ajouter set.string"
+  },
+  "remove set.string": {
+    "en": "remove set.string",
+    "fr": "supprimer set.string"
+  },
+  "Literal set.int": {
+    "en": "Literal set.int",
+    "fr": "Valeur set.int"
+  },
+  "Get set.int": {
+    "en": "Get set.int",
+    "fr": "Lire set.int"
+  },
+  "Set set.int": {
+    "en": "Set set.int",
+    "fr": "Écrire set.int"
+  },
+  "Get field set.int": {
+    "en": "Get field set.int",
+    "fr": "Lire le champ set.int"
+  },
+  "Set field set.int": {
+    "en": "Set field set.int",
+    "fr": "Écrire le champ set.int"
+  },
+  "length set.int": {
+    "en": "length set.int",
+    "fr": "taille set.int"
+  },
+  "contains set.int": {
+    "en": "contains set.int",
+    "fr": "contient set.int"
+  },
+  "get set.int": {
+    "en": "get set.int",
+    "fr": "lire set.int"
+  },
+  "set set.int": {
+    "en": "set set.int",
+    "fr": "écrire set.int"
+  },
+  "add set.int": {
+    "en": "add set.int",
+    "fr": "ajouter set.int"
+  },
+  "remove set.int": {
+    "en": "remove set.int",
+    "fr": "supprimer set.int"
+  },
+  "DX11 geometry and vertex tools, bounded static LOD generation and collision shapes; no production topology or physics cooking.": {
+    "en": "DX11 geometry and vertex tools, bounded static LOD generation and collision shapes; no production topology or physics cooking.",
+    "fr": "Géométrie DX11, sommets, LOD statiques bornés et collisions ; sans modélisation complète ni préparation physique."
+  },
+  "Hierarchy, skinning, clips/keys and reference-pose retarget baking; no IK or automatic humanoid rig solver.": {
+    "en": "Hierarchy, skinning, clips/keys and reference-pose retarget baking; no IK or automatic humanoid rig solver.",
+    "fr": "Hiérarchie, skinning, clips/clés et transfert par pose de référence ; sans IK ni solveur humanoïde automatique."
+  },
+  "Classes, methods, containers, macros, loops, events and delays now work; full engine semantics and Unreal compatibility remain work.": {
+    "en": "Classes, methods, containers, macros, loops, events and delays now work; full engine semantics and Unreal compatibility remain work.",
+    "fr": "Classes, méthodes, conteneurs, macros, boucles, événements et délais fonctionnent ; sémantique moteur complète et compatibilité Unreal à développer."
+  },
+  "Blueprint classes and containers": {
+    "en": "Blueprint classes and containers",
+    "fr": "Classes et conteneurs Blueprint"
+  },
+  "Typed fields, inheritance, virtual methods, shared references and bounded array/map/set operations.": {
+    "en": "Typed fields, inheritance, virtual methods, shared references and bounded array/map/set operations.",
+    "fr": "Champs typés, héritage, méthodes virtuelles, références partagées et opérations array/map/set bornées."
+  },
+  "Inline macros and function loops": {
+    "en": "Inline macros and function loops",
+    "fr": "Macros intégrées et boucles de fonctions"
+  },
+  "Compile-time macro expansion and typed execution-function iteration with early break.": {
+    "en": "Compile-time macro expansion and typed execution-function iteration with early break.",
+    "fr": "Développement des macros à la compilation et itération de fonctions typées avec interruption anticipée."
+  },
+  "Graph events and simulation time": {
+    "en": "Graph events and simulation time",
+    "fr": "Événements et temps de simulation"
+  },
+  "Nonblocking delays, named events and explicit logical time; one execution lane, no engine event bridge.": {
+    "en": "Nonblocking delays, named events and explicit logical time; one execution lane, no engine event bridge.",
+    "fr": "Délais sans blocage, événements nommés et temps logique explicite ; une voie d’exécution, sans liaison moteur."
+  },
+  "Generated static LODs": {
+    "en": "Generated static LODs",
+    "fr": "LOD statiques générés"
+  },
+  "Protected boundary/seam clustering, real preview/export, stale-state detection and regeneration.": {
+    "en": "Protected boundary/seam clustering, real preview/export, stale-state detection and regeneration.",
+    "fr": "Regroupement préservant les frontières/coutures, aperçu/export réels et détection des données périmées."
+  },
+  "Collision shape authoring": {
+    "en": "Collision shape authoring",
+    "fr": "Création de formes de collision"
+  },
+  "Conservative box/sphere/capsule fits, editable properties, wire preview and review markers.": {
+    "en": "Conservative box/sphere/capsule fits, editable properties, wire preview and review markers.",
+    "fr": "Ajustement conservateur de boîtes/sphères/capsules, propriétés, aperçu filaire et marqueurs de révision."
+  },
+  "Reference-pose retargeting": {
+    "en": "Reference-pose retargeting",
+    "fr": "Retargeting par pose de référence"
+  },
+  "Explicit bone mapping, target proportions, orientation correction and sampled clip baking.": {
+    "en": "Explicit bone mapping, target proportions, orientation correction and sampled clip baking.",
+    "fr": "Correspondance explicite des os, proportions de la cible, correction d’orientation et création d’un clip échantillonné."
+  },
+  "Game codec providers": {
+    "en": "Game codec providers",
+    "fr": "Fournisseurs de codecs de jeux"
+  },
+  "Trusted executable registry, exact target/options, loss/hash/validation checks and Core jobs; no real game codec bundled.": {
+    "en": "Trusted executable registry, exact target/options, loss/hash/validation checks and Core jobs; no real game codec bundled.",
+    "fr": "Registre de fournisseurs, cible/options exactes, contrôle des pertes/empreintes/validation et jobs Core ; aucun codec de jeu réel fourni."
+  },
+  "Motion tools": {
+    "en": "Motion tools",
+    "fr": "Outils d’animation"
+  },
+  "IK": {
+    "en": "IK",
+    "fr": "IK"
+  },
+  "Root motion": {
+    "en": "Root motion",
+    "fr": "Mouvement racine"
+  },
+  "Clip tools": {
+    "en": "Clip tools",
+    "fr": "Outils de clip"
+  },
+  "Chain root": {
+    "en": "Chain root",
+    "fr": "Racine de chaîne"
+  },
+  "Chain tip": {
+    "en": "Chain tip",
+    "fr": "Extrémité de chaîne"
+  },
+  "Target position": {
+    "en": "Target position",
+    "fr": "Position cible"
+  },
+  "Use pole": {
+    "en": "Use pole",
+    "fr": "Utiliser un pôle"
+  },
+  "Pole position": {
+    "en": "Pole position",
+    "fr": "Position du pôle"
+  },
+  "Iterations": {
+    "en": "Iterations",
+    "fr": "Itérations"
+  },
+  "Tolerance": {
+    "en": "Tolerance",
+    "fr": "Tolérance"
+  },
+  "Bake IK clip": {
+    "en": "Bake IK clip",
+    "fr": "Créer le clip IK"
+  },
+  "Motion root": {
+    "en": "Motion root",
+    "fr": "Os racine"
+  },
+  "Extract axes": {
+    "en": "Extract axes",
+    "fr": "Axes à extraire"
+  },
+  "Extract rotation": {
+    "en": "Extract rotation",
+    "fr": "Extraire la rotation"
+  },
+  "Extract motion pair": {
+    "en": "Extract motion pair",
+    "fr": "Extraire le mouvement"
+  },
+  "No motion pairs extracted yet.": {
+    "en": "No motion pairs extracted yet.",
+    "fr": "Aucun mouvement extrait."
+  },
+  "Preview in place": {
+    "en": "Preview in place",
+    "fr": "Aperçu sur place"
+  },
+  "Preview displacement": {
+    "en": "Preview displacement",
+    "fr": "Aperçu du déplacement"
+  },
+  "Reconstruct motion clip": {
+    "en": "Reconstruct motion clip",
+    "fr": "Reconstruire le clip"
+  },
+  "Changed motion tracks require a new extraction before reconstruction.": {
+    "en": "Changed motion tracks require a new extraction before reconstruction.",
+    "fr": "Les pistes modifiées nécessitent une nouvelle extraction avant reconstruction."
+  },
+  "Start time": {
+    "en": "Start time",
+    "fr": "Temps de début"
+  },
+  "End time": {
+    "en": "End time",
+    "fr": "Temps de fin"
+  },
+  "Create trimmed clip": {
+    "en": "Create trimmed clip",
+    "fr": "Créer le clip découpé"
+  },
+  "IK result": {
+    "en": "IK result",
+    "fr": "Résultat IK"
+  },
+  "Maximum target error": {
+    "en": "Maximum target error",
+    "fr": "Écart maximal à la cible"
+  },
+  "Unreachable samples": {
+    "en": "Unreachable samples",
+    "fr": "Échantillons hors de portée"
+  },
+  "Unconverged samples": {
+    "en": "Unconverged samples",
+    "fr": "Échantillons sans convergence"
+  },
+  "Displacement distance": {
+    "en": "Displacement distance",
+    "fr": "Distance de déplacement"
+  },
+  "Bake a fixed-root chain to a world-space target. Unit scale is required; no joint limits or foot contacts.": {
+    "en": "Bake a fixed-root chain to a world-space target. Unit scale is required; no joint limits or foot contacts.",
+    "fr": "Créer un clip pour une chaîne à racine fixe et une cible globale. Échelle unitaire requise ; sans limites articulaires ni contacts des pieds."
+  },
+  "Extract root motion into a new in-place clip and a rigid displacement curve. The original clip is retained.": {
+    "en": "Extract root motion into a new in-place clip and a rigid displacement curve. The original clip is retained.",
+    "fr": "Créer un clip sur place et une courbe de déplacement rigide. Le clip original est conservé."
+  },
+  "Create a trimmed and resampled copy. Time starts at zero; the source clip is unchanged.": {
+    "en": "Create a trimmed and resampled copy. Time starts at zero; the source clip is unchanged.",
+    "fr": "Créer une copie découpée et rééchantillonnée. Le temps commence à zéro ; le clip source est conservé."
+  },
+  "Offline chain IK": {
+    "en": "Offline chain IK",
+    "fr": "IK de chaîne hors ligne"
+  },
+  "Root motion extraction and reconstruction": {
+    "en": "Root motion extraction and reconstruction",
+    "fr": "Extraction et reconstruction du mouvement racine"
+  },
+  "Clip trimming and resampling": {
+    "en": "Clip trimming and resampling",
+    "fr": "Découpe et rééchantillonnage des clips"
+  },
+  "None": {
+    "en": "None",
+    "fr": "Aucun"
+  },
+  "Processing asset": {
+    "en": "Processing asset",
+    "fr": "Traitement de l’asset"
+  },
+  "Validating model snapshot": {
+    "en": "Validating model snapshot",
+    "fr": "Validation du document"
+  },
+  "Processing neutral asset": {
+    "en": "Processing neutral asset",
+    "fr": "Traitement de l’asset commun"
+  },
+  "Applying validated authoring result": {
+    "en": "Applying validated authoring result",
+    "fr": "Application du résultat validé"
+  },
+  "Authoring edit ready": {
+    "en": "Authoring edit ready",
+    "fr": "Modification prête"
+  },
+  "Fixed-root FABRIK clip baking, optional pole and reachable/error reporting. Unit scale; no joint limits or contacts.": {
+    "en": "Fixed-root FABRIK clip baking, optional pole and reachable/error reporting. Unit scale; no joint limits or contacts.",
+    "fr": "Création de clips FABRIK à racine fixe, pôle optionnel et rapports de portée/écart. Échelle unitaire ; sans limites articulaires ni contacts."
+  },
+  "Original retained, in-place clip and rigid delta curve, sampled reconstruction and fingerprint guards. No engine movement binding.": {
+    "en": "Original retained, in-place clip and rigid delta curve, sampled reconstruction and fingerprint guards. No engine movement binding.",
+    "fr": "Source conservée, clip sur place et courbe rigide, reconstruction échantillonnée et empreintes vérifiées. Sans commande de déplacement d’un moteur."
+  },
+  "New clip, selected range, zero-based time and bounded LINEAR sampling; original clip retained.": {
+    "en": "New clip, selected range, zero-based time and bounded LINEAR sampling; original clip retained.",
+    "fr": "Nouveau clip, plage sélectionnée, temps ramené à zéro et échantillonnage LINEAR borné ; source conservée."
+  },
+  "Data types": {
+    "en": "Data types",
+    "fr": "Types de données"
+  },
+  "New data type": {
+    "en": "New data type",
+    "fr": "Nouveau type"
+  },
+  "Remove type": {
+    "en": "Remove type",
+    "fr": "Supprimer le type"
+  },
+  "Literal": {
+    "en": "Literal",
+    "fr": "Littéral"
+  },
+  "To string": {
+    "en": "To string",
+    "fr": "Vers une chaîne"
+  },
+  "Enumeration": {
+    "en": "Enumeration",
+    "fr": "Énumération"
+  },
+  "Structure": {
+    "en": "Structure",
+    "fr": "Structure"
+  },
+  "Kind": {
+    "en": "Kind",
+    "fr": "Nature"
+  },
+  "Default member": {
+    "en": "Default member",
+    "fr": "Valeur par défaut"
+  },
+  "Add member": {
+    "en": "Add member",
+    "fr": "Ajouter une valeur"
+  },
+  "Remove field": {
+    "en": "Remove field",
+    "fr": "Supprimer le champ"
+  },
+  "Field name": {
+    "en": "Field name",
+    "fr": "Nom du champ"
+  },
+  "Add field": {
+    "en": "Add field",
+    "fr": "Ajouter un champ"
+  },
+  "Apply data type": {
+    "en": "Apply data type",
+    "fr": "Appliquer le type"
+  },
+  "Fields": {
+    "en": "Fields",
+    "fr": "Champs"
+  },
+  "Data type": {
+    "en": "Data type",
+    "fr": "Type de données"
+  },
+  "Named type node": {
+    "en": "Named type node",
+    "fr": "Nœud de type nommé"
+  },
+  "Named literal": {
+    "en": "Named literal",
+    "fr": "Littéral nommé"
+  },
+  "Named reroute": {
+    "en": "Named reroute",
+    "fr": "Relais nommé"
+  },
+  "Set named variable": {
+    "en": "Set named variable",
+    "fr": "Écrire la variable nommée"
+  },
+  "Get named variable": {
+    "en": "Get named variable",
+    "fr": "Lire la variable nommée"
+  },
+  "Set named field": {
+    "en": "Set named field",
+    "fr": "Écrire le champ nommé"
+  },
+  "Get named field": {
+    "en": "Get named field",
+    "fr": "Lire le champ nommé"
+  },
+  "Make structure": {
+    "en": "Make structure",
+    "fr": "Créer une structure"
+  },
+  "Break structure": {
+    "en": "Break structure",
+    "fr": "Décomposer une structure"
+  },
+  "Set structure field": {
+    "en": "Set structure field",
+    "fr": "Modifier un champ de structure"
+  },
+  "Equal enum": {
+    "en": "Equal enum",
+    "fr": "Comparer une énumération"
+  },
+  "Enum to string": {
+    "en": "Enum to string",
+    "fr": "Énumération vers chaîne"
+  },
+  "Switch on enum": {
+    "en": "Switch on enum",
+    "fr": "Aiguillage sur énumération"
+  },
+  "Describe named graph types": {
+    "en": "Describe named graph types",
+    "fr": "Décrire les types nommés"
+  },
+  "Define enum or structure": {
+    "en": "Define enum or structure",
+    "fr": "Définir une énumération ou structure"
+  },
+  "Remove named graph type": {
+    "en": "Remove named graph type",
+    "fr": "Supprimer un type nommé"
+  },
+  "Changes must keep all existing values and pins valid. Referenced types cannot be removed.": {
+    "en": "Changes must keep all existing values and pins valid. Referenced types cannot be removed.",
+    "fr": "Les valeurs et broches existantes doivent rester valides. Un type référencé ne peut pas être supprimé."
+  },
+  "Named enums": {
+    "en": "Named enums",
+    "fr": "Énumérations nommées"
+  },
+  "Named structures": {
+    "en": "Named structures",
+    "fr": "Structures nommées"
+  },
+  "Local nominal types, validated members/defaults, literal/equality/string/switch nodes and function/variable support.": {
+    "en": "Local nominal types, validated members/defaults, literal/equality/string/switch nodes and function/variable support.",
+    "fr": "Types locaux distincts, valeurs et défauts validés, nœuds littéral/comparaison/chaîne/aiguillage, fonctions et variables."
+  },
+  "Bounded acyclic records, make/break/set nodes, recursive properties, class fields, signatures and clipboard transfer.": {
+    "en": "Bounded acyclic records, make/break/set nodes, recursive properties, class fields, signatures and clipboard transfer.",
+    "fr": "Structures bornées sans récursion, nœuds de création/lecture/modification, propriétés, champs de classe, signatures et presse-papiers."
+  },
+  "Blueprint": {
+    "en": "Blueprint",
+    "fr": "Blueprint"
+  },
+  "Draft type unavailable; choose a type or reload.": {
+    "en": "Draft type unavailable; choose a type or reload.",
+    "fr": "Type du brouillon absent ; choisir un type ou recharger."
+  },
+  "Interfaces": {
+    "en": "Interfaces",
+    "fr": "Interfaces"
+  },
+  "Interface": {
+    "en": "Interface",
+    "fr": "Interface"
+  },
+  "New interface": {
+    "en": "New interface",
+    "fr": "Nouvelle interface"
+  },
+  "Edit interface": {
+    "en": "Edit interface",
+    "fr": "Modifier l’interface"
+  },
+  "Remove interface": {
+    "en": "Remove interface",
+    "fr": "Supprimer l’interface"
+  },
+  "Check interface": {
+    "en": "Check interface",
+    "fr": "Vérifier l’interface"
+  },
+  "Call interface": {
+    "en": "Call interface",
+    "fr": "Appeler l’interface"
+  },
+  "Interface definition": {
+    "en": "Interface definition",
+    "fr": "Définition d’interface"
+  },
+  "Execution method": {
+    "en": "Execution method",
+    "fr": "Méthode avec exécution"
+  },
+  "Method name": {
+    "en": "Method name",
+    "fr": "Nom de méthode"
+  },
+  "Add method": {
+    "en": "Add method",
+    "fr": "Ajouter une méthode"
+  },
+  "Remove method": {
+    "en": "Remove method",
+    "fr": "Supprimer la méthode"
+  },
+  "Apply interface": {
+    "en": "Apply interface",
+    "fr": "Appliquer l’interface"
+  },
+  "Implemented interfaces": {
+    "en": "Implemented interfaces",
+    "fr": "Interfaces implémentées"
+  },
+  "Implements interface": {
+    "en": "Implements interface",
+    "fr": "Implémente l’interface"
+  },
+  "Interface call": {
+    "en": "Interface call",
+    "fr": "Appel d’interface"
+  },
+  "Describe Blueprint interfaces": {
+    "en": "Describe Blueprint interfaces",
+    "fr": "Décrire les interfaces Blueprint"
+  },
+  "Define Blueprint interface": {
+    "en": "Define Blueprint interface",
+    "fr": "Définir une interface Blueprint"
+  },
+  "Remove Blueprint interface": {
+    "en": "Remove Blueprint interface",
+    "fr": "Supprimer une interface Blueprint"
+  },
+  "interface.call": {
+    "en": "interface.call",
+    "fr": "Appel d’interface"
+  },
+  "interface.supports": {
+    "en": "interface.supports",
+    "fr": "Implémente l’interface"
+  },
+  "Interface methods reserve self. Every implementing class must bind matching functions.": {
+    "en": "Interface methods reserve self. Every implementing class must bind matching functions.",
+    "fr": "Les méthodes réservent self. Chaque classe doit lier des fonctions de signature compatible."
+  },
+  "Interface method bindings": {
+    "en": "Interface method bindings",
+    "fr": "Liaisons des méthodes d’interface"
+  },
+  "Choose matching function": {
+    "en": "Choose matching function",
+    "fr": "Choisir une fonction compatible"
+  },
+  "Use inherited binding": {
+    "en": "Use inherited binding",
+    "fr": "Utiliser la liaison héritée"
+  },
+  "Correct method bindings JSON before choosing functions.": {
+    "en": "Correct method bindings JSON before choosing functions.",
+    "fr": "Corrigez le JSON des liaisons avant de choisir les fonctions."
+  },
+  "Class interfaces": {
+    "en": "Class interfaces",
+    "fr": "Interfaces de classes"
+  },
+  "Local method contracts, typed native designer, matching class bindings, dynamic dispatch and shared debugger. No engine reflection or silent message fallback.": {
+    "en": "Local method contracts, typed native designer, matching class bindings, dynamic dispatch and shared debugger. No engine reflection or silent message fallback.",
+    "fr": "Contrats de méthodes locaux, formulaire typé, liaisons compatibles, dispatch et débogueur partagés. Sans réflexion de moteur ni appel silencieux."
+  },
+  "Default": {
+    "en": "Default",
+    "fr": "Valeur par défaut"
+  },
+  "Signature Migration": {
+    "en": "Signature Migration",
+    "fr": "Migration de signature"
+  },
+  "Port renames": {
+    "en": "Port renames",
+    "fr": "Renommage des broches"
+  },
+  "New port name": {
+    "en": "New port name",
+    "fr": "Nouveau nom de broche"
+  },
+  "Rename draft port": {
+    "en": "Rename draft port",
+    "fr": "Renommer la broche du brouillon"
+  },
+  "Choose a new, unique port name.": {
+    "en": "Choose a new, unique port name.",
+    "fr": "Choisissez un nouveau nom de broche unique."
+  },
+  "No migration preview": {
+    "en": "No migration preview",
+    "fr": "Aucun aperçu de migration"
+  },
+  "Edit a function or interface signature, then preview its migration.": {
+    "en": "Edit a function or interface signature, then preview its migration.",
+    "fr": "Modifiez une signature de fonction ou d’interface, puis prévisualisez sa migration."
+  },
+  "Refresh migration preview": {
+    "en": "Refresh migration preview",
+    "fr": "Actualiser l’aperçu de migration"
+  },
+  "Close preview": {
+    "en": "Close preview",
+    "fr": "Fermer l’aperçu"
+  },
+  "Migration applied. Edit > Undo restores the complete previous graph.": {
+    "en": "Migration applied. Edit > Undo restores the complete previous graph.",
+    "fr": "Migration appliquée. Modifier > Annuler restaure tout le graphe précédent."
+  },
+  "The graph changed after this preview. Refresh before applying.": {
+    "en": "The graph changed after this preview. Refresh before applying.",
+    "fr": "Le graphe a changé depuis cet aperçu. Actualisez-le avant application."
+  },
+  "Declarations updated": {
+    "en": "Declarations updated",
+    "fr": "Déclarations modifiées"
+  },
+  "Nodes updated": {
+    "en": "Nodes updated",
+    "fr": "Nœuds actualisés"
+  },
+  "Connections renamed": {
+    "en": "Connections renamed",
+    "fr": "Connexions renommées"
+  },
+  "Connections removed": {
+    "en": "Connections removed",
+    "fr": "Connexions supprimées"
+  },
+  "Fallback values kept": {
+    "en": "Fallback values kept",
+    "fr": "Valeurs de repli conservées"
+  },
+  "Fallback values added": {
+    "en": "Fallback values added",
+    "fr": "Valeurs de repli ajoutées"
+  },
+  "Fallback values removed": {
+    "en": "Fallback values removed",
+    "fr": "Valeurs de repli supprimées"
+  },
+  "Fallback values reset": {
+    "en": "Fallback values reset",
+    "fr": "Valeurs de repli réinitialisées"
+  },
+  "This migration removes connections or fallback values. Review the details before accepting.": {
+    "en": "This migration removes connections or fallback values. Review the details before accepting.",
+    "fr": "Cette migration supprime des connexions ou des valeurs de repli. Vérifiez les détails avant de les accepter."
+  },
+  "Accept the listed losses": {
+    "en": "Accept the listed losses",
+    "fr": "Accepter les pertes indiquées"
+  },
+  "Apply migration": {
+    "en": "Apply migration",
+    "fr": "Appliquer la migration"
+  },
+  "Affected declarations": {
+    "en": "Affected declarations",
+    "fr": "Déclarations concernées"
+  },
+  "Details are limited; summary counts include every change.": {
+    "en": "Details are limited; summary counts include every change.",
+    "fr": "Les détails sont limités ; les compteurs incluent tous les changements."
+  },
+  "Migration details": {
+    "en": "Migration details",
+    "fr": "Détails de migration"
+  },
+  "Declaration updated": {
+    "en": "Declaration updated",
+    "fr": "Déclaration modifiée"
+  },
+  "Value reset": {
+    "en": "Value reset",
+    "fr": "Valeur réinitialisée"
+  },
+  "Value removed": {
+    "en": "Value removed",
+    "fr": "Valeur supprimée"
+  },
+  "Port renamed": {
+    "en": "Port renamed",
+    "fr": "Broche renommée"
+  },
+  "Link removed": {
+    "en": "Link removed",
+    "fr": "Connexion supprimée"
+  },
+  "Link renamed": {
+    "en": "Link renamed",
+    "fr": "Connexion renommée"
+  },
+  "Preview migration": {
+    "en": "Preview migration",
+    "fr": "Prévisualiser la migration"
+  },
+  "Preview method migration": {
+    "en": "Preview method migration",
+    "fr": "Prévisualiser la migration de méthode"
+  },
+  "Migration keeps the existing method and execution mode.": {
+    "en": "Migration keeps the existing method and execution mode.",
+    "fr": "La migration conserve la méthode et son mode d’exécution."
+  },
+  "Preview signature migration": {
+    "en": "Preview signature migration",
+    "fr": "Prévisualiser une migration de signature"
+  },
+  "Apply signature migration": {
+    "en": "Apply signature migration",
+    "fr": "Appliquer une migration de signature"
+  },
+  "Signature migration": {
+    "en": "Signature migration",
+    "fr": "Migration de signature"
+  },
+  "Explicit preview/apply, port rename maps, linked function/interface closure, preserved values and Undo; losses require acceptance. Current graph only, no automatic asset-load migration.": {
+    "en": "Explicit preview/apply, port rename maps, linked function/interface closure, preserved values and Undo; losses require acceptance. Current graph only, no automatic asset-load migration.",
+    "fr": "Aperçu et application explicites, renommage des broches, propagation aux fonctions/interfaces liées, valeurs et annulation conservées ; pertes à accepter. Graphe courant uniquement."
+  },
+  "Type Migration": {
+    "en": "Type Migration",
+    "fr": "Migration de type"
+  },
+  "Values migrated": {
+    "en": "Values migrated",
+    "fr": "Valeurs migrées"
+  },
+  "Value migrated": {
+    "en": "Value migrated",
+    "fr": "Valeur migrée"
+  },
+  "Value added": {
+    "en": "Value added",
+    "fr": "Valeur ajoutée"
+  },
+  "Rename structure field": {
+    "en": "Rename structure field",
+    "fr": "Renommer un champ de structure"
+  },
+  "Field": {
+    "en": "Field",
+    "fr": "Champ"
+  },
+  "New field name": {
+    "en": "New field name",
+    "fr": "Nouveau nom du champ"
+  },
+  "Rename draft field": {
+    "en": "Rename draft field",
+    "fr": "Renommer le champ du brouillon"
+  },
+  "Preview type migration": {
+    "en": "Preview type migration",
+    "fr": "Prévisualiser la migration du type"
+  },
+  "Preview data type migration": {
+    "en": "Preview data type migration",
+    "fr": "Prévisualiser une migration de type de données"
+  },
+  "Apply data type migration": {
+    "en": "Apply data type migration",
+    "fr": "Appliquer une migration de type de données"
+  },
+  "Enum and structure migration": {
+    "en": "Enum and structure migration",
+    "fr": "Migration des enums et structures"
+  },
+  "Explicit field/member renames, nested defaults and typed values, reviewed resets/removals, hash-guarded apply and Undo. One owner only; referenced removed set-fields block.": {
+    "en": "Explicit field/member renames, nested defaults and typed values, reviewed resets/removals, hash-guarded apply and Undo. One owner only; referenced removed set-fields block.",
+    "fr": "Renommage explicite des champs et membres, valeurs imbriquées, pertes vérifiables, application contrôlée et annulation. Un graphe ; les champs supprimés encore utilisés par Set bloquent."
+  },
+  "Values kept": {
+    "en": "Values kept",
+    "fr": "Valeurs conservées"
+  },
+  "Values added": {
+    "en": "Values added",
+    "fr": "Valeurs ajoutées"
+  },
+  "Values removed": {
+    "en": "Values removed",
+    "fr": "Valeurs supprimées"
+  },
+  "Values reset": {
+    "en": "Values reset",
+    "fr": "Valeurs réinitialisées"
+  },
+  "Edit a data type, then preview its migration.": {
+    "en": "Edit a data type, then preview its migration.",
+    "fr": "Modifiez un type de données, puis prévisualisez sa migration."
+  },
+  "This migration removes connections or removes/resets typed values. Review the details before accepting.": {
+    "en": "This migration removes connections or removes/resets typed values. Review the details before accepting.",
+    "fr": "Cette migration supprime des connexions ou supprime/réinitialise des valeurs typées. Vérifiez les détails avant d’accepter."
+  },
+  "Collapse selection": {
+    "en": "Collapse selection",
+    "fr": "Réduire la sélection"
+  },
+  "Pure calculations only. Each exported output must depend on every selected node.": {
+    "en": "Pure calculations only. Each exported output must depend on every selected node.",
+    "fr": "Calculs purs uniquement. Chaque sortie exportée doit dépendre de tous les nœuds sélectionnés."
+  },
+  "Function": {
+    "en": "Function",
+    "fr": "Fonction"
+  },
+  "Preview collapse": {
+    "en": "Preview collapse",
+    "fr": "Prévisualiser la réduction"
+  },
+  "Apply collapse": {
+    "en": "Apply collapse",
+    "fr": "Appliquer la réduction"
+  },
+  "Selected nodes": {
+    "en": "Selected nodes",
+    "fr": "Nœuds sélectionnés"
+  },
+  "Incoming connections": {
+    "en": "Incoming connections",
+    "fr": "Connexions entrantes"
+  },
+  "Outgoing connections": {
+    "en": "Outgoing connections",
+    "fr": "Connexions sortantes"
+  },
+  "Direction": {
+    "en": "Direction",
+    "fr": "Direction"
+  },
+  "Port": {
+    "en": "Port",
+    "fr": "Broche"
+  },
+  "Boundary details": {
+    "en": "Boundary details",
+    "fr": "Détails des limites"
+  },
+  "Pure calculations only. Each exported output must use every selected node and incoming wire.": {
+    "en": "Pure calculations only. Each exported output must use every selected node and incoming wire.",
+    "fr": "Calculs purs uniquement. Chaque sortie exportée doit utiliser tous les nœuds sélectionnés et toutes les connexions entrantes."
+  },
+  "Collapse selection to function or macro": {
+    "en": "Collapse selection to function or macro",
+    "fr": "Réduire la sélection en fonction ou macro"
+  },
+  "Preview and collapse a pure dependency region into a local function or macro, preserving nodes, fallback values, wire IDs and Undo. Execution, variable reads and non-uniform output dependencies reject.": {
+    "en": "Preview and collapse a pure dependency region into a local function or macro, preserving nodes, fallback values, wire IDs and Undo. Execution, variable reads and non-uniform output dependencies reject.",
+    "fr": "Prévisualisation et extraction de calculs purs en fonction ou macro locale, avec conservation des nœuds, valeurs, identifiants de connexion et annulation. Exécution, variables et dépendances non uniformes refusées."
+  },
+  "Preview collapse selection": {
+    "en": "Preview collapse selection",
+    "fr": "Prévisualiser la réduction de sélection"
+  },
+  "Apply collapse selection": {
+    "en": "Apply collapse selection",
+    "fr": "Appliquer la réduction de sélection"
+  },
+  "Close": {
+    "en": "Close",
+    "fr": "Fermer"
+  },
+  "Preview expand call": {
+    "en": "Preview expand call",
+    "fr": "Prévisualiser le développement d’appel"
+  },
+  "Apply expand call": {
+    "en": "Apply expand call",
+    "fr": "Appliquer le développement d’appel"
+  },
+  "Expand call": {
+    "en": "Expand call",
+    "fr": "Développer l’appel"
+  },
+  "Expand one pure call into editable nodes. The local definition stays available. Preview checks wired argument evaluation.": {
+    "en": "Expand one pure call into editable nodes. The local definition stays available. Preview checks wired argument evaluation.",
+    "fr": "Développer un appel pur en nœuds éditables. La définition locale reste disponible. La prévisualisation vérifie l’évaluation des arguments connectés."
+  },
+  "Preview expansion": {
+    "en": "Preview expansion",
+    "fr": "Prévisualiser le développement"
+  },
+  "Cloned nodes": {
+    "en": "Cloned nodes",
+    "fr": "Nœuds copiés"
+  },
+  "Typed reroutes": {
+    "en": "Typed reroutes",
+    "fr": "Points de routage typés"
+  },
+  "Connected": {
+    "en": "Connected",
+    "fr": "Connecté"
+  },
+  "Apply expansion": {
+    "en": "Apply expansion",
+    "fr": "Appliquer le développement"
+  },
+  "Typed reroutes retain call defaults and external wire metadata. A comment group keeps the original call data. Execution calls are not supported.": {
+    "en": "Typed reroutes retain call defaults and external wire metadata. A comment group keeps the original call data. Execution calls are not supported.",
+    "fr": "Les points de routage conservent les valeurs par défaut de l’appel et les métadonnées des liens externes. Un groupe de commentaires garde les données de l’appel original. Les appels d’exécution ne sont pas pris en charge."
+  },
+  "Expand pure calls": {
+    "en": "Expand pure calls",
+    "fr": "Développer les appels purs"
+  },
+  "Hash-guarded preview and one Undo; typed reroutes, retained definitions and source-call provenance. Execution calls reject.": {
+    "en": "Hash-guarded preview and one Undo; typed reroutes, retained definitions and source-call provenance. Execution calls reject.",
+    "fr": "Prévisualisation protégée par empreinte et une annulation ; routage typé, définitions conservées et provenance de l’appel. Les appels d’exécution sont refusés."
+  },
+  "Yes": {
+    "en": "Yes",
+    "fr": "Oui"
+  },
+  "No": {
+    "en": "No",
+    "fr": "Non"
+  }
+}

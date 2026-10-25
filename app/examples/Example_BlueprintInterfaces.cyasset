@@ -1,0 +1,413 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {},
+    "interfaces": {
+      "Damageable": {
+        "methods": {
+          "Read": {
+            "mode": "pure",
+            "inputs": {
+              "bonus": {
+                "type": "float",
+                "default": 5
+              }
+            },
+            "outputs": {
+              "result": {
+                "type": "float",
+                "default": 0
+              }
+            }
+          }
+        },
+        "metadata": {
+          "description": "A reusable local contract; no engine object binding."
+        }
+      }
+    },
+    "classes": {
+      "Crate": {
+        "parent": "",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 40
+          }
+        },
+        "methods": {
+          "Read": "ReadHealth"
+        },
+        "interfaces": [
+          "Damageable"
+        ]
+      },
+      "Boss": {
+        "parent": "Crate",
+        "fields": {
+          "health": {
+            "type": "float",
+            "default": 100
+          }
+        },
+        "methods": {
+          "Read": "BossRead"
+        }
+      }
+    },
+    "functions": {
+      "ReadHealth": {
+        "domain": "function",
+        "inputs": {
+          "self": {
+            "type": "object",
+            "default": ""
+          },
+          "bonus": {
+            "type": "float",
+            "default": 99
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "variables": {},
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              60
+            ],
+            "values": {}
+          },
+          {
+            "id": "get",
+            "type": "object.get.float",
+            "position": [
+              250,
+              60
+            ],
+            "values": {
+              "object": "",
+              "field": "health"
+            }
+          },
+          {
+            "id": "add",
+            "type": "math.add",
+            "position": [
+              500,
+              60
+            ],
+            "values": {
+              "a": 0,
+              "b": 0
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              760,
+              60
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "arguments_self_get_object",
+            "fromNode": "arguments",
+            "fromPin": "self",
+            "toNode": "get",
+            "toPin": "object"
+          },
+          {
+            "id": "get_value_add_a",
+            "fromNode": "get",
+            "fromPin": "value",
+            "toNode": "add",
+            "toPin": "a"
+          },
+          {
+            "id": "arguments_bonus_add_b",
+            "fromNode": "arguments",
+            "fromPin": "bonus",
+            "toNode": "add",
+            "toPin": "b"
+          },
+          {
+            "id": "add_value_return_result",
+            "fromNode": "add",
+            "fromPin": "value",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      },
+      "BossRead": {
+        "domain": "function",
+        "inputs": {
+          "self": {
+            "type": "object",
+            "default": ""
+          },
+          "bonus": {
+            "type": "float",
+            "default": 99
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "variables": {},
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              60
+            ],
+            "values": {}
+          },
+          {
+            "id": "get",
+            "type": "object.get.float",
+            "position": [
+              250,
+              60
+            ],
+            "values": {
+              "object": "",
+              "field": "health"
+            }
+          },
+          {
+            "id": "add",
+            "type": "math.add",
+            "position": [
+              500,
+              60
+            ],
+            "values": {
+              "a": 0,
+              "b": 0
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              760,
+              60
+            ],
+            "values": {
+              "result": 0
+            }
+          },
+          {
+            "id": "multiply",
+            "type": "math.multiply",
+            "position": [
+              500,
+              260
+            ],
+            "values": {
+              "a": 0,
+              "b": 2
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "arguments_self_get_object",
+            "fromNode": "arguments",
+            "fromPin": "self",
+            "toNode": "get",
+            "toPin": "object"
+          },
+          {
+            "id": "get_value_add_a",
+            "fromNode": "get",
+            "fromPin": "value",
+            "toNode": "add",
+            "toPin": "a"
+          },
+          {
+            "id": "arguments_bonus_add_b",
+            "fromNode": "arguments",
+            "fromPin": "bonus",
+            "toNode": "add",
+            "toPin": "b"
+          },
+          {
+            "id": "add_value_multiply_a",
+            "fromNode": "add",
+            "fromPin": "value",
+            "toNode": "multiply",
+            "toPin": "a"
+          },
+          {
+            "id": "multiply_value_return_result",
+            "fromNode": "multiply",
+            "fromPin": "value",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ]
+      }
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          20
+        ],
+        "values": {}
+      },
+      {
+        "id": "new",
+        "type": "object.new",
+        "position": [
+          260,
+          20
+        ],
+        "values": {
+          "class": "Boss"
+        }
+      },
+      {
+        "id": "branch",
+        "type": "flow.branch",
+        "position": [
+          500,
+          20
+        ],
+        "values": {
+          "condition": true
+        }
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          740,
+          20
+        ],
+        "values": {
+          "text": ""
+        }
+      },
+      {
+        "id": "call",
+        "type": "interface.call",
+        "position": [
+          260,
+          250
+        ],
+        "values": {
+          "self": "",
+          "bonus": 5
+        },
+        "interface": "Damageable",
+        "method": "Read"
+      },
+      {
+        "id": "text",
+        "type": "convert.float_string",
+        "position": [
+          740,
+          250
+        ],
+        "values": {
+          "value": 0
+        }
+      },
+      {
+        "id": "supports",
+        "type": "interface.supports",
+        "position": [
+          20,
+          340
+        ],
+        "values": {
+          "self": ""
+        },
+        "interface": "Damageable"
+      }
+    ],
+    "links": [
+      {
+        "id": "begin_then_new_exec",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "new",
+        "toPin": "exec"
+      },
+      {
+        "id": "new_then_branch_exec",
+        "fromNode": "new",
+        "fromPin": "then",
+        "toNode": "branch",
+        "toPin": "exec"
+      },
+      {
+        "id": "new_object_call_self",
+        "fromNode": "new",
+        "fromPin": "object",
+        "toNode": "call",
+        "toPin": "self"
+      },
+      {
+        "id": "new_object_supports_self",
+        "fromNode": "new",
+        "fromPin": "object",
+        "toNode": "supports",
+        "toPin": "self"
+      },
+      {
+        "id": "supports_value_branch_condition",
+        "fromNode": "supports",
+        "fromPin": "value",
+        "toNode": "branch",
+        "toPin": "condition"
+      },
+      {
+        "id": "branch_true_print_exec",
+        "fromNode": "branch",
+        "fromPin": "true",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "call_result_text_value",
+        "fromNode": "call",
+        "fromPin": "result",
+        "toNode": "text",
+        "toPin": "value"
+      },
+      {
+        "id": "text_value_print_text",
+        "fromNode": "text",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      }
+    ]
+  }
+}

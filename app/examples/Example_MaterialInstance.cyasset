@@ -1,0 +1,19 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "material-instance",
+    "parent": "Examples/Example_FunctionMaterial.cyasset",
+    "overrides": {
+      "Tint": [
+        0.035,
+        0.32,
+        0.85
+      ],
+      "Gain": 0.9
+    },
+    "variables": {},
+    "nodes": [],
+    "links": []
+  }
+}

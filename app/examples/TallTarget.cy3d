@@ -1,0 +1,228 @@
+{
+  "format": "cygame-scene3d",
+  "schemaVersion": 1,
+  "assetId": "cd208e51-5840-46ed-aa8a-30548b946291",
+  "name": "TallTarget",
+  "space": {
+    "handedness": "right",
+    "upAxis": "+Y",
+    "linearUnit": "meter",
+    "rotation": "quaternion-xyzw",
+    "timeUnit": "second"
+  },
+  "nodes": [
+    {
+      "id": "node:0",
+      "name": "Triangle",
+      "parent": -1,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "mesh": 0,
+      "skin": 0
+    },
+    {
+      "id": "node:1",
+      "name": "Root",
+      "parent": -1,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "node:2",
+      "name": "Tip",
+      "parent": 1,
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Triangle",
+      "primitives": [
+        {
+          "sourceMesh": 0,
+          "sourcePrimitive": 0,
+          "positions": [
+            [
+              -0.5,
+              0.0,
+              0.0
+            ],
+            [
+              0.5,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.6,
+              0.0
+            ]
+          ],
+          "indices": [
+            0,
+            1,
+            2
+          ],
+          "material": -1,
+          "normals": [
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "joints": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ]
+          ],
+          "weights": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "name": "TwoBoneRig",
+      "joints": [
+        1,
+        2
+      ],
+      "inverseBindMatrices": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          -2,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "animations": [],
+  "materials": [],
+  "extensions": {
+    "org.cygame.examples": {
+      "originalFixture": true
+    }
+  },
+  "source": {
+    "glbBase64": "Z2xURgIAAACsCwAALAkAAEpTT057ImFzc2V0Ijp7InZlcnNpb24iOiIyLjAiLCJnZW5lcmF0b3IiOiJDeUdhbWVTREsgcG9ydGFibGUgY29udHJhY3QgZml4dHVyZXMifSwic2NlbmUiOjAsInNjZW5lcyI6W3sibm9kZXMiOlswLDFdfV0sIm5vZGVzIjpbeyJuYW1lIjoiVHJpYW5nbGUiLCJtZXNoIjowLCJza2luIjowLCJ0cmFuc2xhdGlvbiI6WzAsMCwwXSwicm90YXRpb24iOlswLDAsMCwxXSwic2NhbGUiOlsxLDEsMV19LHsibmFtZSI6IlJvb3QiLCJ0cmFuc2xhdGlvbiI6WzAsMCwwXSwicm90YXRpb24iOlswLDAsMCwxXSwic2NhbGUiOlsxLDEsMV0sImNoaWxkcmVuIjpbMl19LHsibmFtZSI6IlRpcCIsInRyYW5zbGF0aW9uIjpbMCwyLDBdLCJyb3RhdGlvbiI6WzAsMCwwLDFdLCJzY2FsZSI6WzEsMSwxXX1dLCJtZXNoZXMiOlt7Im5hbWUiOiJUcmlhbmdsZSIsInByaW1pdGl2ZXMiOlt7ImF0dHJpYnV0ZXMiOnsiUE9TSVRJT04iOjgsIk5PUk1BTCI6OSwiSk9JTlRTXzAiOjEwLCJXRUlHSFRTXzAiOjExfSwiaW5kaWNlcyI6MTJ9XX1dLCJza2lucyI6W3sibmFtZSI6IlR3b0JvbmVSaWciLCJza2VsZXRvbiI6MSwiam9pbnRzIjpbMSwyXSwiaW52ZXJzZUJpbmRNYXRyaWNlcyI6MTN9XSwiYnVmZmVycyI6W3siYnl0ZUxlbmd0aCI6NjEyfV0sImJ1ZmZlclZpZXdzIjpbeyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjAsImJ5dGVMZW5ndGgiOjM2LCJ0YXJnZXQiOjM0OTYyfSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6MzYsImJ5dGVMZW5ndGgiOjM2LCJ0YXJnZXQiOjM0OTYyfSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6NzIsImJ5dGVMZW5ndGgiOjYsInRhcmdldCI6MzQ5NjN9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo4MCwiYnl0ZUxlbmd0aCI6MTIsInRhcmdldCI6MzQ5NjJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo5MiwiYnl0ZUxlbmd0aCI6NDgsInRhcmdldCI6MzQ5NjJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0IjoxNDAsImJ5dGVMZW5ndGgiOjEyOH0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjI2OCwiYnl0ZUxlbmd0aCI6MTJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0IjoyODAsImJ5dGVMZW5ndGgiOjQ4fSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6MzI4LCJieXRlTGVuZ3RoIjozNn0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjM2NCwiYnl0ZUxlbmd0aCI6MzZ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo0MDAsImJ5dGVMZW5ndGgiOjI0fSx7ImJ1ZmZlciI6MCwiYnl0ZU9mZnNldCI6NDI0LCJieXRlTGVuZ3RoIjo0OH0seyJidWZmZXIiOjAsImJ5dGVPZmZzZXQiOjQ3MiwiYnl0ZUxlbmd0aCI6MTJ9LHsiYnVmZmVyIjowLCJieXRlT2Zmc2V0Ijo0ODQsImJ5dGVMZW5ndGgiOjEyOH1dLCJhY2Nlc3NvcnMiOlt7ImJ1ZmZlclZpZXciOjAsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjozLCJ0eXBlIjoiVkVDMyIsIm1pbiI6Wy0wLjUsMCwwXSwibWF4IjpbMC41LDEsMF19LHsiYnVmZmVyVmlldyI6MSwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUMzIn0seyJidWZmZXJWaWV3IjoyLCJjb21wb25lbnRUeXBlIjo1MTIzLCJjb3VudCI6MywidHlwZSI6IlNDQUxBUiJ9LHsiYnVmZmVyVmlldyI6MywiY29tcG9uZW50VHlwZSI6NTEyMSwiY291bnQiOjMsInR5cGUiOiJWRUM0In0seyJidWZmZXJWaWV3Ijo0LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MywidHlwZSI6IlZFQzQifSx7ImJ1ZmZlclZpZXciOjUsImNvbXBvbmVudFR5cGUiOjUxMjYsImNvdW50IjoyLCJ0eXBlIjoiTUFUNCJ9LHsiYnVmZmVyVmlldyI6NiwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJTQ0FMQVIiLCJtaW4iOlswXSwibWF4IjpbMV19LHsiYnVmZmVyVmlldyI6NywiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUM0In0seyJidWZmZXJWaWV3Ijo4LCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MywidHlwZSI6IlZFQzMiLCJtaW4iOlstMC41LDAuMCwwLjBdLCJtYXgiOlswLjUsMi42LDAuMF19LHsiYnVmZmVyVmlldyI6OSwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUMzIn0seyJidWZmZXJWaWV3IjoxMCwiY29tcG9uZW50VHlwZSI6NTEyMywiY291bnQiOjMsInR5cGUiOiJWRUM0In0seyJidWZmZXJWaWV3IjoxMSwiY29tcG9uZW50VHlwZSI6NTEyNiwiY291bnQiOjMsInR5cGUiOiJWRUM0In0seyJidWZmZXJWaWV3IjoxMiwiY29tcG9uZW50VHlwZSI6NTEyNSwiY291bnQiOjMsInR5cGUiOiJTQ0FMQVIifSx7ImJ1ZmZlclZpZXciOjEzLCJjb21wb25lbnRUeXBlIjo1MTI2LCJjb3VudCI6MiwidHlwZSI6Ik1BVDQifV19IGQCAABCSU4AAAAAvwAAAAAAAAAAAAAAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAABAAIAAAAAAAAAAAAAAAEAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAA/AACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAABXvwz5eg2w/AAAAAAAAAAAAAAAAAACAPwAAAL8AAAAAAAAAAAAAAD8AAAAAAAAAAAAAAABmZiZAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAwAAAAAAAAIA/"
+  }
+}

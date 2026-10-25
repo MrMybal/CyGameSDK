@@ -1,0 +1,308 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "logic",
+    "variables": {
+      "Tags": {
+        "type": "set.string",
+        "default": [
+          "editor",
+          "portable"
+        ]
+      }
+    },
+    "functions": {
+      "PrintItem": {
+        "domain": "function",
+        "mode": "execution",
+        "variables": {},
+        "inputs": {
+          "item": {
+            "type": "float",
+            "default": 0
+          },
+          "index": {
+            "type": "int",
+            "default": 0
+          }
+        },
+        "outputs": {},
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              80
+            ],
+            "values": {}
+          },
+          {
+            "id": "text",
+            "type": "convert.float_string",
+            "position": [
+              20,
+              280
+            ],
+            "values": {
+              "value": 0
+            }
+          },
+          {
+            "id": "print",
+            "type": "debug.print",
+            "position": [
+              260,
+              80
+            ],
+            "values": {
+              "text": ""
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              500,
+              80
+            ],
+            "values": {}
+          }
+        ],
+        "links": [
+          {
+            "id": "arguments_then_print_exec",
+            "fromNode": "arguments",
+            "fromPin": "then",
+            "toNode": "print",
+            "toPin": "exec"
+          },
+          {
+            "id": "print_then_return_exec",
+            "fromNode": "print",
+            "fromPin": "then",
+            "toNode": "return",
+            "toPin": "exec"
+          },
+          {
+            "id": "arguments_item_text_value",
+            "fromNode": "arguments",
+            "fromPin": "item",
+            "toNode": "text",
+            "toPin": "value"
+          },
+          {
+            "id": "text_value_print_text",
+            "fromNode": "text",
+            "fromPin": "value",
+            "toNode": "print",
+            "toPin": "text"
+          }
+        ]
+      },
+      "Twice": {
+        "domain": "function",
+        "mode": "pure",
+        "variables": {},
+        "inputs": {
+          "x": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "float",
+            "default": 0
+          }
+        },
+        "nodes": [
+          {
+            "id": "arguments",
+            "type": "function.input",
+            "position": [
+              20,
+              80
+            ],
+            "values": {}
+          },
+          {
+            "id": "multiply",
+            "type": "math.multiply",
+            "position": [
+              260,
+              80
+            ],
+            "values": {
+              "a": 0,
+              "b": 2
+            }
+          },
+          {
+            "id": "return",
+            "type": "function.output",
+            "position": [
+              500,
+              80
+            ],
+            "values": {
+              "result": 0
+            }
+          }
+        ],
+        "links": [
+          {
+            "id": "arguments_x_multiply_a",
+            "fromNode": "arguments",
+            "fromPin": "x",
+            "toNode": "multiply",
+            "toPin": "a"
+          },
+          {
+            "id": "multiply_value_return_result",
+            "fromNode": "multiply",
+            "fromPin": "value",
+            "toNode": "return",
+            "toPin": "result"
+          }
+        ],
+        "kind": "macro"
+      }
+    },
+    "nodes": [
+      {
+        "id": "begin",
+        "type": "event.begin",
+        "position": [
+          20,
+          60
+        ],
+        "values": {}
+      },
+      {
+        "id": "loop",
+        "type": "flow.foreach",
+        "position": [
+          450,
+          60
+        ],
+        "values": {
+          "values": []
+        },
+        "function": "PrintItem"
+      },
+      {
+        "id": "print",
+        "type": "debug.print",
+        "position": [
+          680,
+          60
+        ],
+        "values": {
+          "text": ""
+        }
+      },
+      {
+        "id": "literal",
+        "type": "constant.array.float",
+        "position": [
+          20,
+          260
+        ],
+        "values": {
+          "value": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "id": "append",
+        "type": "array.add.float",
+        "position": [
+          240,
+          260
+        ],
+        "values": {
+          "container": [],
+          "item": 0
+        }
+      },
+      {
+        "id": "twice",
+        "type": "macro.call",
+        "position": [
+          20,
+          470
+        ],
+        "values": {
+          "x": 3
+        },
+        "function": "Twice"
+      },
+      {
+        "id": "countText",
+        "type": "convert.int_string",
+        "position": [
+          470,
+          340
+        ],
+        "values": {
+          "value": 0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "begin_then_loop_exec",
+        "fromNode": "begin",
+        "fromPin": "then",
+        "toNode": "loop",
+        "toPin": "exec"
+      },
+      {
+        "id": "loop_then_print_exec",
+        "fromNode": "loop",
+        "fromPin": "then",
+        "toNode": "print",
+        "toPin": "exec"
+      },
+      {
+        "id": "loop_count_countText_value",
+        "fromNode": "loop",
+        "fromPin": "count",
+        "toNode": "countText",
+        "toPin": "value"
+      },
+      {
+        "id": "countText_value_print_text",
+        "fromNode": "countText",
+        "fromPin": "value",
+        "toNode": "print",
+        "toPin": "text"
+      },
+      {
+        "id": "literal_value_append_container",
+        "fromNode": "literal",
+        "fromPin": "value",
+        "toNode": "append",
+        "toPin": "container"
+      },
+      {
+        "id": "twice_result_append_item",
+        "fromNode": "twice",
+        "fromPin": "result",
+        "toNode": "append",
+        "toPin": "item"
+      },
+      {
+        "id": "append_value_loop_values",
+        "fromNode": "append",
+        "fromPin": "value",
+        "toNode": "loop",
+        "toPin": "values"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "version": "0.28.0",
+  "reason": "Hash-guarded expansion of pure local calls into editable nodes, typed reroutes, preserved definitions/defaults/provenance and one Undo",
+  "baseVersion": "0.27.0",
+  "preservedBaseline": "runtime/expand-baseline-0.27.0",
+  "preservedBaselineSource": "runtime/milestones/active-0.27.0-source.zip",
+  "preservedCandidate": "runtime/development-0.19.0",
+  "candidateStatus": "Historical executable retained; not active",
+  "verification": "data/reports/expand-validation.json",
+  "sourceCheckpoint": "runtime/milestones/active-0.28.0-source.zip",
+  "gameCodecs": "No real game codec bundled; trusted executable registry defaults to empty"
+}

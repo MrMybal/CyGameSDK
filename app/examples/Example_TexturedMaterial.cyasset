@@ -1,0 +1,72 @@
+{
+  "format": "cygame-graph",
+  "schemaVersion": 1,
+  "graph": {
+    "domain": "material",
+    "variables": {},
+    "nodes": [
+      {
+        "id": "uv",
+        "type": "material.uv",
+        "position": [
+          30,
+          70
+        ],
+        "values": {}
+      },
+      {
+        "id": "image",
+        "type": "material.texture",
+        "position": [
+          320,
+          90
+        ],
+        "values": {
+          "path": "Examples/Example_Image.png",
+          "u": 0.5,
+          "v": 0.5
+        }
+      },
+      {
+        "id": "surface",
+        "type": "material.output",
+        "position": [
+          680,
+          140
+        ],
+        "values": {
+          "baseColor": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "roughness": 0.6,
+          "metallic": 0.0
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "u",
+        "fromNode": "uv",
+        "fromPin": "u",
+        "toNode": "image",
+        "toPin": "u"
+      },
+      {
+        "id": "v",
+        "fromNode": "uv",
+        "fromPin": "v",
+        "toNode": "image",
+        "toPin": "v"
+      },
+      {
+        "id": "color",
+        "fromNode": "image",
+        "fromPin": "color",
+        "toNode": "surface",
+        "toPin": "baseColor"
+      }
+    ]
+  }
+}
