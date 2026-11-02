@@ -21,7 +21,7 @@ void EditorApp::jsonEditor(const std::string& id){
             if(expanded){for(auto it=value.begin();it!=value.end();++it){const std::string child=value.is_object()?it.key():std::to_string(it-value.begin());draw(it.value(),child,pointer+"/"+escaped(child),depth+1);}ImGui::TreePop();}
         }else if(jsonSearch_[0]==0||matches(key+" "+pointer,jsonSearch_)){
             if(value.is_string()&&value.get_ref<const std::string&>().size()>4096){cyui::textDim("%s: %s",key.c_str(),tr("Large string (read-only in this view)"));if(cyui::ghostButton(tr("Copy JSON value")))ImGui::SetClipboardText(value.dump().c_str());}
-            else if(cyui::beginProperties("##jsonProperty",cyui::dp(150))){cyui::property(key.c_str());Json spec={{"type",value.is_boolean()?"boolean":value.is_string()?"string":"json"}},next;if(editValue("json/"+id+pointer,spec,value,next)){edit={{"jsonId",id},{"pointer",pointer},{"value",next}};changed=true;}cyui::endProperties();}
+            else{Json spec={{"type",value.is_boolean()?"boolean":value.is_string()?"string":"json"}},next;if(editProperty("json/"+id+pointer,key,spec,value,next)){edit={{"jsonId",id},{"pointer",pointer},{"value",next}};changed=true;}}
         }
         if(ImGui::BeginPopupContextItem("##jsonContext")){
             if(!pointer.empty()&&ImGui::MenuItem(tr("Remove JSON value"))){invoke("json_remove",{{"jsonId",id},{"pointer",pointer}});}

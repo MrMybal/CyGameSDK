@@ -99,7 +99,7 @@ void EditorApp::debuggerPanel(){
         const auto watches=inspected.value("watches",Json::object());for(const auto& [name,v]:watches.items())ImGui::TextWrapped("%s = %s",name.c_str(),v.dump().c_str());
         ImGui::EndTable();
     }
-    const auto objects=state.value("objects",Json::object());if(!objects.empty())cyui::sectionTitle(tr("Runtime objects"));for(const auto& [id,instance]:objects.items())if(cyui::beginSection(label(instance.at("class").get<std::string>()+" / "+id,id).c_str())){const auto schema=blueprintClass(core.graphs().at(debugGraph_).value("classes",Json::object()),instance.at("class"),core.graphs().at(debugGraph_).value("types",Json::object()));if(cyui::beginProperties(id.c_str(),cyui::dp(120))){for(const auto& [field,value]:instance.at("fields").items()){cyui::property(field.c_str());Json next;if(editValue(debugGraph_+"/"+id+"/"+field,graphWidget(schema.at("fields").at(field).at("type"),core.graphs().at(debugGraph_).value("types",Json::object())),value,next))invoke("graph_debug_object_set",{{"graphId",debugGraph_},{"object",id},{"field",field},{"value",next}});}cyui::endProperties();}cyui::endSection();}
+    const auto objects=state.value("objects",Json::object());if(!objects.empty())cyui::sectionTitle(tr("Runtime objects"));for(const auto& [id,instance]:objects.items())if(cyui::beginSection(label(instance.at("class").get<std::string>()+" / "+id,id).c_str())){const auto schema=blueprintClass(core.graphs().at(debugGraph_).value("classes",Json::object()),instance.at("class"),core.graphs().at(debugGraph_).value("types",Json::object()));{for(const auto& [field,value]:instance.at("fields").items()){Json next;if(editProperty(debugGraph_+"/"+id+"/"+field,field,graphWidget(schema.at("fields").at(field).at("type"),core.graphs().at(debugGraph_).value("types",Json::object())),value,next))invoke("graph_debug_object_set",{{"graphId",debugGraph_},{"object",id},{"field",field},{"value",next}});}}cyui::endSection();}
     if(state.contains("messages")&&!state["messages"].empty()){cyui::sectionTitle(tr("Graph messages"));for(const auto& message:state["messages"])ImGui::TextUnformatted(message.get_ref<const std::string&>().c_str());}
 }
 void EditorApp::graphDiagnosticsPanel(){
@@ -108,12 +108,9 @@ void EditorApp::graphDiagnosticsPanel(){
         Json p={{"graphId",activeGraph_}};if(!activeFunction_.empty())p["functionName"]=activeFunction_;auto result=invoke("graph_diagnose",p);graphViews_[activeGraph_+(activeFunction_.empty()?"":"#"+activeFunction_)].diagnostics=result.value("diagnostics",Json::array());
     }
     const auto key=activeGraph_+(activeFunction_.empty()?"":"#"+activeFunction_);auto& view=graphViews_[key];if(view.diagnostics.empty())cyui::textDim("%s",tr("No graph diagnostics"));
-    for(const auto& entry:view.diagnostics){
-        const std::string severity=entry.at("severity"),id=entry.at("nodeId"),message=entry.at("message"),function=entry.value("functionName",activeFunction_);
-        cyui::badge(tr(severity.c_str()),severity=="Error"?cyui::Tone::error:severity=="Warning"?cyui::Tone::warning:cyui::Tone::info);
-        ImGui::SameLine();if(ImGui::Selectable((id.empty()?std::string(tr(message.c_str())):std::string(tr(message.c_str()))+"###"+id).c_str())&&!id.empty()){
-            focusGraphNode(activeGraph_,function,id);
-        }
-    }
+    std::vector<cyui::Diagnostic> rows;std::map<cyui::ItemId,Json> targets;size_t index=0;
+    for(const auto& entry:view.diagnostics){const auto id=uiId(key+"/diagnostic/"+std::to_string(index++));const std::string severity=entry.at("severity");rows.push_back({id,severity=="Error"?cyui::LogLevel::error:severity=="Warning"?cyui::LogLevel::warning:cyui::LogLevel::info,entry.at("nodeId"),tr(entry.at("message").get_ref<const std::string&>().c_str()),0,0});targets[id]=entry;}
+    const auto requested=cyui::diagnosticList("##graphDiagnostics",rows);if(requested&&targets.count(requested)){const auto& entry=targets.at(requested);const std::string node=entry.at("nodeId");if(!node.empty())focusGraphNode(activeGraph_,entry.value("functionName",activeFunction_),node);}
+
 }
 }

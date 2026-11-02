@@ -2,7 +2,7 @@
 #include "Graph.h"
 #include "Image.h"
 #include <fstream>
-#include <cyui/CyUI.h>
+#include <cyui/Core.h>
 #include <d3dcompiler.h>
 #include <algorithm>
 #include <cstring>

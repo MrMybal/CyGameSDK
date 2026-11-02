@@ -16,12 +16,16 @@ uses its existing CyToolsCore MCP/SDK catalogue; it does not need a second serve
 4. Copy [GamePortingTemplate](app/Docs/GamePortingTemplate.md) into the new game's
    documentation and fill it with observed facts, unknowns and evidence.
 
-Current baseline: active 0.28.0, 175 editor operations / 196 tools including Core
+Current baseline: active 0.29.0, 175 editor operations / 196 tools including Core
 controls. Read [CompletionMilestones](app/Docs/CompletionMilestones.md) and
 [Native3DAssets](app/Docs/Native3DAssets.md) for current implementations and bounds.
 The 0.16.1 UI audit remains historical evidence for the charcoal palette/docking.
 The preserved 0.19 candidate binary is historical; its import source was selectively
 adopted, rebuilt and tested in 0.20.0. Do not mix historical catalogues/executables.
+
+Read [CyUI migration](app/Docs/CyUIMigration.md) before changing native views or
+build dependencies. It records the pinned modules, ownership, gesture adapters and
+remaining upstream API gaps.
 
 ## What is reusable and what the game integration must supply
 

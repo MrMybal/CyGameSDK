@@ -70,7 +70,7 @@ void validateValue(const Json& v, const Json& s, const std::string& path) {
 namespace {
 class SandboxAdapter final : public IGameAdapter {
 public:
-    Json descriptor() const override { return {{"id","sandbox"},{"name","Sandbox"},{"version","0.28.0"},{"capabilities",{{"scene",true},{"properties",true},{"preview",true},{"build",false},{"package",true},{"play",false}}}}; }
+    Json descriptor() const override { return {{"id","sandbox"},{"name","Sandbox"},{"version","0.29.0"},{"capabilities",{{"scene",true},{"properties",true},{"preview",true},{"build",false},{"package",true},{"play",false}}}}; }
     Json buildTargets()const override {
         Json options={{"type","object"},{"properties",{{"compression",{{"type","string"},{"enum",{"Stored","Deflated"}},{"default","Deflated"}}},{"includeMaterialValues",{{"type","boolean"},{"default",true}}}}},{"additionalProperties",false}};
         return Json::array({{{"id","sandbox.document"},{"name","Sandbox document archive"},{"providerId","sandbox.archive"},{"platform","Any"},{"configurations",{"Development"}},{"optionsSchema",options},{"gameExecutable",false}}});
@@ -128,7 +128,7 @@ EditorCore::EditorCore(fs::path root,std::unique_ptr<IGameAdapter> adapter) : ro
     }
     registerImporter({{{"id","scene3d.glb"},{"name","Portable 3D (GLB / CyPack)"},{"extensions",{".glb",".cypack"}},{"outputExtensions",{".cy3d"}},{"maxBytes",32*1024*1024}},[](const fs::path& file){if(file.extension()==".cy3d"){auto model=readJson(file);validateScene3D(model);return Json{{"format","cygame-scene3d"},{"assetId",model.at("assetId")}};}return Json{{"format","portable-3d-source"},{"bytes",fs::file_size(file)}};}});
     registerImporter({{{"id","image.copy"},{"name","Image (original file)"},{"extensions",{".png",".jpg",".jpeg",".bmp"}},{"maxBytes",32*1024*1024}},[](const fs::path& file){return readImageFile(file,true).info;}});
-    log("CyGameSDK 0.28.0 | Sandbox adapter | editor API ready");
+    log("CyGameSDK 0.29.0 | Sandbox adapter | editor API ready");
 }
 void EditorCore::registerCommand(Command c) {
     const std::string id = c.descriptor.at("id");

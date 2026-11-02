@@ -5,12 +5,13 @@ void EditorApp::buildPanel(){
     cyui::heading(tr("Build and Package"),2);auto descriptor=core.execute("build_describe");const auto& targets=descriptor.at("targets");
     if(targets.empty()){cyui::emptyState(tr("No build targets"),tr("This game adapter has not registered a build provider."),cyui::icon::code);return;}
     if(buildTarget_.empty())buildTarget_=targets[0].at("id");Json target=targets[0];for(const auto& t:targets)if(t.at("id")==buildTarget_)target=t;
-    if(cyui::beginProperties("##buildOptions",cyui::dp(160))){
+    if(cyui::beginProperties("##buildOptions",160)){
         cyui::property(tr("Target"));if(ImGui::BeginCombo("##target",tr(target.at("name").get_ref<const std::string&>().c_str()))){for(const auto& t:targets)if(ImGui::Selectable(tr(t.at("name").get_ref<const std::string&>().c_str()),t["id"]==buildTarget_)){buildTarget_=t.at("id");buildOptions_=Json::object();buildConfiguration_=t.at("configurations")[0];}ImGui::EndCombo();}
         cyui::property(tr("Configuration"));if(buildConfiguration_.empty())buildConfiguration_=target.at("configurations")[0];if(ImGui::BeginCombo("##configuration",tr(buildConfiguration_.c_str()))){for(const auto& c:target.at("configurations"))if(ImGui::Selectable(tr(c.get_ref<const std::string&>().c_str()),c==buildConfiguration_))buildConfiguration_=c;ImGui::EndCombo();}
-        for(const auto& [name,spec]:target.at("optionsSchema").at("properties").items()){
-            if(!buildOptions_.contains(name))buildOptions_[name]=spec.value("default",Json());cyui::property(tr(name.c_str()));Json next,viewSpec=spec;if(target.at("providerId")=="sandbox.archive")viewSpec["x-editor-localizeEnum"]=true;if(editValue("build/"+buildTarget_+"/"+name,viewSpec,buildOptions_[name],next))buildOptions_[name]=next;
-        }cyui::endProperties();
+        cyui::endProperties();
+    }
+    for(const auto& [name,spec]:target.at("optionsSchema").at("properties").items()){
+            if(!buildOptions_.contains(name))buildOptions_[name]=spec.value("default",Json());Json next,viewSpec=spec;if(target.at("providerId")=="sandbox.archive")viewSpec["x-editor-localizeEnum"]=true;if(editProperty("build/"+buildTarget_+"/"+name,tr(name.c_str()),viewSpec,buildOptions_[name],next))buildOptions_[name]=next;
     }
     if(!target.value("gameExecutable",false))ImGui::TextWrapped("%s",tr("Exports an immutable document archive. It does not produce a game executable."));
     Json parameters={{"targetId",buildTarget_},{"configuration",buildConfiguration_},{"options",buildOptions_},{"expectedRevision",core.revision()}};

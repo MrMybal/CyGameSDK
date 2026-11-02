@@ -1,6 +1,7 @@
 #include "Editor.h"
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 namespace cygame {
 namespace { void copyTo(char* dst,size_t size,const std::string& value){std::snprintf(dst,size,"%s",value.c_str());} }
 void EditorApp::assetsRefresh(){
@@ -20,7 +21,7 @@ void EditorApp::assetContext(const Json& asset){
         if(ImGui::MenuItem(tr("References")))invoke("asset_reference_view",{{"path",path}});
         if((asset.value("domain","")=="material"||asset.value("domain","")=="material-instance")&&ImGui::MenuItem(tr("Create material instance"))){contextAsset_=path;assetOperation_="new_instance";assetDialog_=true;}
         bool favorite=favorites_.count(path)!=0;
-        if(ImGui::MenuItem(tr(favorite?"Remove favorite":"Add favorite")))invoke("asset_favorite",{{"path",path},{"enabled",!favorite}});
+        if(ImGui::MenuItem(tr(favorite?"Remove favorite":"Add favorite")))invoke("asset_favorite",{{"path",path},{"enabled",!favorite}});probeInterface("assets/favorite");probeInterface(favorite?"assets/favorite/remove":"assets/favorite/add");
         for(const auto& operation:{"asset_copy","asset_move"}){
             if(ImGui::MenuItem(tr(std::string(operation)=="asset_copy"?"Duplicate asset":"Rename / Move"))){
                 contextAsset_=path;assetOperation_=operation;copyTo(assetDestination_,sizeof(assetDestination_),path);assetDialog_=true;
@@ -36,7 +37,7 @@ void EditorApp::assetContext(const Json& asset){
     }
 }
 void EditorApp::contentBrowser(){
-    const auto& palette=cyui::palette();
+
     if(cyui::primaryButton(tr("Add"))){ImGui::OpenPopup("##addContent");}
     if(ImGui::BeginPopup("##addContent")){
         if(ImGui::MenuItem(tr("Import source file..."))){reimport_=false;open("imports");}
@@ -82,9 +83,10 @@ void EditorApp::contentBrowser(){
         ImGui::PushID(path.c_str());
         if(ImGui::Selectable(title.c_str(),assetFolder_==path))assetFolder_=path;
         if(ImGui::BeginDragDropTarget()){
-            if(const auto* payload=ImGui::AcceptDragDropPayload("CYGAME_ASSET")){
-                std::string source=static_cast<const char*>(payload->Data),destination=(fs::u8path(path)/fs::u8path(source).filename()).generic_u8string();
-                invoke("asset_move",{{"path",source},{"destination",destination}});
+            std::string source;
+            if(const auto* payload=ImGui::AcceptDragDropPayload("CYGAME_ASSET"))source=static_cast<const char*>(payload->Data);
+            if(const auto* payload=ImGui::AcceptDragDropPayload("CYUI_ASSET"))if(payload->DataSize==sizeof(cyui::ItemId)){cyui::ItemId id;std::memcpy(&id,payload->Data,sizeof(id));for(const auto& asset:assets_)if(uiId("asset/"+asset.at("path").get<std::string>())==id)source=asset.at("path");}
+            if(!source.empty()){const auto destination=(fs::u8path(path)/fs::u8path(source).filename()).generic_u8string();invoke("asset_move",{{"path",source},{"destination",destination}});
             }ImGui::EndDragDropTarget();
         }ImGui::PopID();
     };
@@ -101,36 +103,28 @@ void EditorApp::contentBrowser(){
         if(!assetFolder_.empty()&&path.rfind(assetFolder_+"/",0)!=0)continue;
         if(favoritesOnly_&&!favorites_.count(path))continue;visible.push_back(asset);
     }
-    if(visible.empty())cyui::emptyState(tr("No matching assets"),tr("Create an asset, change the filters, or drop a file into the content root."),cyui::icon::folder);
-    if(assetGrid_&&!visible.empty()){
-        const int columns=std::max(1,int(ImGui::GetContentRegionAvail().x/cyui::dp(133)));
-        if(ImGui::BeginTable("##assetTiles",columns,ImGuiTableFlags_SizingStretchSame)){
-            for(const auto& asset:visible){
-                ImGui::TableNextColumn();std::string path=asset.at("path"),type=asset.at("type"),domain=asset.value("domain","");
-                ImGui::PushID(path.c_str());const auto a=ImGui::GetCursorScreenPos();ImVec2 size{ImGui::GetContentRegionAvail().x,cyui::dp(102)},b{a.x+size.x,a.y+size.y};
-                if(ImGui::InvisibleButton("##tile",size)){assetPath_=path;copyTo(assetInspect_,sizeof(assetInspect_),asset.dump(2));if(ImGui::IsMouseDoubleClicked(0))openAsset(asset);}
-                auto* draw=ImGui::GetWindowDrawList();draw->AddRectFilled(a,b,path==assetPath_?palette.selection:ImGui::IsItemHovered()?palette.bg4:palette.bg2,cyui::dp(3));
-                draw->AddRect(a,b,path==assetPath_?palette.accent:palette.line,cyui::dp(3));
-                const char* glyph=type=="Graph"?cyui::icon::code:type=="Texture"?cyui::icon::photo:type=="Audio"?cyui::icon::play:type=="Mesh"?cyui::icon::grid:cyui::icon::document;
-                ImTextureID thumb{};auto ext=asset.value("extension","");if(thumbnailRenderer&&(ext==".png"||ext==".jpg"||ext==".jpeg"||ext==".bmp")&&ImGui::IsItemVisible())thumb=thumbnailRenderer(path);
-                if(thumb){const float w=std::min(size.x-cyui::dp(18),cyui::dp(106)),x=a.x+(size.x-w)*.5f;draw->AddImage(thumb,{x,a.y+cyui::dp(7)},{x+w,a.y+cyui::dp(7)+w*.5f});}
-                else draw->AddText(nullptr,ImGui::GetFontSize()*2.2f,{a.x+cyui::dp(13),a.y+cyui::dp(12)},palette.textDim,glyph);
-                auto name=fs::u8path(path).stem().u8string();cyui::clippedText(draw,{a.x+cyui::dp(9),a.y+cyui::dp(66)},size.x-cyui::dp(18),palette.text,name.c_str());
-                const auto kind=domain=="logic"?tr("Logic"):domain=="material-instance"?tr("Material instance"):domain=="material"?tr("Material"):tr(type.c_str());
-                draw->AddText({a.x+cyui::dp(9),a.y+cyui::dp(84)},palette.textFaint,kind);
-                if(asset.value("imported",false))draw->AddText({b.x-cyui::dp(21),a.y+cyui::dp(42)},palette.info,cyui::icon::download);
-                if(favorites_.count(path))draw->AddText({b.x-cyui::dp(21),a.y+cyui::dp(8)},palette.warning,cyui::icon::star);
-                assetContext(asset);ImGui::PopID();
-            }ImGui::EndTable();
-        }
-    }else if(!visible.empty()&&ImGui::BeginTable("##assetRows",3,ImGuiTableFlags_RowBg|ImGuiTableFlags_Resizable)){
-        ImGui::TableSetupColumn(tr("Asset"));ImGui::TableSetupColumn(tr("Type"));ImGui::TableSetupColumn(tr("Size"));ImGui::TableHeadersRow();
-        for(const auto& asset:visible){
-            std::string path=asset.at("path");ImGui::TableNextRow();ImGui::TableNextColumn();ImGui::PushID(path.c_str());
-            if(ImGui::Selectable(path.c_str(),assetPath_==path,ImGuiSelectableFlags_SpanAllColumns|ImGuiSelectableFlags_AllowDoubleClick)){assetPath_=path;copyTo(assetInspect_,sizeof(assetInspect_),asset.dump(2));if(ImGui::IsMouseDoubleClicked(0))openAsset(asset);}
-            assetContext(asset);ImGui::TableNextColumn();ImGui::TextUnformatted(tr(asset.at("type").get_ref<const std::string&>().c_str()));ImGui::TableNextColumn();cyui::textDim("%.1f KB",asset.at("bytes").get<double>()/1024);ImGui::PopID();
-        }ImGui::EndTable();
-    }ImGui::EndChild();
+    std::vector<cyui::AssetItem> items;std::map<cyui::ItemId,Json> descriptors;std::map<cyui::ItemId,std::string> folders;
+    assetState_.folder=assetFolder_.empty()?0:uiId("folder/"+assetFolder_);assetState_.grid=assetGrid_;
+    for(const auto& folder:assetFolders_){const std::string path=folder;const auto parent=fs::u8path(path).parent_path().generic_u8string();const auto id=uiId("folder/"+path);folders[id]=path;items.push_back({id,parent.empty()?0:uiId("folder/"+parent),fs::u8path(path).filename().u8string(),"",0,true,false});}
+    for(const auto& asset:visible){const std::string path=asset.at("path");const auto id=uiId("asset/"+path);if(descriptors.count(id))throw std::runtime_error("UI asset identity collision");descriptors[id]=asset;ImTextureID thumbnail=0;const auto extension=asset.value("extension","");if(thumbnailRenderer&&(extension==".png"||extension==".jpg"||extension==".jpeg"||extension==".bmp"))thumbnail=thumbnailRenderer(path);items.push_back({id,assetState_.folder,fs::u8path(path).filename().u8string(),tr(asset.at("type").get_ref<const std::string&>().c_str()),thumbnail,false,favorites_.count(path)!=0});}
+    auto room=ImGui::GetContentRegionAvail();room.y=std::max(cyui::dp(70),room.y-cyui::dp(36));const auto assetOrigin=ImGui::GetCursorScreenPos();const auto result=cyui::assetBrowser("##contentAssets",assetState_,items,room);
+    if(interfaceProbe&&!items.empty())interfaceProbe("assets/first",{assetOrigin.x+cyui::dp(12),assetOrigin.y+ImGui::GetFrameHeightWithSpacing()+cyui::dp(12)},{assetOrigin.x+cyui::dp(108),assetOrigin.y+ImGui::GetFrameHeightWithSpacing()+cyui::dp(78)});
+    if(assetState_.grid!=assetGrid_){assetGrid_=assetState_.grid;savePreferences();}
+    if(folders.count(assetState_.folder))assetFolder_=folders.at(assetState_.folder);else if(!assetState_.folder)assetFolder_.clear();
+    if(!assetState_.selection.empty()&&descriptors.count(assetState_.selection.back())){const auto& asset=descriptors.at(assetState_.selection.back());assetPath_=asset.at("path");copyTo(assetInspect_,sizeof(assetInspect_),asset.dump(2));}
+    if(descriptors.count(result.id)){const auto asset=descriptors.at(result.id);const std::string path=asset.at("path");if(!cyui::selected(assetState_.selection,result.id))assetState_.selection={result.id};assetPath_=path;copyTo(assetInspect_,sizeof(assetInspect_),asset.dump(2));if(result.action==cyui::AssetAction::open)openAsset(asset);
+        else if(result.action==cyui::AssetAction::favorite)invoke("asset_favorite",{{"path",path},{"enabled",favorites_.count(path)==0}});
+        else if(result.action==cyui::AssetAction::rename){contextAsset_=path;assetOperation_="asset_move";copyTo(assetDestination_,sizeof(assetDestination_),path);assetDialog_=true;}
+        else if(result.action==cyui::AssetAction::remove)invoke("asset_trash",{{"path",path}});
+    }
+    if(visible.empty())cyui::textDim("%s",tr("No matching assets"));
+    // Game-specific import/reference/copy/reload actions stay on the selected asset.
+    // CyUI's standard item menu has no extension callback at the pinned revision.
+    for(const auto& asset:visible)if(asset.at("path")==assetPath_){
+        if(cyui::ghostButton(tr("Asset actions")))ImGui::OpenPopup("##assetContext");probeInterface("assets/actions");assetContext(asset);
+        ImGui::SameLine();cyui::textDim("%s / %s / %.1f KiB",assetPath_.c_str(),tr(asset.at("type").get_ref<const std::string&>().c_str()),asset.at("bytes").get<double>()/1024);break;
+    }
+ImGui::EndChild();
 }
 void EditorApp::trashBrowser(){
     cyui::heading(tr("Trash"),2);cyui::textDim("%s",tr("Deleted assets can be restored without overwriting existing files."));

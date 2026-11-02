@@ -39,7 +39,7 @@ void EditorApp::graphCollapseUI(const std::string& graphId,const std::string& fu
         }
     }
     const bool ready=collapseReport_.is_object()&&!collapseReport_.contains("error")&&collapseReport_.value("valid",false)&&!collapseStale_;
-    {cyui::ScopedDisabled disabled(!ready);if(cyui::primaryButton(tr("Apply collapse"))){auto request=collapseRequest_;request["planHash"]=collapseReport_.at("planHash");const auto applied=invoke("graph_collapse_apply",request);if(!applied.contains("error")){view.selection={applied.at("callNodeId").get<std::string>()};view.selected=*view.selection.begin();view.wireNode.clear();view.dragging.clear();ImGui::CloseCurrentPopup();}}probeInterface("collapse/apply");}
+    {cyui::ScopedDisabled disabled(!ready);if(cyui::primaryButton(tr("Apply collapse"))){auto request=collapseRequest_;request["planHash"]=collapseReport_.at("planHash");const auto applied=invoke("graph_collapse_apply",request);if(!applied.contains("error")){view.selection={applied.at("callNodeId").get<std::string>()};view.selected=*view.selection.begin();view.wireNode.clear();ImGui::CloseCurrentPopup();}}probeInterface("collapse/apply");}
     ImGui::SameLine();if(cyui::ghostButton(tr("Close")))ImGui::CloseCurrentPopup();ImGui::EndPopup();
 }
 }

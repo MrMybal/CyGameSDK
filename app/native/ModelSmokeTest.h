@@ -20,8 +20,10 @@ public:
         if(frame==66)hover("model/tab/Animation");if(frame==68)io.AddMouseButtonEvent(0,true);if(frame==70)io.AddMouseButtonEvent(0,false);
         if(frame==80)hover("model/play");if(frame==82)io.AddMouseButtonEvent(0,true);if(frame==84)io.AddMouseButtonEvent(0,false);
         if(frame==95){auto state=core_.execute("model_view_settings",{{"modelId",id_}});check("actualClipPlayback",state.at("playing").get<bool>()&&state.at("time").get<double>()>.03);core_.execute("model_view_settings",{{"modelId",id_},{"playing",false},{"time",.5}});}
+        if(frame==100)hover("model/seek");if(frame==102)io.AddMouseButtonEvent(0,true);if(frame==104)io.AddMouseButtonEvent(0,false);
+        if(frame==114){const auto state=core_.execute("model_view_settings",{{"modelId",id_}});check("commonTimelineSeek",!state.at("playing").get<bool>()&&state.at("time").get<double>()>.65);}
         if(havePointer_)io.AddMousePosEvent(pointer_.x,pointer_.y);
     }
-    int finish(int frame){if(!enabled()||frame!=110)return -1;if(id_.empty())check("loadedModel",false);writeJson(report_,{{"passed",passed_},{"input","own ImGui mouse events"},{"checks",checks_}});return passed_?0:3;}
+    int finish(int frame){if(!enabled()||frame!=120)return -1;if(id_.empty())check("loadedModel",false);writeJson(report_,{{"passed",passed_},{"input","own ImGui mouse events"},{"checks",checks_}});return passed_?0:3;}
 };
 }

@@ -1,5 +1,5 @@
 #include "MeshPreview.h"
-#include <cyui/CyUI.h>
+#include <cyui/Core.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
 #include <algorithm>

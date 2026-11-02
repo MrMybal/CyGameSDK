@@ -43,9 +43,8 @@ void EditorApp::graphCommentProperties(const std::string& graphId,const std::str
         const std::string id=c.at("id");ImGui::PushID(id.c_str());
         if(cyui::beginSection(c.at("text").get_ref<const std::string&>().c_str())){
             Json p={{"graphId",graphId},{"commentId",id}};if(!function.empty())p["functionName"]=function;
-            if(cyui::beginProperties("##commentProps",cyui::dp(72))){
-                for(const auto* key:{"text","position","size"}){cyui::property(tr(key));Json next,spec=std::string(key)=="text"?Json{{"type","string"},{"maxLength",2048}}:Json{{"type","array"},{"items",{{"minimum",std::string(key)=="size"?40:-100000},{"maximum",std::string(key)=="size"?10000:100000}}}};if(editValue(graphId+"#"+function+"/comment/"+id+"/"+key,spec,c.at(key),next)){auto request=p;request[key]=next;invoke("graph_comment_edit",request);}}
-                cyui::endProperties();
+            {
+                for(const auto* key:{"text","position","size"}){Json next,spec=std::string(key)=="text"?Json{{"type","string"},{"maxLength",2048}}:Json{{"type","array"},{"items",{{"minimum",std::string(key)=="size"?40:-100000},{"maximum",std::string(key)=="size"?10000:100000}}}};if(editProperty(graphId+"#"+function+"/comment/"+id+"/"+key,tr(key),spec,c.at(key),next)){auto request=p;request[key]=next;invoke("graph_comment_edit",request);}}
             }
             if(cyui::ghostButton(tr("Remove group")))invoke("graph_comment_remove",p);cyui::endSection();
         }ImGui::PopID();

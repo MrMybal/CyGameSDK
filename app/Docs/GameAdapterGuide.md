@@ -44,7 +44,8 @@ EditorApp app(core);
 
 Register game UI/renderer hooks after EditorApp construction. Keep adapter parsing,
 validation and serialization independent of ImGui. Adding implementation .cpp files
-requires adding them to both `app/build_native.cmd` and `app/CMakeLists.txt`.
+requires adding them to `app/CMakeLists.txt`. Both build scripts delegate to this
+source list. Select additional CyUI modules explicitly; see [CyUIMigration](CyUIMigration.md).
 The example header is source-only and is not selected by the default application.
 
 Capabilities describe implemented behavior; setting `build:true` does not add a

@@ -1,0 +1,28 @@
+{
+  "CyUI": {
+    "repository": "https://github.com/MrMybal/CyUI.git",
+    "revision": "ff023e646c6a3038b3dfbfd53f6d2b4a2f5955e3",
+    "version": "1.2.0",
+    "modules": [
+      "Nodes",
+      "Inspector",
+      "Assets",
+      "Viewport",
+      "Timeline",
+      "Commands",
+      "Code",
+      "Diagnostics",
+      "Diff"
+    ],
+    "adapters": [
+      "ImGuizmo"
+    ],
+    "disabled": [
+      "Audio",
+      "Gallery",
+      "Demo",
+      "WebCEF",
+      "CodeEditor"
+    ]
+  }
+}

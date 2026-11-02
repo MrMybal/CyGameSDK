@@ -1090,7 +1090,7 @@ class EditorIntegration(unittest.TestCase):
             handle=kernel.CreateFileW(str(asset),0x80000000,3,None,3,0,None);self.assertNotEqual(handle,ctypes.c_void_p(-1).value)
             try:
                 result=run();self.assertEqual(result['state'],'Failed',result);self.assertEqual(result['error']['code'],'EditorCommandFailed')
-                self.assertEqual(asset.read_bytes(),old);self.assertEqual(meta.read_bytes(),oldmeta);self.assertEqual(self.call('editor_status')['adapter']['version'],'0.28.0')
+                self.assertEqual(asset.read_bytes(),old);self.assertEqual(meta.read_bytes(),oldmeta);self.assertEqual(self.call('editor_status')['adapter']['version'],'0.29.0')
             finally:kernel.CloseHandle(handle)
             temporary=Path(str(meta)+'.tmp');temporary.mkdir()
             try:

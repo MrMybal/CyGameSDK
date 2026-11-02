@@ -1,4 +1,4 @@
-> Current native release: 0.28.0. See [GraphExpand](GraphExpand.md) and [AdvancedAuthoring](AdvancedAuthoring.md).
+> Current native release: 0.29.0. See [CyUIMigration](CyUIMigration.md), [GraphExpand](GraphExpand.md) and [AdvancedAuthoring](AdvancedAuthoring.md).
 > This document retains its historical milestone/recovery evidence.
 
 # Completion milestones — 0.20.0
@@ -61,3 +61,26 @@ palettes. Two edited/key-authored GLB exports have zero Khronos errors/warnings.
 These tests use isolated roots; no editor is left running in the user's workspace.
 The prior 12 asset files, language/theme preferences and layout are hash-checked.
 See completion-validation.json for the exact binary/source checkpoint hashes.
+
+## Native 0.29 modular presentation
+
+CyUI 1.2.0 is pinned at `ff023e646c6a3038b3dfbfd53f6d2b4a2f5955e3`.
+Common Nodes/Canvas, Inspector, Assets/Images, Viewport/ImGuizmo, Timeline,
+Commands, Diagnostics, Code and Diff replace the matching local presentation.
+The host retains document data, validation, runtime/compiler providers and Undo.
+
+CMake consumes the explicit module lock, supplies one ImGui target and excludes
+Audio, Gallery, Demo, CodeEditor and Web/CEF. Both build scripts use the same
+configuration. Clean default-fetch and exact-checkout builds are verified on
+Windows x64 / MSVC / DX11. The native Linux/macOS host remains unimplemented.
+
+Verification covers native contracts and 182 Python cases, including actual
+EN/FR interactions, revision/local-schema draft cancellation, one-Undo edits,
+keyboard command captions/IDs, asset actions, image navigation and timeline seek.
+80 isolated captures cover six themes, compact/comfortable densities, simulated
+100/150/200 percent DPI, generated HLSL and graph diffs. Existing 28 asset/project
+files, saved preferences and layout retain their baseline hashes.
+
+Read [CyUIMigration](CyUIMigration.md) for the exact API gaps and retained adapters.
+Evidence: `data/reports/cyui-validation.json`. Catalogue remains 175 editor
+operations / 196 tools including Core. No game codec or engine binding is added.

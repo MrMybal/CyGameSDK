@@ -1,19 +1,33 @@
 #pragma once
 #include "Core.h"
 #include "MeshPreview.h"
-#include <cyui/CyUI.h>
+#include <cyui/Core.h>
+#include <cyui/modules/Nodes.h>
+#include <cyui/modules/Inspector.h>
+#include <cyui/modules/Assets.h>
+#include <cyui/modules/Viewport.h>
+#include <cyui/adapters/ImGuizmo.h>
+#include <cyui/modules/Timeline.h>
+#include <cyui/modules/Commands.h>
+#include <cyui/modules/Diagnostics.h>
+#pragma push_macro("pascal")
+#undef pascal // Windows calling-convention macro collides with CodeLanguage::pascal.
+#include <cyui/modules/Code.h>
+#include <cyui/modules/Diff.h>
+#pragma pop_macro("pascal")
 #include <imgui.h>
 #include <set>
 namespace cygame {
-struct GizmoDraft { bool active=false; uint64_t revision=0; std::string primary;Json original=Json::array(),transforms=Json::array();float matrix[16]{}; };
+struct GizmoDraft { cyui::Gizmo3DState ui; bool active=false; uint64_t revision=0; std::string primary;Json original=Json::array(),transforms=Json::array();float matrix[16]{}; };
 struct Camera { float yaw=-0.85f,pitch=0.55f,distance=11.0f,target[3]{0,0,0.4f}; int mode=0,drawMode=0;bool grid=true; };
 struct GraphView {
+    cyui::NodeState nodes;
     ImVec2 pan{40,30};
     float zoom=1;
-    std::string selected,linkSelected,dragging,wireNode,wirePin;
-    bool wireOutput=false;
-    std::set<std::string> selection;bool marquee=false;ImVec2 marqueeStart{};Json dragPositions=Json::array();uint64_t dragRevision=0;
-    ImVec2 dragOrigin{},nodeOrigin{},newNodeAt{100,100};
+    std::string selected,wireNode,wirePin;
+    bool wireOutput=false;uint64_t wireRevision=0;
+    std::set<std::string> selection;
+    ImVec2 newNodeAt{100,100};
     char filter[128]{};
     Json preview={{"baseColor",{0.2,0.45,0.8}},{"roughness",0.5},{"metallic",0.0}};
     std::string result,previewSignature;
@@ -62,11 +76,23 @@ public:
     EditorCore& core;
     bool shouldClose=false,resetLayout=false,persistSettings=true;
     void requestClose(){closePrompt_=true;}
+    void previewDensity(const std::string& density){density_=density=="comfortable"?"comfortable":"compact";persistSettings=false;}
     void previewSettings(const std::string& lang,const std::string& theme){if(!lang.empty())language_=lang;if(!theme.empty())theme_=theme;persistSettings=false;}
 private:
+    friend class ModuleSmokeTest; // Own-host UI fixture; no public editing bypass.
     std::vector<AssetEditorDefinition> assetEditors_;
+    // Presentation state stays per document/view; Core remains the transaction owner.
+    cyui::AssetState assetState_;
+    std::map<std::string,cyui::InspectorState> inspectors_;
+    cyui::CommandState commandState_;
+    cyui::LogBuffer uiLog_;cyui::LogState uiLogState_;
+    cyui::DiffDocument uiDiff_;cyui::DiffState uiDiffState_;std::string uiDiffKey_;bool diffRaw_=false;
+    struct SourceView{cyui::CodeDocument document;cyui::CodeViewState state;bool selectText=false;};
+    std::map<std::string,SourceView> sourceViews_;
+    void sourceView(const std::string& key,const std::string& text,cyui::CodeLanguage language,ImVec2 size={},bool selectTextOnly=false);
+    static cyui::ItemId uiId(const std::string& key);
     Json interfaceFeatures_,translations_,preferences_,assets_=Json::array(),lastResult_=Json::object();
-    std::string language_="en",theme_="unreal-dark",operation_="editor_status",assetFolder_,assetPath_,activeGraph_="logic",activeField_;
+    std::string density_="compact",language_="en",theme_="unreal-dark",operation_="editor_status",assetFolder_,assetPath_,activeGraph_="logic",activeField_;
     std::map<std::string,Json> drafts_;
     std::map<std::string,Camera> cameras_;
     std::map<std::string,GizmoDraft> gizmos_;
@@ -86,7 +112,7 @@ private:
     char actorFolder_[256]{};
     std::map<std::string,GraphView> graphViews_;
     std::unique_ptr<IEditorPlugin> diagnostics_;
-    bool pluginEnabled_=true,layoutChecked_=false,searchOpen_=false,focusSearch_=false;
+    bool pluginEnabled_=true,layoutChecked_=false,searchOpen_=false;
     bool closePrompt_=false,autoSave_=false,logPaused_=false;
     float textScale_=1,styleDpi_=1;
     bool stylePending_=false;
@@ -102,10 +128,11 @@ private:
     void blueprintLibraryUI();void classDefinitionUI();
     bool newMacro_=false;char className_[65]="NewClass",classParent_[65]="",classFields_[4096]="{\"health\":{\"type\":\"float\",\"default\":100}}",classMethods_[2048]="{}",debugEvent_[129]="CustomEvent";float debugDelta_=0.1f;
     void modelLibrary();void modelEditor(const std::string& id);
-    struct ModelView {bool motionInitialized=false,ikUsePole=true,motionRotation=false,motionAxes[3]={true,false,true};int ikRoot=0,ikTip=0,motionRoot=0,ikIterations=64,motionSource=-2;float ikTarget[3]={1,1,0},ikPole[3]={0,0,1},ikTolerance=.001f,motionFps=30,trimStart=0,trimEnd=0;std::string motionTool,processedRun;ModelCamera camera;ModelFrame frame;uint64_t revision=~uint64_t(0);float time=0,sampledTime=-1,speed=1;int lod=0,sampledLod=-1,collisionKind=0,retargetAnimation=0,translationMode=0;float lodRatio=.5f,retargetFps=30,retargetScale=1;bool collisions=true;std::string retargetSource;Json mapping=Json::object();char mappingFilter[128]{};std::shared_ptr<BuildClient> processor;int sampledAnimation=-2,animation=-1,node=0,mesh=0,primitive=0,vertex=0,track=0,key=0;std::string requestedTab;char clipName[129]="NewClip";int trackChannel=0;bool playing=false,loop=true,skeleton=true;std::shared_ptr<BuildClient> exporter;};
+    struct ModelView {cyui::ViewportState viewport;cyui::TimelineState timeline;int timelineAnimation=-2,timelineTrack=-2;bool motionInitialized=false,ikUsePole=true,motionRotation=false,motionAxes[3]={true,false,true};int ikRoot=0,ikTip=0,motionRoot=0,ikIterations=64,motionSource=-2;float ikTarget[3]={1,1,0},ikPole[3]={0,0,1},ikTolerance=.001f,motionFps=30,trimStart=0,trimEnd=0;std::string motionTool,processedRun;ModelCamera camera;ModelFrame frame;uint64_t revision=~uint64_t(0);float time=0,sampledTime=-1,speed=1;int lod=0,sampledLod=-1,collisionKind=0,retargetAnimation=0,translationMode=0;float lodRatio=.5f,retargetFps=30,retargetScale=1;bool collisions=true;std::string retargetSource;Json mapping=Json::object();char mappingFilter[128]{};std::shared_ptr<BuildClient> processor;int sampledAnimation=-2,animation=-1,node=0,mesh=0,primitive=0,vertex=0,track=0,key=0;std::string requestedTab;char clipName[129]="NewClip";int trackChannel=0;bool playing=false,loop=true,skeleton=true;std::shared_ptr<BuildClient> exporter;};
     std::map<std::string,ModelView> modelViews_;
     int viewportCount_=1,assetType_=0;
-    char globalSearch_[256]{},objectSearch_[128]{},propertySearch_[128]{},assetSearch_[256]{},menuFilters_[6][128]{};
+    char objectSearch_[128]{},propertySearch_[128]{},assetSearch_[256]{};
+    cyui::TextFilter menuFilters_[6];
     char operationParams_[16384]="{}",recipePath_[512]="",assetInspect_[16384]="";
     std::string resultText_,logSnapshot_;
     std::string workspacePreset_="Level",assetOperation_,contextAsset_;
@@ -149,7 +176,7 @@ private:
     Json shaderStatus(const std::string& graphId);
     void compilerPanel();
     void materialPreviewUI(const std::string& graphId);
-    struct ImageView {Json info;float zoom=1;ImVec2 pan{};bool fit=true,refresh=false;int channel=0;};
+    struct ImageView {cyui::ImageState image;Json info;ImVec2 fittedRoom{};bool fit=true,refresh=false;int channel=0;};
     std::map<std::string,ImageView> imageViews_;
     Json openTexture(const std::string& path);
     void textureEditor(const std::string& path);
@@ -169,7 +196,11 @@ private:
     void viewport(const std::string& id);
     bool transformGizmo(const std::string& id,const ImVec2& origin,const ImVec2& size,const float* view,const float* projection);
     void graphEditor(const std::string& graphId,const std::string& functionName="");
-    bool editValue(const std::string& id,const Json& schema,const Json& original,Json& committed);
+    bool editValue(const std::string& id,const Json& schema,const Json& original,Json& committed,const std::string& caption="Value");
+    bool editProperty(const std::string& id,const std::string& caption,const Json& schema,const Json& original,Json& committed);
+    std::map<std::string,int> inspectorFrames_,inspectorBlockedUntil_;std::map<std::string,ImGuiID> inspectorActiveIds_;
+    std::string rawCaption(const std::string& id,const std::string& text);
+    std::map<std::string,std::string> rawCaptions_;
     void saveRecipe();
     void loadRecipe();
 };

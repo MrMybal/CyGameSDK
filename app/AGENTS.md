@@ -8,8 +8,11 @@ Read the root README.md, Docs/EditorArchitecture.md, Docs/CapabilityCoverage.md,
 CyTool.json and tool.py. The app began with cytools new --desktop, and replaces
 the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
 
-- Read ../CyImgui_Interface/docs/AI_GUIDE.md when editing native UI.
-  Use palette roles, dp(), property tables, translated labels and stable ### IDs.
+- Read Docs/CyUIMigration.md and dependencies.lock.json, then the pinned CyUI
+  checkout's docs/AI_GUIDE.md and docs/MODULES.md when editing native UI.
+  Use explicit module headers/targets, palette roles, design-unit dimensions and
+  stable IDs. beginProperties takes a design-unit width, not an already dp-scaled
+  width. Keep English default/fallback, and raw user captions untranslated.
 - CyToolsCore remains the MCP/SDK/job implementation. Do not copy its runtime,
   rewrite its scheduler/authentication/MCP parser, or modify sibling repositories.
 - app/build_manifest.py is the source of the operation catalogue. Regenerate

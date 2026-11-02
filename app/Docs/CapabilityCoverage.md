@@ -1,4 +1,4 @@
-# Capability coverage — CyGameSDK 0.28.0
+# Capability coverage — CyGameSDK 0.29.0
 
 | Capability | Delivered behavior | Validation / limits |
 |---|---|---|
@@ -165,3 +165,11 @@ operations / 194 tools including Core controls.
 
 Current catalogue: 175 editor operations / 196 tools including Core controls.
 Read [GraphExpand](GraphExpand.md). Evidence: data/reports/expand-validation.json.
+
+## Native 0.29 common presentation
+
+The UI now uses the pinned modular CyUI build and its common Nodes, Assets,
+Inspector, Images, Viewport/ImGuizmo, Timeline, Commands, Diagnostics, Code and Diff
+views. Core remains the validated document/Undo owner. Read
+[CyUIMigration](CyUIMigration.md) for replacements, exact upstream API gaps and
+Windows verification. This release adds no game codec or engine binding.

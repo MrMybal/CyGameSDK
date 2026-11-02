@@ -23,6 +23,6 @@ void EditorApp::graphExpandUI(const std::string& graphId,const std::string& func
         }
     }
     const bool ready=expandReport_.is_object()&&!expandReport_.contains("error")&&expandReport_.value("valid",false)&&!expandStale_;
-    {cyui::ScopedDisabled disabled(!ready);if(cyui::primaryButton(tr("Apply expansion"))){auto request=expandRequest_;request["planHash"]=expandReport_.at("planHash");const auto applied=invoke("graph_expand_apply",request);if(!applied.contains("error")){view.selection.clear();for(const auto& id:applied.at("addedNodeIds"))view.selection.insert(id);view.selected=view.selection.empty()?"":*view.selection.begin();view.wireNode.clear();view.dragging.clear();ImGui::CloseCurrentPopup();}}probeInterface("expand/apply");}ImGui::SameLine();if(cyui::ghostButton(tr("Close")))ImGui::CloseCurrentPopup();ImGui::EndPopup();
+    {cyui::ScopedDisabled disabled(!ready);if(cyui::primaryButton(tr("Apply expansion"))){auto request=expandRequest_;request["planHash"]=expandReport_.at("planHash");const auto applied=invoke("graph_expand_apply",request);if(!applied.contains("error")){view.selection.clear();for(const auto& id:applied.at("addedNodeIds"))view.selection.insert(id);view.selected=view.selection.empty()?"":*view.selection.begin();view.wireNode.clear();ImGui::CloseCurrentPopup();}}probeInterface("expand/apply");}ImGui::SameLine();if(cyui::ghostButton(tr("Close")))ImGui::CloseCurrentPopup();ImGui::EndPopup();
 }
 }

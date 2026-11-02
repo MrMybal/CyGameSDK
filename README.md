@@ -5,7 +5,7 @@ SDKs and authoring tools. Its Unreal-inspired workspace uses C++17, Dear ImGui
 docking, CyUI and Direct3D 11. CyToolsCore provides the existing MCP server, AI SDK,
 authentication, jobs and ProcessWorker integration.
 
-**Current source/catalogue version: 0.28.0.** The interface starts in English,
+**Current source/catalogue version: 0.29.0.** The interface starts in English,
 independently of the Windows locale. French is selectable in Options. An explicitly
 saved language is preserved; English remains the source and fallback language.
 
@@ -45,18 +45,25 @@ The current catalogue contains 175 editor operations / 196 tools including Core.
 Requirements:
 
 - Windows x64, Visual Studio 2022 with Desktop development with C++, and Windows SDK.
-- An accessible CyImgui_Interface checkout (CyUI and its Dear ImGui docking sources).
+- Git and CMake 3.24+ (the Visual Studio CMake tools are detected automatically).
+- Network access for the first pinned CyUI fetch, or a clean offline checkout at
+  the revision in [app/dependencies.lock.json](app/dependencies.lock.json).
 - For MCP, AI SDK and worker jobs: Python and the CyToolsCore 0.10.1 wheel built from
   your CyToolsCore checkout. MCP uses its pinned official Python transport.
 
-By default, the dependency checkouts are siblings of this repository:
-
-```text
-workspace/
-  CyGameSDK/
-  CyImgui_Interface/
-  CyToolsCore/
-```
+CyUI 1.2.0 is fetched at the exact locked commit into `runtime/dependencies`.
+The upstream repository is [MrMybal/CyUI](https://github.com/MrMybal/CyUI).
+If repository access is restricted, authenticate Git with an account that has
+access before building, or supply an authorized offline checkout using
+`-CyUIRoot`. Do not put access tokens in CMake arguments or dependency URLs.
+The upstream repository is [MrMybal/CyUI](https://github.com/MrMybal/CyUI).
+If repository access is restricted, authenticate Git with an account that has
+access before building, or supply an authorized offline checkout using
+`-CyUIRoot`. Do not put access tokens in CMake arguments or dependency URLs.
+Its modular targets share one host-owned Dear ImGui instance. Audio, Gallery,
+Demo, CodeEditor and Web/CEF are disabled. CyToolsCore remains a separate official
+Python wheel; its setup script defaults to a sibling `CyToolsCore` checkout.
+See [CyUI migration](app/Docs/CyUIMigration.md) for module selection and UI limits.
 
 Run PowerShell from the repository root:
 
@@ -70,15 +77,20 @@ Run PowerShell from the repository root:
 Custom dependency locations can be passed explicitly:
 
 ```powershell
-.\app\build.ps1 -CyUIRoot 'C:\src\CyImgui_Interface'
+.\app\build.ps1 -CyUIRoot 'C:\src\CyUI'
 .\app\setup_mcp.ps1 -CyToolsCoreRoot 'C:\src\CyToolsCore'
 ```
 
-`app/build_native.cmd` is the verified MSVC build entry point. A CMake developer
-configuration is also available in [app/CMakeLists.txt](app/CMakeLists.txt).
-`CyGameEditor.exe` is produced at the repository root. The graphical host itself
-needs the Microsoft C++ runtime; the private Python runtime is used by MCP and
-worker operations. `CyGameEditor.sh` reports that a Linux host is not implemented.
+`app/build.ps1` configures and builds [app/CMakeLists.txt](app/CMakeLists.txt).
+`app/build_native.cmd` delegates to that same entry point; there is one source and
+module list. `CyGameEditor.exe` is produced at the repository root. The native
+contracts binary is written to `runtime/build/CyGameSDKTests.exe`.
+Use `-BuildDirectory` and `-OutputDirectory` for an independent build. A supplied
+CyUI checkout must be clean and match the lock exactly; it is never modified.
+
+The graphical host needs the Microsoft C++ runtime. The private Python runtime
+is used by MCP and worker operations. The current native host is Win32/DX11;
+Linux/macOS hosts remain unimplemented. `CyGameEditor.sh` reports this limitation.
 
 The Git repository contains source, documentation, dependency notices and generated
 example fixtures. Executables, private runtimes, local reports/checkpoints, settings,
@@ -86,6 +98,12 @@ projects and working assets are kept locally and are not included. Historical
 validation/checkpoint references in the guides refer to the local development
 workspace; a fresh clone must build and run its own checks. The release identity
 is recorded in [runtime/active-release.json](runtime/active-release.json).
+
+Run the isolated native, SDK/MCP and graphical regression suites after building:
+
+```powershell
+.\runtime\python\Scripts\python.exe app\verify_cyui.py --captures
+```
 
 ## First use
 

@@ -10,7 +10,7 @@ void EditorApp::graphDiffPanel(){
     ImGui::SameLine();if(cyui::ghostButton(tr("Save asset"))){invoke("asset_save_graph",{{"graphId",diffGraph_}});refresh=true;}
     refresh|=ImGui::Checkbox(tr("Ignore layout and comments"),&diffIgnorePresentation_);
     if(refresh||diffReport_.is_null()||diffRevision_!=core.revision()){
-        diffReport_=invoke("graph_diff",{{"graphId",diffGraph_},{"ignorePresentation",diffIgnorePresentation_}});diffRevision_=core.revision();diffSelection_=-1;
+        diffReport_=invoke("graph_diff",{{"graphId",diffGraph_},{"ignorePresentation",diffIgnorePresentation_}});diffRevision_=core.revision();diffSelection_=-1;uiDiffKey_.clear();
     }
     if(diffReport_.contains("error")){cyui::callout(cyui::Tone::error,diffReport_.at("error").get_ref<const std::string&>().c_str());return;}
     cyui::textDim("%s: %s %s",tr("Baseline"),tr(diffReport_.at("baselineSource").get_ref<const std::string&>().c_str()),diffReport_.at("path").get_ref<const std::string&>().c_str());
@@ -26,11 +26,14 @@ void EditorApp::graphDiffPanel(){
     if(diffSelection_>=0&&diffSelection_<entries.size()){
         const auto& e=entries[diffSelection_];const std::string function=e.at("functionName"),node=e.at("key");
         if(e.at("kind")=="nodes"&&e.at("change")!="Removed"&&cyui::ghostButton(tr("Locate current node")))focusGraphNode(diffGraph_,function,node);
-        for(const auto* key:{"beforePreview","afterPreview"}){
-            cyui::sectionTitle(tr(std::string(key)=="beforePreview"?"Saved version":"Current version"));
-            std::string value=e.at(key);std::vector<char> buffer(value.begin(),value.end());buffer.push_back(0);
-            ImGui::InputTextMultiline(key,buffer.data(),buffer.size(),{-1,cyui::dp(180)},ImGuiInputTextFlags_ReadOnly);
-        }
+        const auto cacheKey=diffGraph_+"/"+std::to_string(diffRevision_)+"/"+std::to_string(diffSelection_);
+        if(uiDiffKey_!=cacheKey){uiDiff_.setTexts(e.at("beforePreview").get<std::string>(),e.at("afterPreview").get<std::string>(),cyui::CodeLanguage::json);uiDiffKey_=cacheKey;uiDiffState_={};}
+        ImGui::Checkbox(tr("Text selection"),&diffRaw_);
+        if(diffRaw_){
+            cyui::sectionTitle(tr("Saved"));sourceView("diff/before",e.at("beforePreview"),cyui::CodeLanguage::json,{-1,ImGui::GetContentRegionAvail().y*.48f},true);
+            cyui::sectionTitle(tr("Current"));sourceView("diff/after",e.at("afterPreview"),cyui::CodeLanguage::json,ImGui::GetContentRegionAvail(),true);
+        }else cyui::diffViewer("##graphChanges",uiDiffState_,uiDiff_,ImGui::GetContentRegionAvail());
+
     }else cyui::textDim("%s",tr("Select a change to inspect its saved and current values."));
     ImGui::EndChild();
 }

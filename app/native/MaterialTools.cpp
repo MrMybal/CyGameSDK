@@ -50,7 +50,7 @@ void EditorApp::materialPreviewUI(const std::string& id){
     {cyui::ScopedDisabled running(activeJob(status));if(cyui::ghostButton(tr("Compile preview")))invoke("material_compile_request",{{"graphId",id},{"expectedRevision",core.revision()}});}
     ImGui::SameLine();if(cyui::iconButton(cyui::icon::code,tr("Shader source and diagnostics")))invoke("material_compiler_view",{{"graphId",id}});
     cyui::badge(tr(status.value("current",false)?"GPU graph preview":"UV center sample"));if(activeJob(status))cyui::textDim("%s",tr(status.value("state","Idle").c_str()));
-    const char* shapes[]={tr("Sphere"),tr("Plane")};int shape=view.plane?1:0;if(cyui::beginProperties("##previewProperties",cyui::dp(65))){cyui::property(tr("Surface"));if(ImGui::Combo("##shape",&shape,shapes,2))view.plane=shape==1;cyui::endProperties();}
+    const char* shapes[]={tr("Sphere"),tr("Plane")};int shape=view.plane?1:0;if(cyui::beginProperties("##previewProperties",65)){cyui::property(tr("Surface"));if(ImGui::Combo("##shape",&shape,shapes,2))view.plane=shape==1;cyui::endProperties();}
     Json preview=view.prepared.value("preview",Json{{"baseColor",{.2,.45,.8}},{"roughness",.5},{"metallic",0.}});preview["_previewPlane"]=view.plane;
     if(status.value("current",false)){preview["_shaderSignature"]=view.prepared.at("signature");preview["_shaderParameters"]=view.prepared.at("parameters");}
     if(materialRenderer){const float width=std::max(cyui::dp(96),ImGui::GetContentRegionAvail().x);try{ImGui::Image(materialRenderer(id,preview,{width,width}),{width,width});}catch(const std::exception& e){cyui::textDim("%s",e.what());}}
@@ -76,7 +76,8 @@ void EditorApp::compilerPanel(){
         }
         if(report.is_object())diagnostics=report.value("diagnostics",Json::array());
     }
-    for(size_t i=0;i<diagnostics.size();++i){const auto& d=diagnostics[i];if(ImGui::Selectable(label(d.at("message").get<std::string>(),"diagnostic"+std::to_string(i)).c_str())&&!d.value("nodeId","").empty())focusGraphNode(compilerGraph_,d.value("functionName",""),d.at("nodeId"));}
-    cyui::sectionTitle(tr("Generated HLSL"));if(view.source.empty())cyui::textDim("%s",tr("Compile a supported material to inspect its shader source."));else{std::vector<char> text(view.source.begin(),view.source.end());text.push_back(0);ImGui::InputTextMultiline("##shaderSource",text.data(),text.size(),{-1,-1},ImGuiInputTextFlags_ReadOnly);}
+    std::vector<cyui::Diagnostic> rows;for(size_t i=0;i<diagnostics.size();++i){const auto& d=diagnostics[i];const std::string severity=d.value("severity","Error");rows.push_back({i+1,severity=="Warning"?cyui::LogLevel::warning:severity=="Info"?cyui::LogLevel::info:cyui::LogLevel::error,d.value("nodeId",""),d.at("message"),0,0});}
+    if(!rows.empty()){const auto selected=cyui::diagnosticList("##shaderDiagnostics",rows,cyui::dp(0,100));if(selected&&selected<=diagnostics.size()){const auto& d=diagnostics.at(selected-1);if(!d.value("nodeId","").empty())focusGraphNode(compilerGraph_,d.value("functionName",""),d.at("nodeId"));}}
+    cyui::sectionTitle(tr("Generated HLSL"));if(view.source.empty())cyui::textDim("%s",tr("Compile a supported material to inspect its shader source."));else sourceView("shader/"+compilerGraph_,view.source,cyui::CodeLanguage::hlsl,ImGui::GetContentRegionAvail());
 }
 }

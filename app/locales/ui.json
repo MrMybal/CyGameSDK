@@ -4842,5 +4842,33 @@
   "No": {
     "en": "No",
     "fr": "Non"
+  },
+  "Asset actions": {
+    "en": "Asset actions",
+    "fr": "Actions de l’asset"
+  },
+  "Density": {
+    "en": "Density",
+    "fr": "Densité"
+  },
+  "Compact": {
+    "en": "Compact",
+    "fr": "Compacte"
+  },
+  "Comfortable": {
+    "en": "Comfortable",
+    "fr": "Confortable"
+  },
+  "Copy text": {
+    "en": "Copy text",
+    "fr": "Copier le texte"
+  },
+  "Text selection": {
+    "en": "Text selection",
+    "fr": "Selection du texte"
+  },
+  "Current": {
+    "en": "Current",
+    "fr": "Actuel"
   }
 }

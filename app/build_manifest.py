@@ -85,7 +85,7 @@ for operation in operations:
 from milestone_contracts import extend
 extend(operations,obj)
 manifest=json.loads((ROOT/"CyTool.json").read_text("utf-8"))
-manifest.update(description="Modular game editor foundation. CyUI native desktop and CyToolsCore MCP/SDK.",version="0.28.0",
+manifest.update(description="Modular game editor foundation. CyUI native desktop and CyToolsCore MCP/SDK.",version="0.29.0",
     categories=["development"],platforms=[{"os":"Windows","architecture":"x64","status":"Experimental","computeBackends":["CPU"]}],
     executable="runtime/python/Scripts/python.exe app/tool.py",standaloneExecutable="CyGameEditor.exe",
     distributionStatus="Development foundation; Windows DX11; source plugins; Sandbox adapter only",operations=operations)

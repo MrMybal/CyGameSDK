@@ -14,7 +14,7 @@ void EditorApp::materialInstanceEditor(const std::string& id){
     if(materialParentKey_!=id){materialParentKey_=id;std::snprintf(materialParent_,sizeof(materialParent_),"%s",source.at("parent").get_ref<const std::string&>().c_str());}
     ImGui::BeginChild("##instanceParameters",{ImGui::GetContentRegionAvail().x*.66f,0});
     cyui::heading(tr("Material parameters"),2);
-    if(cyui::beginProperties("##instanceParent",cyui::dp(90))){cyui::property(tr("Parent"));if(ImGui::InputText("##parent",materialParent_,sizeof(materialParent_),ImGuiInputTextFlags_EnterReturnsTrue)){invoke("material_parent_set",{{"graphId",id},{"parent",std::string(materialParent_)}});refresh=true;}cyui::endProperties();}
+    if(cyui::beginProperties("##instanceParent",90)){cyui::property(tr("Parent"));if(ImGui::InputText("##parent",materialParent_,sizeof(materialParent_),ImGuiInputTextFlags_EnterReturnsTrue)){invoke("material_parent_set",{{"graphId",id},{"parent",std::string(materialParent_)}});refresh=true;}cyui::endProperties();}
     ImGui::TextWrapped("%s",tr("Enable an override to change a value. Disable it to inherit the parent."));
     const auto report=state.report;
     if(report.contains("error")){

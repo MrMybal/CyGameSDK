@@ -1,5 +1,5 @@
 #pragma once
-#include <cyui/CyUI.h>
+#include <cyui/Core.h>
 #include <algorithm>
 #include <string>
 
@@ -16,10 +16,10 @@ inline const char* editorThemeName(const std::string& key) {
     for(const auto& theme:cyui::builtInThemes())if(theme.key==key)return theme.name.c_str();
     return "Unreal-inspired Dark";
 }
-inline void applyEditorTheme(const std::string& key,float dpi,float textScale) {
+inline void applyEditorTheme(const std::string& key,float dpi,float textScale,cyui::Density density=cyui::Density::compact) {
     cyui::Config config;
     config.themeKey=key=="unreal-dark"?"navy":key.c_str();
-    config.density=cyui::Density::compact;config.dpiScale=dpi;config.squareWindows=true;
+    config.density=density;config.dpiScale=dpi;config.squareWindows=true;
     cyui::apply(config);
     if(key=="unreal-dark") {
         using cyui::rgb;

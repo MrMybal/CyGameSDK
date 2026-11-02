@@ -5,7 +5,6 @@
 #include <cstring>
 namespace cygame {
 namespace {
-ImVec2 add(ImVec2 a,ImVec2 b){return{a.x+b.x,a.y+b.y};}
 float distance(ImVec2 a,ImVec2 b){return std::hypot(a.x-b.x,a.y-b.y);}
 }
 void EditorApp::graphEditor(const std::string& graphId,const std::string& functionName) {
@@ -14,13 +13,12 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
         cyui::emptyState(tr("Asset Editor"),tr("This asset is not loaded in the current project."),cyui::icon::info);return;
     }
     if(core.graphs().at(graphId).at("domain")=="material-instance"){materialInstanceEditor(graphId);return;}
-    const auto graph=graphView(core.graphs().at(graphId),functionName);
+    auto graph=graphView(core.graphs().at(graphId),functionName);
     auto command=[&](const std::string& id,Json p){if(id.rfind("graph_",0)==0&&id.rfind("graph_function_",0)!=0&&id.rfind("graph_debug_",0)!=0&&!functionName.empty())p["functionName"]=functionName;return invoke(id,p);};const std::string domain=graph.at("domain");const bool execution=domain=="logic"||(domain=="function"&&graph.value("mode","pure")=="execution");
     std::set<std::string> existing;for(const auto& n:graph["nodes"])existing.insert(n.at("id"));
     for(auto it=view.selection.begin();it!=view.selection.end();)if(!existing.count(*it))it=view.selection.erase(it);else ++it;
     if(!existing.count(view.selected))view.selected.clear();
     if(!view.selected.empty()&&!view.selection.count(view.selected))view.selection={view.selected};
-    if(!view.dragging.empty()&&(core.revision()!=view.dragRevision||ImGui::IsKeyPressed(ImGuiKey_Escape))){view.dragging.clear();view.dragPositions=Json::array();}
     auto selectCopies=[&](const Json& result){if(result.contains("nodes")){view.selection.clear();for(const auto& n:result["nodes"])view.selection.insert(n.at("id"));view.selected=view.selection.empty()?"":*view.selection.begin();}};
     auto copy=[&](){if(view.selection.empty())return;auto result=command("graph_fragment_copy",{{"graphId",graphId},{"nodeIds",view.selection}});if(result.contains("fragment"))ImGui::SetClipboardText(result["fragment"].dump().c_str());};
     auto paste=[&](){const char* text=ImGui::GetClipboardText();if(!text||std::strlen(text)>512*1024)return;try{selectCopies(command("graph_fragment_paste",{{"graphId",graphId},{"fragment",Json::parse(text)}}));}catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}};
@@ -59,7 +57,7 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
         if(input.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_C))copy();
         if(input.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_V))paste();
         if(input.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_D))duplicate();
-        if(ImGui::IsKeyPressed(ImGuiKey_Delete))remove();
+
         if(!view.selected.empty()&&ImGui::IsKeyPressed(ImGuiKey_F9))for(const auto& n:graph["nodes"])if(n["id"]==view.selected)command("graph_breakpoint_set",{{"graphId",graphId},{"nodeId",view.selected},{"enabled",!n.value("breakpoint",false)}});
     }
     if(execution&&view.debug.value("activeFunction","")!=functionName)view.debug.erase("nextNode");
@@ -107,29 +105,71 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
             for(const auto& n:entries){const auto spec=typedNodeDefinition(graph,n);const std::string title=std::string(tr(spec.at("title").get_ref<const std::string&>().c_str()))+" / "+id+(n.contains("field")?" / "+n.at("field").get<std::string>():"");if(matches(title+" "+n.at("type").get<std::string>()+" "+spec.at("title").get<std::string>(),view.filter)&&ImGui::Selectable(label(title,title).c_str())){Json p={{"graphId",graphId},{"type",n.at("type")},{"typeRef",id},{"position",{view.newNodeAt.x,view.newNodeAt.y}}};if(n.contains("field"))p["fieldRef"]=n.at("field");command("graph_node_add",p);ImGui::CloseCurrentPopup();}}
         }ImGui::EndPopup();
     }
+    // Toolbar/modal actions can replace the selected region in this very frame.
+    // Build the common Nodes model from the new document, retaining new selection IDs.
+    graph=graphView(core.graphs().at(graphId),functionName);
     const float sidebar=cyui::dp(235);
     ImGui::BeginChild("##nodeCanvas",{std::max(cyui::dp(150),ImGui::GetContentRegionAvail().x-sidebar-cyui::dp(8)),0},ImGuiChildFlags_Borders,ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
-    ImVec2 start=ImGui::GetCursorScreenPos(),size=ImGui::GetContentRegionAvail(),end=add(start,size);
-    if(frameAll&&!graph["nodes"].empty()){
-        ImVec2 low{1e9f,1e9f},high{-1e9f,-1e9f};
-        for(const auto& n:graph["nodes"]){const float x=n["position"][0],y=n["position"][1];const auto type=nodeDefinition(graph,n);
-            low.x=std::min(low.x,x);low.y=std::min(low.y,y);high.x=std::max(high.x,x+205);high.y=std::max(high.y,y+34+27*(1+float(std::max(type["inputs"].size(),type["outputs"].size()))));}
-        view.zoom=std::clamp(std::min((size.x-cyui::dp(70))/(high.x-low.x),(size.y-cyui::dp(70))/(high.y-low.y))/cyui::dp(1),.4f,1.8f);
-        const float scale=cyui::dp(view.zoom);view.pan={size.x*.5f-(low.x+high.x)*.5f*scale,size.y*.5f-(low.y+high.y)*.5f*scale};
+    const auto start=ImGui::GetCursorScreenPos(),size=ImGui::GetContentRegionAvail();const float dpi=cyui::dp(1);
+    auto& state=view.nodes;if(view.wireRevision!=core.revision()){view.wireNode.clear();view.wireRevision=core.revision();}state.canvas.view.zoom=view.zoom;state.canvas.view.origin={-view.pan.x/view.zoom,-view.pan.y/view.zoom};
+    state.selection.clear();std::map<cyui::ItemId,std::string> nodeNames,linkNames;
+    struct Pin {std::string node,key,type;bool output;cyui::ItemId id;ImVec2 point;};std::map<cyui::ItemId,Pin> pins;
+    std::vector<cyui::Node> nodes;std::vector<cyui::NodeLink> links;
+    auto pinId=[&](const std::string& node,const std::string& pin,bool out){return uiId("pin/"+viewKey+Json::array({node,pin,out}).dump());};
+    for(const auto& n:graph.at("nodes")){
+        const std::string id=n.at("id"),type=n.at("type");const auto spec=nodeDefinition(graph,n);const auto numeric=uiId("node/"+viewKey+id);
+        if(!nodeNames.emplace(numeric,id).second)throw std::runtime_error("UI node identity collision");
+        const bool named=type=="function.call"||type=="macro.call"||type=="object.call"||type=="interface.call";
+        cyui::Node node;node.id=numeric;node.position={n.at("position")[0].get<double>()*dpi,n.at("position")[1].get<double>()*dpi};node.label=named?spec.at("title").get<std::string>():tr(spec.at("title").get_ref<const std::string&>().c_str());
+        if(n.contains("variable"))node.label+=" / "+n.at("variable").get<std::string>();node.colorIndex=0;
+        for(const auto* side:{"inputs","outputs"}){const bool out=std::string(side)=="outputs";for(const auto& [key,t]:spec.at(side).items()){
+            const auto pid=pinId(id,key,out);const std::string portType=t;const bool user=named||type=="function.input"||type=="function.output"||type=="struct.make"||type=="struct.break"||type=="enum.switch";
+            if(!pins.emplace(pid,Pin{id,key,portType,out,pid,{}}).second)throw std::runtime_error("UI pin identity collision");
+            (out?node.outputs:node.inputs).push_back({pid,user?key:std::string(tr(key.c_str())),portType=="exec"?0:portType=="bool"?2:1});
+        }}nodes.push_back(node);if(view.selection.count(id))state.selection.push_back(numeric);
     }
-    ImGui::InvisibleButton("##canvas",size,ImGuiButtonFlags_MouseButtonLeft|ImGuiButtonFlags_MouseButtonMiddle|ImGuiButtonFlags_MouseButtonRight);
-    const bool hovered=ImGui::IsItemHovered();auto& io=ImGui::GetIO();
-    if(hovered) {
-        if(ImGui::IsMouseDragging(ImGuiMouseButton_Middle))view.pan=add(view.pan,io.MouseDelta);
-        if(io.MouseWheel!=0){
-            const float next=std::clamp(view.zoom*std::pow(1.1f,io.MouseWheel),0.4f,1.8f),ratio=next/view.zoom;
-            view.pan={io.MousePos.x-start.x-(io.MousePos.x-start.x-view.pan.x)*ratio,io.MousePos.y-start.y-(io.MousePos.y-start.y-view.pan.y)*ratio};view.zoom=next;
-        }
-        if(ImGui::IsMouseClicked(ImGuiMouseButton_Right)){
-            view.newNodeAt={(io.MousePos.x-start.x-view.pan.x)/view.zoom,(io.MousePos.y-start.y-view.pan.y)/view.zoom};
-            ImGui::OpenPopup("##canvasMenu");
-        }
+    for(const auto& l:graph.at("links")){const auto id=uiId("link/"+viewKey+l.at("id").get<std::string>());linkNames[id]=l.at("id");links.push_back({id,pinId(l.at("fromNode"),l.at("fromPin"),true),pinId(l.at("toNode"),l.at("toPin"),false),0});}
+    if(frameAll&&!nodes.empty()){
+        cyui::Point low{1e9,1e9},high{-1e9,-1e9};for(const auto& n:nodes){low.x=std::min(low.x,n.position.x);low.y=std::min(low.y,n.position.y);high.x=std::max(high.x,n.position.x+cyui::dp(205));high.y=std::max(high.y,n.position.y+cyui::dp(34+27*float(std::max(n.inputs.size(),n.outputs.size()))+8));}state.canvas.view.fit(low,high,size,cyui::dp(35));
     }
+    cyui::NodeOptions options;options.width=205;options.header=34;options.row=27;options.revision=core.revision();
+    options.canConnect=[&](cyui::ItemId from,cyui::ItemId to){return pins.count(from)&&pins.count(to)&&pins.at(from).type==pins.at(to).type;};
+    options.drawBody=[&](const cyui::Node& node,const cyui::Rect& rect){
+        const auto& id=nodeNames.at(node.id);for(const auto& n:graph.at("nodes"))if(n.at("id")==id){auto* draw=ImGui::GetWindowDrawList();const float zoom=float(state.canvas.view.zoom);
+            if(n.value("breakpoint",false))draw->AddCircleFilled({rect.max.x-cyui::dp(5),rect.min.y-cyui::dp(17)*zoom},cyui::dp(5),pal.error);
+            if(view.debug.value("nextNode","")==id)draw->AddRect({rect.min.x-cyui::dp(8)*zoom,rect.min.y-cyui::dp(34)*zoom},rect.max,pal.warning,cyui::dp(4),0,cyui::dp(2));
+            if(!n.value("comment","").empty()&&rect.contains(ImGui::GetIO().MousePos))ImGui::SetTooltip("%s",n.at("comment").get_ref<const std::string&>().c_str());
+        }
+    };
+    const bool wasBoxing=state.boxing;const auto boxAnchor=state.boxStart;const auto result=cyui::nodeEditor("##canvas",state,nodes,links,size,options);
+    auto* draw=ImGui::GetWindowDrawList();auto& io=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered();
+    if(result.moved.committed()){
+        Json positions=Json::array();bool changed=false;for(const auto& moved:result.moved.value){const auto& name=nodeNames.at(moved.id);positions.push_back({{"nodeId",name},{"position",{moved.position.x/dpi,moved.position.y/dpi}}});for(const auto& n:graph.at("nodes"))if(n.at("id")==name)changed|=std::abs(n.at("position")[0].get<double>()-moved.position.x/dpi)>.001||std::abs(n.at("position")[1].get<double>()-moved.position.y/dpi)>.001;}
+        if(changed)command("graph_nodes_move",{{"graphId",graphId},{"positions",positions},{"expectedRevision",state.revision}});
+    }
+    if(result.connect){const auto& from=pins.at(result.connectFrom);const auto& to=pins.at(result.connectTo);command("graph_link_add",{{"graphId",graphId},{"fromNode",from.node},{"fromPin",from.key},{"toNode",to.node},{"toPin",to.key}});view.wireNode.clear();}
+    if(result.linkRemoved&&linkNames.count(result.removeLink))command("graph_link_remove",{{"graphId",graphId},{"linkId",linkNames.at(result.removeLink)}});
+    if(!result.removeNodes.empty()){Json names=Json::array();for(const auto id:result.removeNodes)if(nodeNames.count(id))names.push_back(nodeNames.at(id));if(!names.empty())command("graph_nodes_remove",{{"graphId",graphId},{"nodeIds",names}});}
+    Json boxes=Json::array();
+    // Application overlays supply type colors, breakpoints and authored comment
+    // groups; common Nodes owns cards, wires, hit testing, navigation and gestures.
+    for(const auto& n:nodes){auto pos=n.position;for(const auto& moved:state.preview)if(moved.id==n.id)pos=moved.position;const auto origin=state.canvas.view.screen(pos,start);const float zoom=float(state.canvas.view.zoom),width=cyui::dp(205)*zoom,height=cyui::dp(34+27*float(std::max<size_t>(1,std::max(n.inputs.size(),n.outputs.size())))+8)*zoom;const ImVec2 end{origin.x+width,origin.y+height};
+        boxes.push_back({{"id",nodeNames.at(n.id)},{"a",{origin.x,origin.y}},{"b",{end.x,end.y}}});
+        if(wasBoxing&&ImGui::IsMouseReleased(0)){const auto anchor=state.canvas.view.screen(boxAnchor,start);const cyui::Rect selection{{std::min(anchor.x,io.MousePos.x),std::min(anchor.y,io.MousePos.y)},{std::max(anchor.x,io.MousePos.x),std::max(anchor.y,io.MousePos.y)}};if(origin.x<selection.max.x&&end.x>selection.min.x&&origin.y<selection.max.y&&end.y>selection.min.y&&!cyui::selected(state.selection,n.id))state.selection.push_back(n.id);}
+        for(const bool out:{false,true}){const auto& ports=out?n.outputs:n.inputs;for(size_t i=0;i<ports.size();++i){auto& pin=pins.at(ports[i].id);pin.point={origin.x+(out?width:0),origin.y+cyui::dp(34+27*(float(i)+.5f))*zoom};const auto color=pin.type=="exec"?pal.text:pin.type=="bool"?pal.warning:pin.type=="color"?pal.info:pal.accent;draw->AddCircleFilled(pin.point,cyui::dp(4)*std::max(.6f,zoom),color);}}
+    }
+    view.selection.clear();for(const auto id:state.selection)if(nodeNames.count(id))view.selection.insert(nodeNames.at(id));if(!view.selection.count(view.selected))view.selected=view.selection.empty()?"":*view.selection.begin();
+    if(hovered&&ImGui::IsMouseClicked(0)){
+        bool clicked=false;for(const auto& [id,pin]:pins)if(distance(pin.point,io.MousePos)<cyui::dp(9)){
+            clicked=true;if(!view.wireNode.empty()&&view.wireOutput!=pin.output){const auto from=view.wireOutput?view.wireNode:pin.node,fp=view.wireOutput?view.wirePin:pin.key,to=view.wireOutput?pin.node:view.wireNode,tp=view.wireOutput?pin.key:view.wirePin;command("graph_link_add",{{"graphId",graphId},{"fromNode",from},{"fromPin",fp},{"toNode",to},{"toPin",tp}});view.wireNode.clear();state.wiring=false;}else{view.wireNode=pin.node;view.wirePin=pin.key;view.wireOutput=pin.output;}break;
+        }if(!clicked)view.wireNode.clear();
+    }
+    if(ImGui::IsKeyPressed(ImGuiKey_Escape)||result.moved.phase==cyui::EditPhase::cancel)view.wireNode.clear();
+    const auto comments=graph.value("comments",Json::array());draw->PushClipRect(start,{start.x+size.x,start.y+size.y},true);
+    for(const auto& comment:comments){const auto low=state.canvas.view.screen({comment.at("position")[0].get<double>()*dpi,comment.at("position")[1].get<double>()*dpi},start),high=state.canvas.view.screen({(comment.at("position")[0].get<double>()+comment.at("size")[0].get<double>())*dpi,(comment.at("position")[1].get<double>()+comment.at("size")[1].get<double>())*dpi},start);draw->AddRect(low,high,cyui::alpha(pal.info,.5f),cyui::dp(4));draw->AddText({low.x+cyui::dp(8),low.y+cyui::dp(8)},pal.textDim,comment.at("text").get_ref<const std::string&>().c_str());}
+    if(!view.wireNode.empty())for(const auto& [id,pin]:pins)if(pin.node==view.wireNode&&pin.key==view.wirePin&&pin.output==view.wireOutput&&!state.wiring)draw->AddLine(pin.point,io.MousePos,pal.accent,cyui::dp(2));
+    draw->AddText({start.x+cyui::dp(12),start.y+size.y-cyui::dp(24)},pal.textFaint,tr("MMB pan | Wheel zoom | Click pins to connect | RMB add"));draw->PopClipRect();
+    if(hovered&&ImGui::IsMouseClicked(1)&&!result.linkRemoved){const auto point=state.canvas.view.world(io.MousePos,start);view.newNodeAt={float(point.x/dpi),float(point.y/dpi)};ImGui::OpenPopup("##canvasMenu");}
     if(ImGui::BeginPopup("##canvasMenu")) {
         for(const auto& [type,spec]:nodeTypes().items())if(type.rfind("function.",0)!=0&&(domain=="function"||spec["domain"]=="both"||spec["domain"]==domain)) {
             if(domain=="function"&&(type=="event.begin"||type=="material.output"))continue;
@@ -140,87 +180,9 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
                 command("graph_node_add",{{"graphId",graphId},{"type",type},{"position",{view.newNodeAt.x,view.newNodeAt.y}}});
         }ImGui::EndPopup();
     }
-    auto* draw=ImGui::GetWindowDrawList();draw->PushClipRect(start,end,true);draw->AddRectFilled(start,end,pal.bg0);
-    const float z=cyui::dp(view.zoom),width=cyui::dp(205)*view.zoom,header=cyui::dp(34)*view.zoom,row=cyui::dp(27)*view.zoom;
-    const float spacing=cyui::dp(32)*view.zoom;
-    for(float x=std::fmod(view.pan.x,spacing);x<size.x;x+=spacing)draw->AddLine({start.x+x,start.y},{start.x+x,end.y},pal.grid);
-    for(float y=std::fmod(view.pan.y,spacing);y<size.y;y+=spacing)draw->AddLine({start.x,start.y+y},{end.x,start.y+y},pal.grid);
-    const auto comments=graph.value("comments",Json::array());for(const auto& c:comments){ImVec2 a{start.x+view.pan.x+c["position"][0].get<float>()*z,start.y+view.pan.y+c["position"][1].get<float>()*z},b{a.x+c["size"][0].get<float>()*z,a.y+c["size"][1].get<float>()*z};draw->AddRectFilled(a,b,cyui::alpha(pal.info,.08f),cyui::dp(4));draw->AddRect(a,b,cyui::alpha(pal.info,.4f),cyui::dp(4));draw->AddText({a.x+cyui::dp(10),a.y+cyui::dp(8)},pal.textDim,c.at("text").get_ref<const std::string&>().c_str());}
-    struct Pin {std::string node,key,type;bool output;ImVec2 p;bool userName=false;};
-    std::vector<Pin> pins;
-    struct Box{std::string id,type;ImVec2 a,b;};std::vector<Box> boxes;
-    for(const auto& n:graph.at("nodes")){
-        const std::string id=n.at("id"),type=n.at("type");const auto spec=nodeDefinition(graph,n);
-        float px=n["position"][0],py=n["position"][1];
-        if(!view.dragging.empty()&&ImGui::IsMouseDown(ImGuiMouseButton_Left))for(const auto& original:view.dragPositions)if(original["nodeId"]==id){px=original["position"][0].get<float>()+(io.MousePos.x-view.dragOrigin.x)/z;py=original["position"][1].get<float>()+(io.MousePos.y-view.dragOrigin.y)/z;}
-        const ImVec2 a{start.x+view.pan.x+px*z,start.y+view.pan.y+py*z};const bool route=type.rfind("route.",0)==0;
-        ImVec2 b{a.x+(route?cyui::dp(36)*view.zoom:width),a.y+(route?cyui::dp(24)*view.zoom:header+row*(1+std::max(spec["inputs"].size(),spec["outputs"].size())))};
-        boxes.push_back({id,type,a,b});
-        int i=0;for(const auto& [key,t]:spec["inputs"].items())pins.push_back({id,key,t,false,{a.x,a.y+(route?cyui::dp(12)*view.zoom:header+(++i)*row)},((type.rfind("function.",0)==0||type=="macro.call"||(type=="object.call"||type=="interface.call"))&&t!="exec")||type=="struct.make"});
-        i=0;for(const auto& [key,t]:spec["outputs"].items())pins.push_back({id,key,t,true,{b.x,a.y+(route?cyui::dp(12)*view.zoom:header+(++i)*row)},((type.rfind("function.",0)==0||type=="macro.call"||(type=="object.call"||type=="interface.call"))&&t!="exec")||type=="struct.break"||type=="enum.switch"});
-    }
-    auto findPin=[&](const std::string& n,const std::string& p,bool out)->const Pin*{for(const auto& pin:pins)if(pin.node==n&&pin.key==p&&pin.output==out)return &pin;return nullptr;};
-    for(const auto& link:graph.at("links")){
-        const auto* a=findPin(link.at("fromNode"),link.at("fromPin"),true);const auto* b=findPin(link.at("toNode"),link.at("toPin"),false);
-        if(a&&b){const float d=std::max(cyui::dp(12),std::abs(b->p.x-a->p.x)*0.5f);draw->AddBezierCubic(a->p,add(a->p,{d,0}),add(b->p,{-d,0}),b->p,a->type=="exec"?pal.text:pal.accent,cyui::dp(2));}
-    }
-    if(!view.wireNode.empty()){
-        if(const auto* pin=findPin(view.wireNode,view.wirePin,view.wireOutput))
-            draw->AddBezierCubic(pin->p,add(pin->p,{cyui::dp(60),0}),add(io.MousePos,{-cyui::dp(60),0}),io.MousePos,pal.accent,cyui::dp(2));
-    }
-    bool pinClicked=false,boxClicked=false;
-    for(const auto& box:boxes){
-        bool selected=view.selection.count(box.id)!=0;draw->AddRectFilled(box.a,box.b,pal.bg2,cyui::dp(4));
-        const bool reroute=box.type.rfind("route.",0)==0;
-        if(!reroute)draw->AddRectFilled(box.a,{box.b.x,box.a.y+header},selected?pal.accentDim:pal.bg4,cyui::dp(4));
-        draw->AddRect(box.a,box.b,view.debug.value("nextNode","")==box.id?pal.warning:selected?pal.accent:pal.lineStrong,cyui::dp(4),0,cyui::dp(selected?2.f:1.f));
-        Json spec;for(const auto& n:graph["nodes"])if(n["id"]==box.id)spec=nodeDefinition(graph,n);const auto title=box.type=="function.call"||box.type=="macro.call"||(box.type=="object.call"||box.type=="interface.call")?spec.at("title").get<std::string>():std::string(tr(spec.at("title").get_ref<const std::string&>().c_str()));
-        if(!reroute)draw->AddText(nullptr,ImGui::GetFontSize()*view.zoom,{box.a.x+cyui::dp(12)*view.zoom,box.a.y+cyui::dp(9)*view.zoom},pal.text,title.c_str());
-        else draw->AddLine({box.a.x+cyui::dp(6)*view.zoom,(box.a.y+box.b.y)/2},{box.b.x-cyui::dp(6)*view.zoom,(box.a.y+box.b.y)/2},pal.textDim,cyui::dp(2));
-        for(const auto& n:graph["nodes"])if(n["id"]==box.id){
-            if(n.contains("variable"))draw->AddText(nullptr,ImGui::GetFontSize()*view.zoom,{box.a.x+cyui::dp(12)*view.zoom,box.b.y-row*.65f},pal.info,n.at("variable").get_ref<const std::string&>().c_str());
-            if(n.value("breakpoint",false))draw->AddCircleFilled({box.b.x-cyui::dp(12),box.a.y+header/2},cyui::dp(5),pal.error);
-            if(!n.value("comment","").empty()&&hovered&&io.MousePos.x>box.a.x&&io.MousePos.x<box.b.x&&io.MousePos.y>box.a.y&&io.MousePos.y<box.b.y)ImGui::SetTooltip("%s",n.at("comment").get_ref<const std::string&>().c_str());
-        }
-        if(hovered&&io.MousePos.x>box.a.x&&io.MousePos.x<box.b.x&&io.MousePos.y>box.a.y&&io.MousePos.y<box.b.y&&ImGui::IsMouseClicked(ImGuiMouseButton_Left)){
-            if(io.KeyCtrl){if(view.selection.count(box.id))view.selection.erase(box.id);else view.selection.insert(box.id);}else if(!view.selection.count(box.id)){view.selection={box.id};}
-            view.selected=view.selection.count(box.id)?box.id:view.selection.empty()?"":*view.selection.begin();boxClicked=true;
-            if(io.MousePos.y<box.a.y+header&&view.selection.count(box.id)){
-                view.dragging=box.id;view.dragOrigin=io.MousePos;view.dragRevision=core.revision();view.dragPositions=Json::array();
-                for(const auto& n:graph["nodes"])if(view.selection.count(n.at("id")))view.dragPositions.push_back({{"nodeId",n.at("id")},{"position",n.at("position")}});
-                for(const auto& n:graph["nodes"])if(n["id"]==box.id)view.nodeOrigin={n["position"][0],n["position"][1]};
-            }
-        }
-    }
-    for(const auto& pin:pins){
-        const auto color=pin.type=="exec"?pal.text:pin.type=="bool"?pal.warning:pin.type=="color"?pal.info:pal.accent;
-        draw->AddCircleFilled(pin.p,cyui::dp(5)*view.zoom,color);
-        const auto text=pin.userName?pin.key:std::string(tr(pin.key.c_str()));const auto textWidth=ImGui::CalcTextSize(text.c_str()).x*view.zoom;
-        if(pin.node.empty()||std::none_of(boxes.begin(),boxes.end(),[&](const Box& b){return b.id==pin.node&&b.type.rfind("route.",0)==0;}))draw->AddText(nullptr,ImGui::GetFontSize()*view.zoom,{pin.p.x+(pin.output?-textWidth-cyui::dp(12)*view.zoom:cyui::dp(12)*view.zoom),pin.p.y-ImGui::GetFontSize()*view.zoom/2},pal.textDim,text.c_str());
-        if(hovered&&distance(pin.p,io.MousePos)<cyui::dp(11)&&ImGui::IsMouseClicked(ImGuiMouseButton_Left)){
-            pinClicked=true;view.dragging.clear();
-            if(!view.wireNode.empty()&&view.wireOutput!=pin.output){
-                const auto from=view.wireOutput?view.wireNode:pin.node,fp=view.wireOutput?view.wirePin:pin.key;
-                const auto to=view.wireOutput?pin.node:view.wireNode,tp=view.wireOutput?pin.key:view.wirePin;
-                command("graph_link_add",{{"graphId",graphId},{"fromNode",from},{"fromPin",fp},{"toNode",to},{"toPin",tp}});
-                view.wireNode.clear();
-            }else{view.wireNode=pin.node;view.wirePin=pin.key;view.wireOutput=pin.output;}
-        }
-    }
-    if(hovered&&ImGui::IsMouseClicked(ImGuiMouseButton_Left)&&!pinClicked&&!boxClicked){if(!io.KeyCtrl)view.selection.clear();view.selected.clear();view.wireNode.clear();view.marquee=true;view.marqueeStart=io.MousePos;}
-    if(view.marquee){
-        const ImVec2 a{std::min(view.marqueeStart.x,io.MousePos.x),std::min(view.marqueeStart.y,io.MousePos.y)},b{std::max(view.marqueeStart.x,io.MousePos.x),std::max(view.marqueeStart.y,io.MousePos.y)};
-        draw->AddRectFilled(a,b,cyui::alpha(pal.selection,.4f));draw->AddRect(a,b,pal.accent);
-        if(ImGui::IsMouseReleased(ImGuiMouseButton_Left)){if(distance(a,b)>cyui::dp(5))for(const auto& box:boxes)if(box.a.x<b.x&&box.b.x>a.x&&box.a.y<b.y&&box.b.y>a.y)view.selection.insert(box.id);view.selected=view.selection.empty()?"":*view.selection.begin();view.marquee=false;}
-    }
-    if(!view.dragging.empty()&&ImGui::IsMouseReleased(ImGuiMouseButton_Left)){
-        const float dx=(io.MousePos.x-view.dragOrigin.x)/z,dy=(io.MousePos.y-view.dragOrigin.y)/z;
-        if(std::hypot(dx,dy)>.1f){auto positions=view.dragPositions;for(auto& original:positions){original["position"][0]=original["position"][0].get<float>()+dx;original["position"][1]=original["position"][1].get<float>()+dy;}command("graph_nodes_move",{{"graphId",graphId},{"positions",positions},{"expectedRevision",view.dragRevision}});}
-        view.dragging.clear();view.dragPositions=Json::array();
-    }
-    if(graphProbe){Json probe=Json::array();for(const auto& box:boxes)probe.push_back({{"id",box.id},{"a",{box.a.x,box.a.y}},{"b",{box.b.x,box.b.y}}});graphProbe(viewKey,probe,view.selection);}
-    draw->AddText({start.x+cyui::dp(12),end.y-cyui::dp(24)},pal.textFaint,tr("MMB pan | Wheel zoom | Click pins to connect | RMB add"));
-    draw->PopClipRect();ImGui::EndChild();ImGui::SameLine();
+    view.zoom=float(state.canvas.view.zoom);view.pan={float(-state.canvas.view.origin.x*view.zoom),float(-state.canvas.view.origin.y*view.zoom)};
+    if(graphProbe)graphProbe(viewKey,boxes,view.selection);
+    ImGui::EndChild();ImGui::SameLine();
     ImGui::BeginChild("##nodeDetails",{0,0});
     cyui::sectionTitle(tr("Node properties"));
     if(view.selected.empty())cyui::textDim("%s",tr("Select a node to edit its values."));
@@ -240,8 +202,8 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
         if(n.contains("function"))cyui::textDim("%s: %s",tr("Definition"),n.at("function").get_ref<const std::string&>().c_str());
         for(const auto& [key,v]:n["values"].items()){
             const auto definition=nodeDefinition(graph,n);const std::string portType=definition.at("inputs").contains(key)?definition["inputs"][key].get<std::string>():definition.at("outputs").at(key).get<std::string>();Json spec=graphWidget(portType,graph.value("types",Json::object()));
-            ImGui::TextUnformatted(type.rfind("function.",0)==0||type=="macro.call"||(type=="object.call"||type=="interface.call")||type=="struct.make"?key.c_str():tr(key.c_str()));Json changed;
-            if(editValue(graphId+"/"+view.selected+"/"+key,spec,v,changed))
+            const std::string caption=type.rfind("function.",0)==0||type=="macro.call"||(type=="object.call"||type=="interface.call")||type=="struct.make"?key:tr(key.c_str());Json changed;
+            if(editProperty(viewKey+"/"+view.selected+"/"+key,caption,spec,v,changed))
                 command("graph_node_value",{{"graphId",graphId},{"nodeId",view.selected},{"key",key},{"value",changed}});
         }
         if(cyui::dangerButton(tr("Delete node")))remove();

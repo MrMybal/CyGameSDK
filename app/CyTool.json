@@ -3,7 +3,7 @@
   "protocolVersion": "1.0",
   "id": "cy.editor.gamesdk",
   "name": "CyGameEditor",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "Modular game editor foundation. CyUI native desktop and CyToolsCore MCP/SDK.",
   "vendor": "Cyberalien",
   "author": "Cyberalien",

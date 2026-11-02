@@ -6,7 +6,7 @@ requires an adapter, real format/toolchain knowledge and verification against th
 
 - Check `runtime/active-release.json`, `app/CyTool.json` and the running
   `editor_status` before assuming a version or capability. Currently the active
-  source/catalogue/executable is 0.28.0. The preserved 0.19.0 candidate is under
+  source/catalogue/executable is 0.29.0. The preserved 0.19.0 candidate is under
   `runtime/development-0.19.0`; its executable remains historical. Import source
   was adopted and verified in 0.20.0; read `app/Docs/CompletionMilestones.md`.
 - For a new game, follow `app/Docs/GameAdapterGuide.md` and fill in
@@ -14,8 +14,10 @@ requires an adapter, real format/toolchain knowledge and verification against th
   Do not overwrite this reusable foundation or the user's installed game files.
 - CyToolsCore provides MCP, the AI SDK, identities, jobs and ProcessWorker.
   Extend operations/providers; do not implement a replacement MCP server or scheduler.
-- CyImgui_Interface supplies CyUI/ImGui. Read its `docs/AI_GUIDE.md` before native UI
-  edits. Do not modify sibling repositories as part of a game adapter task.
+- CyUI supplies modular presentation and the pinned ImGui snapshot. Read
+  `app/Docs/CyUIMigration.md`, `app/dependencies.lock.json`, then the locked CyUI
+  checkout's `docs/AI_GUIDE.md` and `docs/MODULES.md` before native UI edits.
+  Do not modify sibling repositories as part of this application.
 - English is the source/default/fallback UI language, independent of Windows locale.
   Preserve an explicitly selected language and add other languages to the catalogue.
 - `IGameAdapter` is a source-level extension seam, not automatic support for an
@@ -93,3 +95,10 @@ comment provenance. Every connected function output must read every wired argume
 include nested macro laziness and per-output UV dependencies. Recompute/validate the
 candidate and runtime macro expansion, require the exact hash and keep one Undo.
 --test-expand injects only its isolated host's own ImGui canvas/modal/key input.
+
+Native 0.29 modular UI: use explicit CyUI targets and the dependency lock. Core
+owns all document data/validation/Undo; CyUI owns common presentation/gestures.
+Commit only completed edits and cancel stale/hidden Inspector drafts, including
+ImGui deactivation replay. Preserve authored captions/IDs independently of locale.
+Read app/Docs/CyUIMigration.md for the remaining API gaps and retained adapters.
+--test-modules injects only its own isolated ImGui context, as do the other tests.

@@ -24,7 +24,7 @@ void EditorApp::importPanel(){
     cyui::heading(tr("Asset Import"),2);ImGui::TextWrapped("%s",tr("Import a source file into the project. Original files remain unchanged."));
     auto definitions=core.execute("asset_importers");
     auto state=importAction("asset_import_status",{});bool running=active(state);
-    {cyui::ScopedDisabled disabled(running);if(cyui::beginProperties("##importFields",cyui::dp(150))){
+    {cyui::ScopedDisabled disabled(running);if(cyui::beginProperties("##importFields",150)){
         cyui::property(tr("Reimport existing asset"));if(ImGui::Checkbox("##reimport",&reimport_))importReport_=Json();
         if(!reimport_){cyui::property(tr("Importer"));if(ImGui::BeginCombo("##importProvider",importProvider_.empty()?tr("Automatic"):importProvider_.c_str())){if(ImGui::Selectable(tr("Automatic"),importProvider_.empty()))importProvider_.clear();for(const auto& definition:definitions.at("importers"))if(ImGui::Selectable(tr(definition.at("name").get_ref<const std::string&>().c_str()),definition.at("id")==importProvider_))importProvider_=definition.at("id");ImGui::EndCombo();}}
         cyui::property(tr("Source file"));ImGui::InputText("##importSource",importSource_,sizeof(importSource_),reimport_?ImGuiInputTextFlags_ReadOnly:0);
@@ -51,7 +51,7 @@ void EditorApp::importPanel(){
             if(importReport_.value("state","")=="LocalChanges")cyui::callout(cyui::Tone::warning,tr("Reimport is blocked because this asset was edited locally."));
             if(importReport_.value("state","")=="SourceMissing")cyui::callout(cyui::Tone::warning,tr("Restore the source file to reimport this asset."));
             cyui::sectionTitle(tr("Import details"));auto record=importReport_.value("metadata",importReport_);
-            if(cyui::beginProperties("##importInfo",cyui::dp(150))){
+            if(cyui::beginProperties("##importInfo",150)){
                 for(const auto& pair:std::vector<std::pair<const char*,const char*>>{{"importerId","Importer"},{"sourcePath","Source file"},{"importedAt","Imported at"}})if(record.contains(pair.first)){cyui::property(tr(pair.second));ImGui::TextWrapped("%s",record.at(pair.first).get_ref<const std::string&>().c_str());}
                 if(record.contains("info")){auto info=record.at("info");if(info.contains("width")){cyui::property(tr("Dimensions"));ImGui::Text("%u x %u",info.at("width").get<unsigned>(),info.at("height").get<unsigned>());}if(info.contains("format")){cyui::property(tr("Format"));ImGui::TextUnformatted(info.at("format").get_ref<const std::string&>().c_str());}}
                 cyui::endProperties();

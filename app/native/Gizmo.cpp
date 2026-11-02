@@ -5,25 +5,11 @@
 #include <cstring>
 namespace cygame {
 bool EditorApp::transformGizmo(const std::string& id,const ImVec2& origin,const ImVec2& size,const float* view,const float* projection){
-    auto& draft=gizmos_[id];const auto& p=cyui::palette();
-    ImGuizmo::PushID(id.c_str());ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());ImGuizmo::SetRect(origin.x,origin.y,size.x,size.y);ImGuizmo::SetOrthographic(cameras_[id].mode!=0);
-    auto& style=ImGuizmo::GetStyle();for(auto& c:style.Colors)c=cyui::vec(p.textDim);
-    const ImU32 axes[]={p.warning,p.success,p.info};
-    for(int i=0;i<3;++i){style.Colors[ImGuizmo::DIRECTION_X+i]=cyui::vec(axes[i]);style.Colors[ImGuizmo::PLANE_X+i]=cyui::vec(cyui::alpha(axes[i],0.25f));}
-    style.Colors[ImGuizmo::SELECTION]=cyui::vec(p.accent);style.Colors[ImGuizmo::INACTIVE]=cyui::vec(p.textFaint);
-    style.Colors[ImGuizmo::TEXT]=cyui::vec(p.text);style.Colors[ImGuizmo::TEXT_SHADOW]=cyui::vec(p.bg0);
-    style.Colors[ImGuizmo::ROTATION_USING_FILL]=cyui::vec(cyui::alpha(p.accent,0.15f));
-    style.TranslationLineThickness=cyui::dp(2.5f);style.RotationLineThickness=cyui::dp(2.5f);style.ScaleLineThickness=cyui::dp(2.5f);
-    style.TranslationLineArrowSize=cyui::dp(6);style.ScaleLineCircleSize=cyui::dp(5);style.CenterCircleSize=cyui::dp(6);
-    bool blocked=draft.active;
-    if(draft.active&&(draft.revision!=core.revision()||draft.primary!=core.selection()||ImGui::IsKeyPressed(ImGuiKey_Escape))){
-        ImGuizmo::Enable(false);draft.active=false;draft.transforms=Json::array();
-        if(draft.revision!=core.revision())cyui::notify(tr("Transform cancelled because the document changed."),cyui::Tone::warning);
-    }
-    if(core.selection().empty()||gizmoOperation_<0){ImGuizmo::PopID();return blocked;}
+    auto& draft=gizmos_[id];
+    if(draft.active&&(draft.primary!=core.selection()||gizmoOperation_<0)){draft.ui.active=false;draft.ui.blocked=true;draft.active=false;draft.transforms=Json::array();}
+    if(core.selection().empty()||gizmoOperation_<0)return false;
     auto entity=core.entity(core.selection());auto properties=entity.at("properties");bool locked=false;
     for(const auto& selected:core.selectedIds())locked|=core.entity(selected).value("editorLocked",false);
-    ImGuizmo::Enable(!locked);
     float matrix[16]{};
     if(draft.active)std::copy(std::begin(draft.matrix),std::end(draft.matrix),matrix);
     else{
@@ -32,8 +18,12 @@ bool EditorApp::transformGizmo(const std::string& id,const ImVec2& origin,const 
     }
     const auto operation=core.selectedIds().size()>1?ImGuizmo::TRANSLATE:gizmoOperation_==0?ImGuizmo::TRANSLATE:gizmoOperation_==1?ImGuizmo::ROTATE:ImGuizmo::SCALE;
     float value=operation==ImGuizmo::TRANSLATE?translationSnap_:operation==ImGuizmo::ROTATE?rotationSnap_:scaleSnap_,snap[3]={value,value,value};
-    ImGuizmo::Manipulate(view,projection,operation,localTransform_?ImGuizmo::LOCAL:ImGuizmo::WORLD,matrix,nullptr,snapping_?snap:nullptr);
-    const bool usingNow=ImGuizmo::IsUsing(),over=ImGuizmo::IsOver();
+    std::array<float,16> transform{},viewMatrix{},projectionMatrix{};std::copy(matrix,matrix+16,transform.begin());std::copy(view,view+16,viewMatrix.begin());std::copy(projection,projection+16,projectionMatrix.begin());
+    cyui::Gizmo3DOptions options;options.operation=operation;options.mode=localTransform_?ImGuizmo::LOCAL:ImGuizmo::WORLD;options.orthographic=cameras_[id].mode!=0;options.enabled=!locked;options.revision=core.revision();options.snap=snapping_?snap:nullptr;
+    const auto edit=cyui::gizmo3D(id.c_str(),draft.ui,transform,viewMatrix,projectionMatrix,{origin,{origin.x+size.x,origin.y+size.y}},options);
+    if(edit.phase==cyui::EditPhase::cancel){draft.active=false;draft.transforms=Json::array();return true;}
+    const bool usingNow=edit.phase==cyui::EditPhase::begin||edit.phase==cyui::EditPhase::update||draft.ui.active,over=ImGuizmo::IsOver();
+    if(edit.phase!=cyui::EditPhase::none)std::copy(edit.value.begin(),edit.value.end(),matrix);
     if(usingNow&&!draft.active){
         draft.active=true;draft.revision=core.revision();draft.primary=core.selection();draft.original=Json::array();
         for(const auto& selected:core.selectedIds()){
@@ -51,11 +41,11 @@ bool EditorApp::transformGizmo(const std::string& id,const ImVec2& origin,const 
                 else{t["position"]={position[0],position[1],position[2]};t["rotation"]={rotation[0],rotation[1],rotation[2]};t["scale"]={std::max(scale[0],.01f),std::max(scale[1],.01f),std::max(scale[2],.01f)};}
             }
         }
-    }else if(draft.active){
+    }else if(draft.active&&edit.committed()){
         auto transforms=draft.transforms;draft.active=false;
         if(!transforms.empty())invoke("scene_transform_batch",{{"transforms",transforms},{"expectedRevision",draft.revision}});
         draft.transforms=Json::array();
     }
-    ImGuizmo::PopID();return over||usingNow||blocked;
+    return over||usingNow||draft.ui.blocked;
 }
 }

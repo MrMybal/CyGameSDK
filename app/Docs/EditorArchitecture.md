@@ -1,4 +1,4 @@
-# Editor architecture — 0.28.0
+# Editor architecture — 0.29.0
 
 ## Layers and ownership
 
@@ -23,6 +23,14 @@ The native GUI uses the same validated command dispatcher as the IPC bridge.
 Immediate document edits are local transactions. The CyToolsCore job envelope is
 the AI-facing invocation/lifetime contract. Long builds/imports should execute as
 Core ProcessWorker jobs, then submit a short commit operation to the owner thread.
+
+## Common presentation modules
+
+The dependency lock and CMake targets select CyUI Core, Nodes, Inspector, Assets,
+Viewport, ImGuizmo, Timeline, Commands, Diagnostics, Code and Diff. Canvas/Images
+are automatic dependencies. The modules render host snapshots and emit requests;
+EditorCore remains the document/validation/Undo owner. Read [CyUIMigration](CyUIMigration.md)
+for the view mapping, stale-edit handling, precise API gaps and verification.
 
 ## Source plugins
 
