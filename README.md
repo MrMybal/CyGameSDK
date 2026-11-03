@@ -14,6 +14,26 @@ automatically support an arbitrary game engine, ship a real game codec, or provi
 full Unreal Engine / Blueprint compatibility. A derived SDK needs verified game
 formats, tools, runtime bindings and an adapter for the chosen game/version.
 
+## Screenshots
+
+Captured from CyGameSDK 0.29.0 with the English interface and Sandbox examples.
+
+**Editor workspace** — docked viewport, scene hierarchy, properties and Content Browser.
+
+![CyGameSDK editor workspace with the Sandbox scene, transform gizmo, World Outliner, Details panel and Content Browser](app/Docs/images/editor-workspace.png)
+
+**Logic graph** — node connections, graph navigation and debugging controls.
+
+![CyGameSDK logic graph editor with connected execution nodes and graph diagnostics](app/Docs/images/logic-graph.png)
+
+**Material editor** — texture coordinates, sampling and a compiled DX11 preview.
+
+![CyGameSDK material graph with texture sampling nodes and the compiled color texture preview](app/Docs/images/material-editor.png)
+
+**Animation editor** — skeleton overlay, clip controls, keyframes and timeline.
+
+![CyGameSDK animation editor showing the AnimatedTriangle example, skeleton overlay and animation timeline](app/Docs/images/animation-editor.png)
+
 ## Editor capabilities
 
 - Docked tabs, detached windows, saved workspaces, multiple viewport cameras,
@@ -52,10 +72,6 @@ Requirements:
   your CyToolsCore checkout. MCP uses its pinned official Python transport.
 
 CyUI 1.2.0 is fetched at the exact locked commit into `runtime/dependencies`.
-The upstream repository is [MrMybal/CyUI](https://github.com/MrMybal/CyUI).
-If repository access is restricted, authenticate Git with an account that has
-access before building, or supply an authorized offline checkout using
-`-CyUIRoot`. Do not put access tokens in CMake arguments or dependency URLs.
 The upstream repository is [MrMybal/CyUI](https://github.com/MrMybal/CyUI).
 If repository access is restricted, authenticate Git with an account that has
 access before building, or supply an authorized offline checkout using
