@@ -44,12 +44,16 @@ captures of real projects, credentials or private paths. Keep screenshot alt tex
 and all interaction labels translated. Screenshots show the English application;
 this is stated in the page content and is independent of the site language.
 
-## GitHub Pages preparation
+## GitHub Pages
 
-When publication is explicitly authorized, this directory can be served from the
-`/docs` folder on the selected branch. Relative paths support the `/CyGameSDK/`
-project prefix and direct-file use. `.nojekyll` disables Jekyll processing. There
-is no deployment workflow, automatic publication or hosting configuration change.
+- Showcase: https://mrmybal.github.io/CyGameSDK/
+- English guide: https://mrmybal.github.io/CyGameSDK/guide.html?lang=en
+- French guide: https://mrmybal.github.io/CyGameSDK/guide.html?lang=fr
+
+GitHub Pages serves the `/docs` directory on `main`, using the built-in branch
+build. Pushes to that branch update the website automatically. Relative paths
+support the `/CyGameSDK/` project prefix and direct-file use. `.nojekyll` disables
+Jekyll processing. No custom deployment workflow or external hosting is required.
 
 ## Product boundaries
 

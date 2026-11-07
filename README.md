@@ -14,6 +14,16 @@ automatically support an arbitrary game engine, ship a real game codec, or provi
 full Unreal Engine / Blueprint compatibility. A derived SDK needs verified game
 formats, tools, runtime bindings and an adapter for the chosen game/version.
 
+## Website and documentation
+
+[Explore CyGameSDK](https://mrmybal.github.io/CyGameSDK/) ·
+[Read the documentation](https://mrmybal.github.io/CyGameSDK/guide.html?lang=en) ·
+[Download the source](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.29.0)
+
+The showcase and HTML setup guide are available in English and French.
+[Présentation en français](https://mrmybal.github.io/CyGameSDK/?lang=fr) ·
+[Documentation en français](https://mrmybal.github.io/CyGameSDK/guide.html?lang=fr).
+
 ## Screenshots
 
 Captured from CyGameSDK 0.29.0 with the English interface and Sandbox examples.
