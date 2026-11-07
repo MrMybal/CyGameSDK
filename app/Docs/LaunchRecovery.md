@@ -1,9 +1,11 @@
 # Build and launch troubleshooting
 
-Current source/catalogue version: 0.28.0. See the root [README](../../README.md)
+Current source/catalogue version: 0.29.0. See the root [README](../../README.md)
 for setup and [CompletionMilestones](CompletionMilestones.md) for historical
 feature milestones. Historical local archives are not executable replacements
 for the current source/catalogue.
+
+The human troubleshooting page is in the [local CyDoc manual](../../Documentation/Documentation.html#/en/troubleshooting).
 
 ## A fresh source checkout
 

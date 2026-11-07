@@ -746,68 +746,6 @@ p {
   font-size:11px;
   color:#a2acb9
 }
-.guide-layout {
-  display:grid;
-  grid-template-columns:220px 1fr;
-  gap:80px;
-  padding-block:55px
-}
-.guide-sidebar {
-  position:sticky;
-  top:105px;
-  align-self:start
-}
-.guide-sidebar .eyebrow {
-  margin-top:35px;
-  color:#7b91a7
-}
-.guide-sidebar nav {
-  display:flex;
-  flex-direction:column;
-  gap:17px;
-  font-size:13px;
-  color:#b6c1cc
-}
-.guide-article {
-  max-width:850px
-}
-.guide-article h1 {
-  font-size:46px;
-  line-height:1.2;
-  letter-spacing:-1.6px;
-  margin:20px 0
-}
-.guide-article header {
-  padding-bottom:30px
-}
-.guide-article section {
-  padding:42px 0;
-  border-top:1px solid #343b45
-}
-.guide-article h2 {
-  font-size:28px;
-  letter-spacing:-.7px
-}
-.guide-article p {
-  font-size:15px;
-  line-height:1.9
-}
-.guide-article pre {
-  max-width:100%;
-  overflow:auto;
-  white-space:pre;
-  background:#191e26;
-  border:1px solid #364150;
-  padding:22px;
-  border-radius:7px;
-  font-family:Consolas,monospace;
-  font-size:12px;
-  line-height:2;
-  color:#b9d7f1
-}
-.guide-article .feature-list li {
-  font-size:14px
-}
 .lightbox {
   width:100vw;
   max-width:none;
@@ -937,9 +875,6 @@ kbd {
   }
   .header-download {
     display:none
-  }
-  .guide-layout {
-    gap:40px
   }
 }
 @media(max-width:760px) {
@@ -1220,39 +1155,6 @@ kbd {
   .site-footer nav {
     gap:17px 24px;
     font-size:11px
-  }
-  .guide-layout {
-    display:block;
-    padding-block:30px
-  }
-  .guide-sidebar {
-    position:static;
-    margin-bottom:35px
-  }
-  .guide-sidebar .eyebrow {
-    margin-top:25px
-  }
-  .guide-sidebar nav {
-    flex-direction:row;
-    flex-wrap:wrap;
-    gap:10px 22px;
-    font-size:12px
-  }
-  .guide-article h1 {
-    font-size:36px
-  }
-  .guide-article h2 {
-    font-size:25px
-  }
-  .guide-article p {
-    font-size:14px
-  }
-  .guide-article pre {
-    font-size:10px;
-    padding:14px
-  }
-  .guide-article .feature-list li {
-    font-size:13px
   }
   .lightbox {
     padding:12px

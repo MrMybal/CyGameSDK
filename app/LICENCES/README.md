@@ -7,6 +7,8 @@
 - Dear ImGui 1.93.0 WIP (`IMGUI_VERSION_NUM=19297`), locked CyUI snapshot, MIT.
   Dear-ImGui-MIT.txt and Dear-ImGui-stb-MIT.txt (MIT option for bundled stb).
   Upstream: https://github.com/ocornut/imgui
+- CyDoc 0.1.0 at `e038c474577e1f305df3eba421f2b9c03b0f1d8d`, MIT. CyDoc-MIT.txt.
+  Upstream: https://github.com/MrMybal/CyDoc. Reader: image, gallery, graph.
 - CyToolsCore 0.10.1: installed official local wheel, MIT. CyToolsCore-MIT.txt.
 - nlohmann/json 3.11.3: vendored single header, MIT. nlohmann-json-MIT.txt.
   Upstream: https://github.com/nlohmann/json/tree/v3.11.3

@@ -38,3 +38,8 @@ CMakeCache.txt
 # OS files
 Thumbs.db
 .DS_Store
+
+# CyDoc intermediate inputs and private review reports
+.CyDocBuild/internal/
+.CyDocBuild/api/
+.CyDocBuild/manual/*/api-generated/

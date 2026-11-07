@@ -2,6 +2,8 @@
 #include "Graph.h"
 #include "BuildClient.h"
 #include "EditorTheme.h"
+#include "Documentation.h"
+#include <shellapi.h>
 #include <imgui_internal.h>
 #include <algorithm>
 #include <fstream>
@@ -205,6 +207,26 @@ Json EditorApp::open(const std::string& id,bool instance){
     throw std::runtime_error("Panel not found: "+id);
 }
 void EditorApp::probeInterface(const std::string& id){if(interfaceProbe)interfaceProbe(id,ImGui::GetItemRectMin(),ImGui::GetItemRectMax());}
+bool EditorApp::openDocumentation(bool contextual){
+    std::error_code error;
+    if(!fs::is_regular_file(core.root()/"Documentation/Documentation.html",error)){
+        cyui::notify(tr("Documentation is missing. Regenerate or restore the Documentation folder."),cyui::Tone::error);return false;
+    }
+    auto topic=documentationTopic(contextual?helpContext_:"interface");
+    if(contextual&&helpContext_.rfind("graph:",0)==0){
+        const auto graph=helpContext_.substr(6);
+        if(core.graphs().contains(graph)&&core.graphs().at(graph).value("domain","")=="material")topic={"materials","nodes"};
+    }
+    const auto url=documentationUrl(core.root(),language_,topic);
+    bool opened=false;
+    if(documentationLauncher)opened=documentationLauncher(url);
+    else {
+        const auto wide=fs::u8path(url).wstring();
+        opened=reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr,L"open",wide.c_str(),nullptr,nullptr,SW_SHOWNORMAL))>32;
+    }
+    if(!opened)cyui::notify(tr("The documentation browser could not be opened."),cyui::Tone::error);
+    return opened;
+}
 void EditorApp::menuBar(){
     if(!ImGui::BeginMainMenuBar())return;
     {cyui::ScopedFont font(cyui::boldFont());ImGui::TextUnformatted("CY");}
@@ -268,6 +290,8 @@ void EditorApp::menuBar(){
         ImGui::EndMenu();
     }
     if(beginMenu("Help",5)){
+        if(item("Documentation"))openDocumentation(false);
+        if(item("Context Help","F1"))openDocumentation();
         if(item("Editor Overview"))open("interface");
         if(item("Diagnostics",nullptr,false,pluginEnabled_))open("diagnostics");
         ImGui::EndMenu();
@@ -552,6 +576,7 @@ void EditorApp::frame(){
     cyui::setLocale(language_.c_str());
     if(stylePending_)configureStyle(styleDpi_);
     auto& io=ImGui::GetIO();
+    if(ImGui::IsKeyPressed(ImGuiKey_F1,false))openDocumentation();
     if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_Space))invoke("content_drawer_toggle");
     if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_P)){searchOpen_=true;}
     if(!io.WantTextInput){
@@ -585,6 +610,7 @@ void EditorApp::frame(){
         ImGui::SetNextWindowSize(cyui::dp(500,400),ImGuiCond_FirstUseEver);
         if(panel.id.rfind("json:",0)==0||panel.id=="mesh"||panel.id.rfind("model:",0)==0||panel.id.rfind("viewport.",0)==0||panel.id=="interface"||panel.id=="codecs"||panel.id.rfind("graph:",0)==0||panel.id.rfind("fn:",0)==0||panel.id=="references"||panel.id=="build"||panel.id=="typeMigration"||panel.id=="signatureMigration"||panel.id=="changes"||panel.id=="compiler"||panel.id=="imports"||panel.id.rfind("texture:",0)==0){auto* target=ImGui::FindWindowByName(workspacePreset_=="Materials"?"###material":workspacePreset_=="Scripting"?"###logic":"###viewport");if(target&&target->DockId)ImGui::SetNextWindowDockID(target->DockId,ImGuiCond_FirstUseEver);}
         if(ImGui::Begin(label(panelTitle(panel),panel.id).c_str(),&opened)){
+            if(ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))helpContext_=panel.id;
             if((panel.id=="logic"||panel.id=="material")&&ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){activeGraph_=panel.id;activeFunction_.clear();}
             if(panel.id.rfind("graph:",0)==0&&ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){activeGraph_=panel.id.substr(6);activeFunction_.clear();}
             if(panel.id.rfind("fn:",0)==0&&ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){const auto split=panel.id.rfind('#');activeGraph_=panel.id.substr(3,split-3);activeFunction_=panel.id.substr(split+1);}

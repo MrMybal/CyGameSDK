@@ -1,0 +1,77 @@
+{
+  "name": "CyGameSDK",
+  "version": "0.29.0",
+  "defaultLocale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "fr",
+      "label": "Français"
+    }
+  ],
+  "homePage": "overview",
+  "content": "manual",
+  "assets": "assets",
+  "out": "../Documentation",
+  "logo": "assets/mark.svg",
+  "modules": [
+    "image",
+    "gallery",
+    "graph"
+  ],
+  "sources": [
+    "../app/examples/adapters"
+  ],
+  "apiIndex": {
+    "enabled": true,
+    "includeDirs": [
+      "../app/native"
+    ]
+  },
+  "apiImports": [],
+  "aliases": {
+    "start": "quickstart",
+    "build": "setup",
+    "explore": "workspace",
+    "mcp": "automation",
+    "adapter": "game-adapters",
+    "scope": "limits",
+    "Overview": "overview",
+    "Native3DAssets": "assets-3d",
+    "CommonAssetFormat": "portable-assets",
+    "AdvancedAuthoring": "assets-3d#authoring",
+    "AnimationTools": "animation-tools",
+    "AssetImport": "asset-import",
+    "BuildProviders": "build-providers",
+    "EditorArchitecture": "extensions",
+    "GameAdapterGuide": "game-adapters",
+    "GameCodecs": "game-codecs",
+    "GenerationConfigurations": "recipes",
+    "GraphCollapse": "collapse",
+    "GraphExpand": "expand",
+    "GraphInterfaces": "interfaces",
+    "LaunchRecovery": "troubleshooting",
+    "Licensing": "licensing",
+    "Localization": "workspace#layouts",
+    "MaterialPipeline": "materials",
+    "MultiClient": "jobs#clients",
+    "NamedGraphTypes": "named-types",
+    "Protocol": "protocol",
+    "SignatureMigration": "signature-migration",
+    "TypeMigration": "type-migration",
+    "Workers": "jobs",
+    "TaskFiles": "jobs",
+    "Operations": "operations",
+    "Parameters": "sdk-contracts#schemas",
+    "Outputs": "sdk-contracts#schemas",
+    "ErrorModel": "sdk-contracts#errors",
+    "Events": "protocol#events",
+    "Scheduler": "protocol#scheduling",
+    "MCP": "automation",
+    "ToolManifest": "sdk-contracts#manifest",
+    "Index": "overview"
+  }
+}

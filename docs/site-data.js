@@ -1,4 +1,4 @@
-/* Content grounded in README, AI_GUIDE and app/Docs. No network is required. */
+/* Application showcase content. The complete manual is exported by CyDoc. */
 window.CYGAME_SITE = {
   "shared": {
     "version": "0.29.0",
@@ -23,8 +23,6 @@ window.CYGAME_SITE = {
     "imageOf": "Screenshot",
     "escape": "Esc to close · ← → to browse",
     "chapterLabel": "Page chapters",
-    "back": "Back to showcase",
-    "technical": "Technical reference (English)",
     "chapters": [
       [
         "workspace",
@@ -306,110 +304,7 @@ window.CYGAME_SITE = {
     "releaseButton": "Release notes & checksums",
     "footer": "A native foundation for game-specific tools.",
     "license": "MIT license",
-    "top": "Back to top",
-    "guideTitle": "CyGameSDK guide",
-    "guideIntro": "A practical starting point for 0.29.0. This HTML guide is available in English and French and opens offline. Detailed source references are in English.",
-    "guideNav": [
-      [
-        "start",
-        "Start here"
-      ],
-      [
-        "build",
-        "Build & launch"
-      ],
-      [
-        "explore",
-        "Explore the editor"
-      ],
-      [
-        "mcp",
-        "MCP & AI SDK"
-      ],
-      [
-        "adapter",
-        "Create a game SDK"
-      ],
-      [
-        "scope",
-        "Current limits"
-      ]
-    ],
-    "guideSections": [
-      {
-        "id": "start",
-        "title": "Start with the right expectations.",
-        "body": "CyGameSDK is a native editor foundation in early development. It supplies a Sandbox adapter and reusable UI, document and authoring systems. It does not automatically support an arbitrary game. Version 0.29.0 is a source release under MIT.",
-        "items": [
-          "Current graphical host: Windows x64 / Direct3D 11.",
-          "The interface defaults to English and preserves an explicitly selected language.",
-          "Projects, working assets and settings live in the installation’s data folder. Keep backups and use a separate destination for a derived SDK."
-        ],
-        "ref": "CapabilityCoverage.md"
-      },
-      {
-        "id": "build",
-        "title": "Build and launch on Windows.",
-        "body": "Install Visual Studio 2022 with Desktop development with C++, the Windows SDK, Git and CMake 3.24+. Clone or extract the source in a new directory. Run these commands from the project root.",
-        "code": ".\\app\\build.ps1\n.\\app\\setup_mcp.ps1\n.\\runtime\\python\\Scripts\\python.exe app\\setup_examples.py\n.\\Lancer.cmd",
-        "items": [
-          "The native build fetches the exact CyUI revision from app/dependencies.lock.json. If upstream is private, authenticate Git first; never put credentials in source or CMake arguments.",
-          "For offline builds, pass -CyUIRoot to app/build.ps1 with a clean checkout at the locked revision.",
-          "setup_mcp.ps1 requires the CyToolsCore 0.10.1 wheel built from an authorized checkout. Select its location with -CyToolsCoreRoot.",
-          "The host needs the Microsoft C++ runtime. MCP and worker-based import, shader and build jobs need the configured Python/Core environment."
-        ],
-        "ref": "CyUIMigration.md"
-      },
-      {
-        "id": "explore",
-        "title": "Explore the supplied workflows.",
-        "body": "The startup Sandbox is a demonstration scene. Ctrl+O loads a saved project; Ctrl+S saves it. The example installer refuses to overwrite assets.",
-        "items": [
-          "Level: dock panels, select objects, inspect properties and use transform gizmos.",
-          "Scripting: open a graph example, inspect typed connections and use the debugger.",
-          "Materials: open Example_TexturedMaterial.cyasset and compile its DX11 preview. This is an editor shader, not a game material export.",
-          "Examples3D: open StaticTriangle.cy3d or AnimatedTriangle.cy3d for mesh, skeleton, animation and GLB/CyPack workflows.",
-          "Ctrl+P opens command search. Ctrl+Space opens the content drawer. The Content Browser has file filters, favorites and references."
-        ],
-        "ref": "Native3DAssets.md"
-      },
-      {
-        "id": "mcp",
-        "title": "Connect to real editor operations.",
-        "body": "Start the editor. Configure your MCP client with app/mcp.example.json and absolute paths for your installation. Run app/tool.py with the private Python environment. CyToolsCore provides the server and jobs.",
-        "code": ".\\runtime\\python\\Scripts\\python.exe app\\tool.py describe\n.\\runtime\\python\\Scripts\\python.exe app\\tool.py mcp",
-        "items": [
-          "Discover operations and inspect their schemas before calling them.",
-          "GUI, native IPC and SDK share EditorCore validation and document transactions.",
-          "Poll Core jobs to a terminal state. After a mutation timeout, inspect current state before retrying: the edit may already have applied."
-        ],
-        "ref": "MultiClient.md"
-      },
-      {
-        "id": "adapter",
-        "title": "Derive an editor for a specific game.",
-        "body": "Start with AI_GUIDE.md and the game porting template. Work in a separate project with real game fixtures and evidence for each supported format.",
-        "items": [
-          "Record the exact game/platform/version, units, coordinate system and format evidence.",
-          "Implement IGameAdapter, schemas and real parsing/serialization; register source extensions for rendering, editors and build providers.",
-          "Start with one import/edit/export workflow and verify output against the game or an official validator.",
-          "Keep asset IDs, unknown metadata and explicit loss reporting. A conversion profile is a declaration, not a game codec."
-        ],
-        "ref": "GameAdapterGuide.md"
-      },
-      {
-        "id": "scope",
-        "title": "What belongs to the integration.",
-        "body": "No real game codec is bundled. The scene viewport demonstrates projected primitives; a game renderer is a source integration. The bounded graph runtime is not full Unreal Blueprint.",
-        "items": [
-          "Sandbox builds produce document ZIP archives, not cooked games or game executables.",
-          "Neutral mesh, animation and image tools follow documented bounded profiles; they are not a complete DCC or pixel-painting application.",
-          "Editor plugins are source extensions. No ABI-stable dynamic DLL loader is claimed.",
-          "Linux/macOS native hosts and a redistributable installer remain future work."
-        ],
-        "ref": "CapabilityCoverage.md"
-      }
-    ]
+    "top": "Back to top"
   },
   "fr": {
     "title": "CyGameSDK — Une base pour votre éditeur de jeu.",
@@ -428,8 +323,6 @@ window.CYGAME_SITE = {
     "imageOf": "Capture",
     "escape": "Échap pour fermer · ← → pour parcourir",
     "chapterLabel": "Chapitres de la page",
-    "back": "Retour à la vitrine",
-    "technical": "Référence technique (en anglais)",
     "chapters": [
       [
         "workspace",
@@ -711,109 +604,6 @@ window.CYGAME_SITE = {
     "releaseButton": "Notes de version et sommes de contrôle",
     "footer": "Une base native pour les outils propres à votre jeu.",
     "license": "Licence MIT",
-    "top": "Retour en haut",
-    "guideTitle": "Guide CyGameSDK",
-    "guideIntro": "Un point de départ pratique pour la fondation 0.29.0. Ce guide HTML est disponible en anglais et en français et s’ouvre hors ligne. Les références source détaillées sont en anglais.",
-    "guideNav": [
-      [
-        "start",
-        "Bien commencer"
-      ],
-      [
-        "build",
-        "Compiler et lancer"
-      ],
-      [
-        "explore",
-        "Explorer l’éditeur"
-      ],
-      [
-        "mcp",
-        "MCP et SDK pour IA"
-      ],
-      [
-        "adapter",
-        "Créer un SDK de jeu"
-      ],
-      [
-        "scope",
-        "Limites actuelles"
-      ]
-    ],
-    "guideSections": [
-      {
-        "id": "start",
-        "title": "Commencer avec les bons repères.",
-        "body": "CyGameSDK est une base d’éditeur natif en développement précoce. Il fournit un adaptateur Sandbox et des systèmes réutilisables d’interface, de documents et d’édition. Il ne prend pas automatiquement en charge n’importe quel jeu. La version 0.29.0 est distribuée en sources sous MIT.",
-        "items": [
-          "Hôte graphique actuel : Windows x64 / Direct3D 11.",
-          "L’interface démarre en anglais et conserve un choix explicite de langue.",
-          "Projets, assets de travail et préférences se trouvent dans le dossier data. Conservez des sauvegardes et une destination séparée pour un SDK dérivé."
-        ],
-        "ref": "CapabilityCoverage.md"
-      },
-      {
-        "id": "build",
-        "title": "Compiler et lancer sous Windows.",
-        "body": "Installez Visual Studio 2022 avec Développement Desktop en C++, le SDK Windows, Git et CMake 3.24 ou plus récent. Clonez ou extrayez les sources dans un nouveau dossier. Exécutez ces commandes à la racine du projet.",
-        "code": ".\\app\\build.ps1\n.\\app\\setup_mcp.ps1\n.\\runtime\\python\\Scripts\\python.exe app\\setup_examples.py\n.\\Lancer.cmd",
-        "items": [
-          "Le build récupère la révision exacte de app/dependencies.lock.json. Si le dépôt est privé, authentifiez Git au préalable ; jamais d’identifiants dans les sources ou arguments CMake.",
-          "Hors ligne, passez -CyUIRoot à app/build.ps1 avec un checkout propre de la révision verrouillée.",
-          "setup_mcp.ps1 nécessite la wheel CyToolsCore 0.10.1 construite depuis un checkout autorisé. Sélectionnez son emplacement avec -CyToolsCoreRoot.",
-          "L’hôte nécessite le runtime Microsoft C++. MCP et les jobs d’import, de shaders et de compilation nécessitent l’environnement Python/Core configuré."
-        ],
-        "ref": "CyUIMigration.md"
-      },
-      {
-        "id": "explore",
-        "title": "Explorer les workflows fournis.",
-        "body": "Le Sandbox de démarrage est une scène de démonstration. Ctrl+O charge un projet enregistré ; Ctrl+S le sauvegarde. L’installeur d’exemples refuse d’écraser les assets.",
-        "items": [
-          "Niveau : ancrez les panneaux, sélectionnez les objets, inspectez les propriétés et utilisez les gizmos.",
-          "Graphes : ouvrez un exemple, inspectez les connexions typées et utilisez le débogueur.",
-          "Matériaux : ouvrez Example_TexturedMaterial.cyasset et compilez l’aperçu DX11. C’est un shader d’éditeur, pas un export de matériau de jeu.",
-          "Examples3D : ouvrez StaticTriangle.cy3d ou AnimatedTriangle.cy3d pour maillage, squelette, animation et échanges GLB/CyPack.",
-          "Ctrl+P ouvre la recherche de commandes. Ctrl+Espace ouvre le tiroir de contenu. Le navigateur propose filtres, favoris et références."
-        ],
-        "ref": "Native3DAssets.md"
-      },
-      {
-        "id": "mcp",
-        "title": "Se connecter aux véritables opérations.",
-        "body": "Démarrez l’éditeur. Configurez votre client MCP avec app/mcp.example.json et les chemins absolus de votre installation. Exécutez app/tool.py avec l’environnement Python privé. CyToolsCore fournit serveur et jobs.",
-        "code": ".\\runtime\\python\\Scripts\\python.exe app\\tool.py describe\n.\\runtime\\python\\Scripts\\python.exe app\\tool.py mcp",
-        "items": [
-          "Découvrez les opérations et leurs schémas avant de les appeler.",
-          "Interface, IPC et SDK partagent validation d’EditorCore et transactions de documents.",
-          "Suivez les jobs jusqu’à un état terminal. Après un timeout de modification, inspectez l’état réel avant de réessayer : la modification peut déjà être appliquée."
-        ],
-        "ref": "MultiClient.md"
-      },
-      {
-        "id": "adapter",
-        "title": "Dériver un éditeur pour un jeu précis.",
-        "body": "Consultez AI_GUIDE.md et le modèle de portage. Travaillez dans un projet séparé avec des données réelles et des éléments de preuve pour chaque format.",
-        "items": [
-          "Documentez jeu, plateforme, version exacte, unités, repères et connaissances des formats.",
-          "Implémentez IGameAdapter, schémas et lecture/écriture réelle ; enregistrez les extensions source de rendu, d’éditeurs et de compilation.",
-          "Commencez par un chemin d’import, d’édition et d’export vérifié dans le jeu ou avec un validateur officiel.",
-          "Conservez identifiants, métadonnées inconnues et déclaration des pertes. Un profil de conversion reste une déclaration, pas un codec de jeu."
-        ],
-        "ref": "GameAdapterGuide.md"
-      },
-      {
-        "id": "scope",
-        "title": "Ce qui reste propre à l’intégration.",
-        "body": "Aucun codec réel de jeu n’est fourni. Le viewport illustre des primitives projetées ; le rendu d’un jeu demande une intégration source. Le runtime borné n’est pas le Blueprint complet d’Unreal.",
-        "items": [
-          "Les builds Sandbox produisent des ZIP de documents, pas des jeux préparés ni des exécutables de jeu.",
-          "Les outils de maillage neutre, d’animation et d’image suivent des profils bornés ; ils ne remplacent pas un logiciel DCC complet ou un outil de peinture.",
-          "Les plugins sont des extensions source. Aucun chargeur de DLL dynamique à ABI stable n’est annoncé.",
-          "Hôtes natifs Linux/macOS et installeur redistribuable restent à développer."
-        ],
-        "ref": "CapabilityCoverage.md"
-      }
-    ]
+    "top": "Retour en haut"
   }
 };

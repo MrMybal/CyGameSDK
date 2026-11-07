@@ -4870,5 +4870,29 @@
   "Current": {
     "en": "Current",
     "fr": "Actuel"
+  },
+  "Documentation": {
+    "en": "Documentation",
+    "fr": "Documentation"
+  },
+  "Context Help": {
+    "en": "Context Help",
+    "fr": "Aide contextuelle"
+  },
+  "Documentation is missing. Regenerate or restore the Documentation folder.": {
+    "en": "Documentation is missing. Regenerate or restore the Documentation folder.",
+    "fr": "La documentation est absente. Régénérez ou restaurez le dossier Documentation."
+  },
+  "The documentation browser could not be opened.": {
+    "en": "The documentation browser could not be opened.",
+    "fr": "Impossible d’ouvrir le navigateur de documentation."
+  },
+  "Offline documentation": {
+    "en": "Offline documentation",
+    "fr": "Documentation hors ligne"
+  },
+  "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required.": {
+    "en": "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required.",
+    "fr": "Manuel CyDoc local, aide F1 contextuelle et pages complètes en anglais/français ; aucun serveur de documentation nécessaire."
   }
 }

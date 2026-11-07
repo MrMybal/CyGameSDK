@@ -1,4 +1,21 @@
-# Documentation CyGameSDK et références CyToolsCore
+# CyGameSDK documentation sources
+
+The human manual is now the complete local [CyDoc reader](../../Documentation/Documentation.html#/en/overview)
+([français](../../Documentation/Documentation.html#/fr/overview)). Open it directly;
+no server or Node.js is needed to read it. Help/F1 in the editor uses the same reader.
+
+These Markdown files remain source-level contracts, historical evidence and generic
+CyToolsCore references. They are preserved for developers and compatibility; they
+are not a replacement HTML help system. Generic model/CUDA/downloader requirements
+apply only to integrations that actually use those components.
+
+Authoring/build instructions and content disposition:
+[CyDoc integration](CyDocIntegration.md). Start a game adaptation with
+[AI_GUIDE.md](../../AI_GUIDE.md).
+
+---
+
+## Preserved source index
 
 ## Pour adapter cet éditeur à un jeu
 

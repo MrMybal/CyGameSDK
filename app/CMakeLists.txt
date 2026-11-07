@@ -63,11 +63,19 @@ add_subdirectory("${CYUI_ROOT}" "${CMAKE_BINARY_DIR}/cyui")
 add_library(editor_core STATIC native/Core.cpp native/Scene3D.cpp native/ModelCommands.cpp native/ModelAuthoring.cpp native/JsonDocuments.cpp native/Build.cpp native/Assets.cpp native/Imports.cpp native/AssetReferences.cpp native/Scene.cpp native/Graph.cpp native/Blueprint.cpp native/Interfaces.cpp native/SignatureMigration.cpp native/TypeLibrary.cpp native/TypeMigration.cpp native/GraphCollapse.cpp native/GraphExpand.cpp native/Macros.cpp native/GraphRuntime.cpp native/Functions.cpp native/Materials.cpp native/MaterialProgram.cpp native/Image.cpp native/GraphBatch.cpp native/GraphNavigation.cpp native/GraphDiff.cpp)
 target_include_directories(editor_core PUBLIC native third_party/nlohmann)
 target_link_libraries(editor_core PUBLIC ole32 bcrypt windowscodecs)
-add_executable(CyGameEditor WIN32 native/main.cpp native/MaterialPreview.cpp native/Editor.cpp native/MeshPreview.cpp native/ModelView.cpp native/ModelAuthoringView.cpp native/MotionToolsView.cpp native/JsonView.cpp native/InterfaceOverview.cpp native/BuildClient.cpp native/BuildView.cpp native/Content.cpp native/Outliner.cpp native/Workspace.cpp native/Viewport.cpp native/Gizmo.cpp native/GraphView.cpp native/GraphPanels.cpp native/GraphNavigatorView.cpp native/GraphDiffView.cpp native/FunctionsView.cpp native/BlueprintView.cpp native/TypesView.cpp native/InterfacesView.cpp native/SignatureMigrationView.cpp native/GraphCollapseView.cpp native/GraphExpandView.cpp native/GameCodecView.cpp native/MaterialInstanceView.cpp native/MaterialTools.cpp native/TextureView.cpp native/ImportView.cpp native/ThumbnailPreview.cpp native/TexturePreview.cpp native/ReferenceView.cpp native/Ipc.cpp)
+add_executable(CyGameEditor WIN32 native/main.cpp native/Documentation.cpp native/MaterialPreview.cpp native/Editor.cpp native/MeshPreview.cpp native/ModelView.cpp native/ModelAuthoringView.cpp native/MotionToolsView.cpp native/JsonView.cpp native/InterfaceOverview.cpp native/BuildClient.cpp native/BuildView.cpp native/Content.cpp native/Outliner.cpp native/Workspace.cpp native/Viewport.cpp native/Gizmo.cpp native/GraphView.cpp native/GraphPanels.cpp native/GraphNavigatorView.cpp native/GraphDiffView.cpp native/FunctionsView.cpp native/BlueprintView.cpp native/TypesView.cpp native/InterfacesView.cpp native/SignatureMigrationView.cpp native/GraphCollapseView.cpp native/GraphExpandView.cpp native/GameCodecView.cpp native/MaterialInstanceView.cpp native/MaterialTools.cpp native/TextureView.cpp native/ImportView.cpp native/ThumbnailPreview.cpp native/TexturePreview.cpp native/ReferenceView.cpp native/Ipc.cpp)
 target_include_directories(CyGameEditor PRIVATE third_party/imguizmo)
 target_link_libraries(CyGameEditor PRIVATE editor_core CyUI::Core CyUI::Nodes CyUI::Inspector CyUI::Assets CyUI::Viewport CyUI::ImGuizmo CyUI::Timeline CyUI::Code CyUI::Commands CyUI::Diagnostics CyUI::Diff comdlg32 advapi32 shell32 user32 gdi32)
 set(CYGAME_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.." CACHE PATH "Native editor output directory")
 set_target_properties(CyGameEditor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CYGAME_OUTPUT_DIR}$<0:>")
+find_program(CYGAME_POWERSHELL NAMES pwsh powershell REQUIRED)
+add_custom_target(CyGameDocumentation ALL
+    COMMAND "${CYGAME_POWERSHELL}" -NoProfile -ExecutionPolicy Bypass -File "${CMAKE_CURRENT_SOURCE_DIR}/build_documentation.ps1"
+        -OutputDirectory "${CYGAME_OUTPUT_DIR}/Documentation"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+    COMMENT "Generate the complete local CyDoc reader" VERBATIM)
+add_dependencies(CyGameEditor CyGameDocumentation)
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../Documentation/" DESTINATION Documentation COMPONENT Documentation)
 if(MSVC)
     foreach(target editor_core CyGameEditor editor_imgui editor_imguizmo)
         target_compile_options(${target} PRIVATE /W4 /utf-8 /EHsc /MP)

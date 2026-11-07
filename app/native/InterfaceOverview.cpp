@@ -3,6 +3,7 @@ namespace cygame {
 void EditorApp::interfaceOverview(){
     cyui::heading(tr("Editor Overview"),2);
     ImGui::TextWrapped("%s",tr("Reusable editor foundation. This inventory describes the shipped Sandbox; adapters supply game-specific capabilities."));
+    if(cyui::ghostButton(tr("Documentation")))openDocumentation(false);
     cyui::searchField("##featureFilter",featureSearch_,sizeof(featureSearch_),tr("Search features, status or limitations"),-1);
     cyui::divider();
     const auto& catalogue=interfaceFeatures_;

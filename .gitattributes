@@ -13,3 +13,6 @@
 *.bmp binary
 *.glb binary
 *.cypack binary
+
+# Preserve the exact upstream CyDoc route-helper bytes.
+app/third_party/cydoc/cydoc_link.hpp text eol=lf

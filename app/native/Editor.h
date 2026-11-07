@@ -46,6 +46,9 @@ public:
     explicit EditorApp(EditorCore& core);
     ~EditorApp();
     void frame();
+    bool openDocumentation(bool contextual=true);
+    // Optional host opener; defaults to the operating system browser.
+    std::function<bool(const std::string&)> documentationLauncher;
     void configureStyle(float dpi);
     std::string startupPanel()const{return workspacePreset_=="Scripting"?"logic":workspacePreset_=="Materials"?"material":"viewport";}
     Json open(const std::string& id,bool instance=false);
@@ -79,6 +82,8 @@ public:
     void previewDensity(const std::string& density){density_=density=="comfortable"?"comfortable":"compact";persistSettings=false;}
     void previewSettings(const std::string& lang,const std::string& theme){if(!lang.empty())language_=lang;if(!theme.empty())theme_=theme;persistSettings=false;}
 private:
+    friend class HelpSmokeTest;
+    std::string helpContext_;
     friend class ModuleSmokeTest; // Own-host UI fixture; no public editing bypass.
     std::vector<AssetEditorDefinition> assetEditors_;
     // Presentation state stays per document/view; Core remains the transaction owner.

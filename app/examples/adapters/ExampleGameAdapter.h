@@ -3,6 +3,41 @@
 #include <set>
 #include <stdexcept>
 
+/**
+ * @doc example-adapter-api
+ * @locale en
+ * @title Example game adapter contract
+ * @section Integration / API
+ * @symbol cygame::examples::ExampleGameAdapter
+ * Source-only adapter example, retaining Sandbox transforms and the hero identity.
+ *
+ * ## Public contract {#contract}
+ * The example implements descriptor, propertySchema, createEntity, initialScene
+ * and validateScene. It adds a bounded integer Health field without decoding a game.
+ * Build/play remain unavailable. Read [source extensions](doc:extensions#contracts).
+ *
+ * ```cpp
+ * EditorCore core(root, std::make_unique<cygame::examples::ExampleGameAdapter>());
+ * ```
+ */
+/**
+ * @doc example-adapter-api
+ * @locale fr
+ * @title Contrat de l’exemple d’adaptateur de jeu
+ * @section Intégration / API
+ * @symbol cygame::examples::ExampleGameAdapter
+ * Exemple source conservant les transformations Sandbox et l’identité hero.
+ *
+ * ## Contrat public {#contract}
+ * Cet exemple implémente descriptor, propertySchema, createEntity, initialScene
+ * et validateScene. Il ajoute Health, entier borné, sans décoder un jeu.
+ * Compilation/lancement restent indisponibles. Voir les [extensions source](doc:extensions#contracts).
+ *
+ * ```cpp
+ * EditorCore core(root, std::make_unique<cygame::examples::ExampleGameAdapter>());
+ * ```
+ */
+
 namespace cygame::examples {
 // Source-only starter; not selected by the shipped editor and not a game decoder.
 // It retains the current transform fields and the initial "hero" selection ID.

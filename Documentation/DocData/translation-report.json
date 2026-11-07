@@ -1,0 +1,20 @@
+{
+  "defaultLocale": "en",
+  "missing": [],
+  "outdated": [],
+  "untracked": [
+    {
+      "id": "example-adapter-api",
+      "title": "Example game adapter contract",
+      "locale": "fr",
+      "expectedRevision": "e7a90a71bade"
+    },
+    {
+      "id": "source-app-examples-adapters-examplegameadapter-h",
+      "title": "ExampleGameAdapter.h",
+      "locale": "fr",
+      "expectedRevision": "9d5a188d64a5"
+    }
+  ],
+  "current": 210
+}

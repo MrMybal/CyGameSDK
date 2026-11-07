@@ -1,22 +1,12 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101214">
-<meta name="description" content="A native, modular game editor foundation with visual graphs, asset tools and a shared MCP/AI SDK. Built for game-specific tooling.">
-<meta property="og:title" content="CyGameSDK — A foundation for your game editor.">
-<meta property="og:description" content="Native workspace, visual graphs, asset authoring and MCP. A development foundation for game-specific SDKs.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="assets/screenshots/workspace.png">
-<title>CyGameSDK guide</title>
-<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=04eff9619727">
-<script defer src="site-data.js?v=7928a5fd2668"></script>
-<script defer src="site.js?v=bfd741c5a49d"></script>
-</head>
-<body id="top" data-page="guide">
-<div id="app"></div>
-<noscript><main class="wrap section"><h1>CyGameSDK</h1><p>A native game editor foundation / Une base d’éditeur de jeu native.</p><p>This bilingual showcase needs JavaScript. The source documentation is available on GitHub. / Cette vitrine bilingue nécessite JavaScript. La documentation source est disponible sur GitHub.</p><a href="https://github.com/MrMybal/CyGameSDK">GitHub · Source &amp; documentation</a></main></noscript>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CyGameSDK documentation</title></head>
+<body><p><a id="manual" href="manual/Documentation.html#/en/overview">Open the CyGameSDK manual / Ouvrir le manuel CyGameSDK</a></p>
+<script>
+(() => {
+ const locale=new URLSearchParams(location.search).get('lang')==='fr'?'fr':'en';
+ const old=decodeURIComponent(location.hash.slice(1));
+ const page=({start:'overview',build:'setup',explore:'workspace',mcp:'automation',adapter:'game-adapters',scope:'limits'})[old]||'overview';
+ const target=`manual/Documentation.html#/${locale}/${page}`;
+ document.getElementById('manual').href=target;location.replace(target);
+})();
+</script></body></html>

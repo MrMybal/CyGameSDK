@@ -197,3 +197,12 @@ comment provenance. Every connected function output must read every wired argume
 include nested macro laziness and per-output UV dependencies. Recompute/validate the
 candidate and runtime macro expansion, require the exact hash and keep one Undo.
 --test-expand injects only its isolated host's own ImGui canvas/modal/key input.
+
+## Local CyDoc help
+
+Human documentation is authored under `.CyDocBuild/manual/en` and `fr` at the
+repository root and generated with `app/build_documentation.ps1`. Read
+`app/Docs/CyDocIntegration.md` (root-relative) before changing help, translations or
+packaging. Keep stable IDs/anchors and the official offline reader. Do not edit
+exported HTML/JS to repair authoring input. Keep this AI guide separate from the
+human manual. Preserve the exact CyDoc lock and the source-import translation gate.

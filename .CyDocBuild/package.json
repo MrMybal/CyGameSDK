@@ -1,0 +1,16 @@
+{
+  "name": "cygamesdk-documentation",
+  "private": true,
+  "version": "0.29.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check"
+  },
+  "dependencies": {
+    "cydoc": "file:../runtime/cydoc-0.1.0.tgz"
+  }
+}

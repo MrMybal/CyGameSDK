@@ -310,6 +310,13 @@
       "status": "Available",
       "panel": "logic",
       "notes": "Hash-guarded preview and one Undo; typed reroutes, retained definitions and source-call provenance. Execution calls reject."
+    },
+    {
+      "category": "Workspace",
+      "name": "Offline documentation",
+      "status": "Available",
+      "panel": "interface",
+      "notes": "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required."
     }
   ]
 }

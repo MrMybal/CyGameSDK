@@ -14,15 +14,36 @@ automatically support an arbitrary game engine, ship a real game codec, or provi
 full Unreal Engine / Blueprint compatibility. A derived SDK needs verified game
 formats, tools, runtime bindings and an adapter for the chosen game/version.
 
+## Local documentation
+
+The complete CyDoc manual is included: open [Documentation.html](Documentation/Documentation.html)
+directly, without a server or Internet connection. Help > Documentation and F1
+open the local manual in the editor language; F1 uses the focused panel.
+English is the default; French has the same page and section IDs.
+
+Regenerate with Node.js 22+ and npm (generation only):
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File app/build_documentation.ps1
+```
+
+The script obtains the exact private CyDoc Git revision in the dependency lock
+using your existing Git authentication, packs the official library and verifies
+the local package against npm's lock. It exports the complete `Documentation/`
+reader and mirrors it to `docs/manual/` for Pages. No publishing happens here.
+CMake builds and installation include the generated help. Ship the whole directory;
+Node, npm and `.CyDocBuild` are not reader requirements. Maintenance details:
+[CyDoc integration](app/Docs/CyDocIntegration.md).
+
 ## Website and documentation
 
 [Explore CyGameSDK](https://mrmybal.github.io/CyGameSDK/) ·
-[Read the documentation](https://mrmybal.github.io/CyGameSDK/guide.html?lang=en) ·
+[Read the documentation](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview) ·
 [Download the source](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.29.0)
 
 The showcase and HTML setup guide are available in English and French.
 [Présentation en français](https://mrmybal.github.io/CyGameSDK/?lang=fr) ·
-[Documentation en français](https://mrmybal.github.io/CyGameSDK/guide.html?lang=fr).
+[Documentation en français](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/overview).
 
 ## Screenshots
 
