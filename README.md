@@ -1,246 +1,249 @@
-# CyGameSDK
+<table width="100%">
+  <tr>
+    <td width="300" align="left" valign="top">
+      <a href="https://mrmybal.github.io/CyGameSDK/">Website</a><br>
+      <a href="https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview">Manual</a><br>
+      <a href="https://github.com/MrMybal/CyGameSDK">GitHub</a><br><br>
+      <sub>README</sub><br>
+      <a href="README.md">English</a> · <a href="README.fr.md">Français</a>
+    </td>
+    <td width="400" align="center" valign="middle">
+      <a href="https://mrmybal.github.io/CyGameSDK/"><img src="docs/assets/mark.svg" alt="CyGameSDK" width="128"></a>
+    </td>
+    <td width="300" align="right" valign="top">
+      <p><sub>Application license</sub><br><a href="LICENSE"><strong>MIT</strong></a></p>
+      <p><sub>Editor / catalogue</sub><br><a href="app/Docs/Release-0.29.0.md"><strong>0.29.0</strong></a><br><strong>DEVELOPMENT PREVIEW</strong></p>
+      <p><a href="https://github.com/MrMybal/CyGameSDK/releases/download/v0.29.0/CyGameSDK-0.29.0-source.zip"><strong>Download source</strong></a><br><sub>Source ZIP · build on Windows x64</sub></p>
+    </td>
+  </tr>
+</table>
 
-CyGameSDK is a reusable native game editor foundation for building game-specific
-SDKs and authoring tools. Its Unreal-inspired workspace uses C++17, Dear ImGui
-docking, CyUI and Direct3D 11. CyToolsCore provides the existing MCP server, AI SDK,
-authentication, jobs and ProcessWorker integration.
+<h1 align="center">CyGameSDK</h1>
 
-**Current source/catalogue version: 0.29.0.** The interface starts in English,
-independently of the Windows locale. French is selectable in Options. An explicitly
-saved language is preserved; English remains the source and fallback language.
+A reusable native editor foundation for developers building a game-specific SDK
+or authoring tool. Start with a dockable workspace, visual graphs, asset editors
+and a shared MCP/AI SDK, then connect the formats, renderer and toolchain of the
+game you want to support.
 
-This is a Windows development foundation with a Sandbox adapter. It does not
-automatically support an arbitrary game engine, ship a real game codec, or provide
-full Unreal Engine / Blueprint compatibility. A derived SDK needs verified game
-formats, tools, runtime bindings and an adapter for the chosen game/version.
+> **DEVELOPMENT PREVIEW · 0.29.0**
+>
+> Experimental tooling with a Sandbox adapter. Features follow documented limits;
+> game compatibility requires a verified adapter. Read the
+> [version notes, download scope and known limitations](app/Docs/Release-0.29.0.md).
 
-## Local documentation
+[![CyGameSDK Sandbox workspace with viewport, transform gizmo, World Outliner, Details and Content Browser](app/Docs/images/editor-workspace.png)](app/Docs/images/editor-workspace.png)
 
-The complete CyDoc manual is included: open [Documentation.html](Documentation/Documentation.html)
-directly, without a server or Internet connection. Help > Documentation and F1
-open the local manual in the editor language; F1 uses the focused panel.
-English is the default; French has the same page and section IDs.
+## About CyGameSDK
 
-Regenerate with Node.js 22+ and npm (generation only):
+Arrange panels, select scene objects, edit schema-driven properties and undo document
+changes. Browse assets and open a specialized graph, material, JSON or neutral 3D
+editor. The Unreal-inspired workspace uses C++17, Dear ImGui docking, modular CyUI
+and Direct3D 11. English is the default and fallback language; French is selectable
+in Options and an explicitly saved choice is preserved.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File app/build_documentation.ps1
+### Visual logic and materials
+
+Create typed logic graphs with local functions, macros, classes and interfaces.
+Inspect execution with breakpoints and a call stack. Preview signature/type changes
+before applying them, collapse supported pure selections into helpers, or expand
+pure calls into editable nodes with document Undo.
+
+[![Logic graph editor with connected execution nodes, navigation and graph diagnostics](app/Docs/images/logic-graph.png)](app/Docs/images/logic-graph.png)
+
+Author material graphs, texture sampling and instances, then compile the DX11
+editor preview through a CyToolsCore worker. This is an editor shader workflow;
+a game's material format and compiler need their own provider.
+
+[![Material graph with texture sampling nodes and a compiled DX11 color preview](app/Docs/images/material-editor.png)](app/Docs/images/material-editor.png)
+
+### Assets, animation and automation
+
+Work with bounded `.cy3d` mesh, skeleton and animation documents; exchange GLB and
+CyPack assets, author static LODs/collision shapes and use reference-pose retargeting,
+offline IK, root-motion pairs and clip trim/resample tools. These are documented
+editing profiles, not a complete DCC application or automatic support for game files.
+
+[![Animation editor with the AnimatedTriangle example, skeleton overlay, keyframes and timeline](app/Docs/images/animation-editor.png)](app/Docs/images/animation-editor.png)
+
+CyToolsCore supplies MCP, the AI SDK, authentication, jobs and ProcessWorker. The
+interface, native IPC and SDK share EditorCore validation and document transactions.
+Source adapters supply real game decoding, serialization, rendering and build/play
+behavior. The default codec registry is empty; full Unreal Engine/Blueprint
+compatibility is not provided.
+
+## Features
+
+- **Workspace:** docked tabs, detached windows, saved layouts, independent viewport
+  cameras, command search, themes, text size and DPI support.
+- **Assets:** folders, filters, thumbnails, favorites, references, guarded
+  import/reimport, JSON tree editing and bounded PNG/JPEG/BMP inspection.
+- **Graph authoring:** nominal enum/record types, containers, functions, macros,
+  interfaces, debugger, guarded migrations and pure-call collapse/expansion.
+- **Materials and 3D:** compiled editor previews, neutral mesh/skeleton/animation
+  editing, portable interchange, LODs, collision shapes and motion tools.
+- **Automation:** 175 editor operations, 196 tools including Core controls, with
+  shared schemas and explicit job progress/cancellation.
+- **Local help:** a CyDoc reader with 35 English/French chapters and the operation
+  reference; Help and contextual F1 open the relevant page. No server is needed.
+
+---
+
+## Installation
+
+The published **v0.29.0 download contains source**, not an installer or prebuilt
+editor. The native graphical host runs on Windows x64 / Direct3D 11. Linux/macOS
+native hosts are not implemented.
+
+1. [Download the v0.29.0 source archive](https://github.com/MrMybal/CyGameSDK/releases/download/v0.29.0/CyGameSDK-0.29.0-source.zip)
+   and extract it into a new folder, or clone the current source below.
+2. Follow the build requirements and commands for the source you selected.
+3. Start the built `CyGameEditor.exe` or `Lancer.cmd`. The graphical host requires
+   the Microsoft Visual C++ 2015–2022 x64 runtime.
+
+**The current `main` branch includes CyDoc help; the published v0.29.0 archive
+predates that integration.** Clone `main` for the complete current manual and F1
+integration. The archive's original setup remains in its
+[tagged release guide](https://github.com/MrMybal/CyGameSDK/blob/v0.29.0/app/Docs/Release-0.29.0.md).
+
+On first launch, the scene is a Sandbox demonstration. Ctrl+S saves the project;
+Ctrl+O reloads it. Projects, working assets and preferences live in this installation's
+`data/projects`, `data/assets` and `data/settings`. Keep existing data backed up.
+Installing the supplied examples never overwrites existing assets.
+
+The current manual can also be read directly from
+[`Documentation/Documentation.html`](Documentation/Documentation.html), with its
+complete `DocData/` folder beside it. Reading requires no Node.js or Internet access.
+
+## Source, build and required libraries
+
+<details>
+<summary>Build the current source and configure MCP / worker jobs</summary>
+
+### Requirements
+
+- Windows x64; Visual Studio 2022 with **Desktop development with C++** and Windows SDK.
+- Git and CMake 3.24+; the Visual Studio CMake tools are detected automatically.
+- Node.js 22+ and npm for generating the current CyDoc manual, not for reading it.
+- The exact [CyUI and CyDoc revisions](app/dependencies.lock.json). The build obtains
+  them from their source repositories. Offline builds need complete cached toolchains
+  and dependencies, not just a source folder.
+- For MCP, the AI SDK, imports and worker-based shader/build jobs: Python 3.11+ and the
+  **CyToolsCore 0.10.1 wheel**, built beforehand from the Core checkout.
+
+### Get the source
+
+```sh
+git clone https://github.com/MrMybal/CyGameSDK.git
+cd CyGameSDK
 ```
 
-The script obtains the exact private CyDoc Git revision in the dependency lock
-using your existing Git authentication, packs the official library and verifies
-the local package against npm's lock. It exports the complete `Documentation/`
-reader and mirrors it to `docs/manual/` for Pages. No publishing happens here.
-CMake builds and installation include the generated help. Ship the whole directory;
-Node, npm and `.CyDocBuild` are not reader requirements. Maintenance details:
-[CyDoc integration](app/Docs/CyDocIntegration.md).
-
-## Website and documentation
-
-[Explore CyGameSDK](https://mrmybal.github.io/CyGameSDK/) ·
-[Read the documentation](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview) ·
-[Download the source](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.29.0)
-
-The showcase and HTML setup guide are available in English and French.
-[Présentation en français](https://mrmybal.github.io/CyGameSDK/?lang=fr) ·
-[Documentation en français](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/overview).
-
-## Screenshots
-
-Captured from CyGameSDK 0.29.0 with the English interface and Sandbox examples.
-
-**Editor workspace** — docked viewport, scene hierarchy, properties and Content Browser.
-
-![CyGameSDK editor workspace with the Sandbox scene, transform gizmo, World Outliner, Details panel and Content Browser](app/Docs/images/editor-workspace.png)
-
-**Logic graph** — node connections, graph navigation and debugging controls.
-
-![CyGameSDK logic graph editor with connected execution nodes and graph diagnostics](app/Docs/images/logic-graph.png)
-
-**Material editor** — texture coordinates, sampling and a compiled DX11 preview.
-
-![CyGameSDK material graph with texture sampling nodes and the compiled color texture preview](app/Docs/images/material-editor.png)
-
-**Animation editor** — skeleton overlay, clip controls, keyframes and timeline.
-
-![CyGameSDK animation editor showing the AnimatedTriangle example, skeleton overlay and animation timeline](app/Docs/images/animation-editor.png)
-
-## Editor capabilities
-
-- Docked tabs, detached windows, saved workspaces, multiple viewport cameras,
-  global command search and schema-driven property editing.
-- Scene hierarchy, selection, transform gizmos, snapping, grouping and document Undo.
-  The Sandbox scene viewport is a demonstration renderer, not a game engine renderer.
-- Asset browser with folders, search, field filters, thumbnails, references and
-  protected import/reimport. Extension recognition alone is not a format decoder.
-- Typed logic/material graphs, local functions/macros, classes, interfaces,
-  containers, named enums/records, breakpoints and call-stack debugging.
-- Explicit signature/type migration with preview and guarded apply. Collapse pure
-  selections into helpers, or expand pure calls back into editable nodes. Default
-  values, wire metadata and Undo are retained within the documented limits.
-- Bounded neutral .cy3d mesh/skeleton/animation editing, DX11 mesh preview, GLB/CyPack
-  import/export, static LODs, editable collision shapes, reference-pose retargeting,
-  offline IK, root-motion extraction/reconstruction and clip trim/resample tools.
-- JSON tree editing, bounded PNG/JPEG/BMP inspection, material instances and
-  procedural graphs. Preview shaders compile through the official Core worker.
-- Source extension seams for adapters, asset editors, graph nodes, viewport rendering
-  and build/codec providers. The default game codec registry is empty.
-
-See [Capability coverage](app/Docs/CapabilityCoverage.md),
-[Editor architecture](app/Docs/EditorArchitecture.md) and
-[Interface audit](app/Docs/InterfaceAudit.md) for implementation evidence and limits.
-The current catalogue contains 175 editor operations / 196 tools including Core.
-
-## Build from source
-
-Requirements:
-
-- Windows x64, Visual Studio 2022 with Desktop development with C++, and Windows SDK.
-- Git and CMake 3.24+ (the Visual Studio CMake tools are detected automatically).
-- Network access for the first pinned CyUI fetch, or a clean offline checkout at
-  the revision in [app/dependencies.lock.json](app/dependencies.lock.json).
-- For MCP, AI SDK and worker jobs: Python and the CyToolsCore 0.10.1 wheel built from
-  your CyToolsCore checkout. MCP uses its pinned official Python transport.
-
-CyUI 1.2.0 is fetched at the exact locked commit into `runtime/dependencies`.
-The upstream repository is [MrMybal/CyUI](https://github.com/MrMybal/CyUI).
-If repository access is restricted, authenticate Git with an account that has
-access before building, or supply an authorized offline checkout using
-`-CyUIRoot`. Do not put access tokens in CMake arguments or dependency URLs.
-Its modular targets share one host-owned Dear ImGui instance. Audio, Gallery,
-Demo, CodeEditor and Web/CEF are disabled. CyToolsCore remains a separate official
-Python wheel; its setup script defaults to a sibling `CyToolsCore` checkout.
-See [CyUI migration](app/Docs/CyUIMigration.md) for module selection and UI limits.
+### Build and run
 
 Run PowerShell from the repository root:
 
 ```powershell
 .\app\build.ps1
-.\app\setup_mcp.ps1
-.\runtime\python\Scripts\python.exe app\setup_examples.py
 .\Lancer.cmd
 ```
 
-Custom dependency locations can be passed explicitly:
+For MCP and worker jobs, prepare the Core wheel at
+`CyToolsCore/dist/cytools_core-0.10.1-py3-none-any.whl`, then configure the private
+Python environment. The default Core checkout is a sibling of CyGameSDK:
 
 ```powershell
-.\app\build.ps1 -CyUIRoot 'C:\src\CyUI'
-.\app\setup_mcp.ps1 -CyToolsCoreRoot 'C:\src\CyToolsCore'
+.\app\setup_mcp.ps1
+.\runtime\python\Scripts\python.exe app\setup_examples.py
 ```
 
-`app/build.ps1` configures and builds [app/CMakeLists.txt](app/CMakeLists.txt).
-`app/build_native.cmd` delegates to that same entry point; there is one source and
-module list. `CyGameEditor.exe` is produced at the repository root. The native
-contracts binary is written to `runtime/build/CyGameSDKTests.exe`.
-Use `-BuildDirectory` and `-OutputDirectory` for an independent build. A supplied
-CyUI checkout must be clean and match the lock exactly; it is never modified.
+Select alternative authorized checkouts with `-CyUIRoot` on `app/build.ps1` or
+`-CyToolsCoreRoot` on `app/setup_mcp.ps1`. A supplied CyUI checkout must be clean
+and match the dependency lock; it is not modified. `-BuildDirectory` and
+`-OutputDirectory` select an independent native build.
 
-The graphical host needs the Microsoft C++ runtime. The private Python runtime
-is used by MCP and worker operations. The current native host is Win32/DX11;
-Linux/macOS hosts remain unimplemented. `CyGameEditor.sh` reports this limitation.
+CyUI shares one host-owned ImGui instance and compiles the selected modules.
+Native Audio, Gallery, Demo, CodeEditor and Web/CEF integrations are disabled.
+CyDoc's separate reader uses image, gallery and graph; it does not ship Three.js.
 
-The Git repository contains source, documentation, dependency notices and generated
-example fixtures. Executables, private runtimes, local reports/checkpoints, settings,
-projects and working assets are kept locally and are not included. Historical
-validation/checkpoint references in the guides refer to the local development
-workspace; a fresh clone must build and run its own checks. The release identity
-is recorded in [runtime/active-release.json](runtime/active-release.json).
-
-Run the isolated native, SDK/MCP and graphical regression suites after building:
+The build writes `CyGameEditor.exe` to the project root and copies the complete
+local manual beside it. `app/build_native.cmd` delegates to the same CMake entry.
+To regenerate only the manual:
 
 ```powershell
-.\runtime\python\Scripts\python.exe app\verify_cyui.py --captures
+powershell -NoProfile -ExecutionPolicy Bypass -File app/build_documentation.ps1
 ```
 
-## First use
+### Connect an MCP client
 
-Open the built `CyGameEditor.exe` or `Lancer.cmd`. The startup scene is a Sandbox
-demonstration. Ctrl+S saves the project; Ctrl+O reloads the saved project. User
-projects live in `data/projects`, assets in `data/assets`, and preferences/layout
-in `data/settings`. Example installation refuses to overwrite existing files.
-
-- Content Browser → Examples3D: open StaticTriangle.cy3d or AnimatedTriangle.cy3d
-  for Mesh / Skeleton / Animation, playback, keys and GLB/CyPack export.
-- Examples3D/ChainMotion.cy3d → Motion tools: try IK baking, root-motion pairs or
-  clip trim/resample. Source clips and reference poses are preserved.
-- Examples/Example_TexturedMaterial.cyasset → Compile preview: compile the editor's
-  DX11 material shader. This does not compile a game's material format.
-- BlueprintExamples/Example_BlueprintExpand.cyasset: select Calculate, then
-  **Expand call → Preview expansion → Apply expansion**. Run graph prints 9 before
-  and after. Ctrl+Z / Ctrl+Y undo and redo. Execution-flow calls are not supported
-  by this expansion operation; its definition remains available in My Graph.
-- Window → Game Codecs: the provider list stays empty until trusted source code
-  registers and verifies a real codec for a specific target.
-
-The Sandbox build target packages document data into a ZIP through Core. It does
-not cook game files or produce a runnable game. Game-specific build/play/render
-behavior must be supplied and verified by the adapter.
-
-## MCP and AI SDK
-
-Start the editor, adapt the absolute placeholder paths in
-[app/mcp.example.json](app/mcp.example.json), and configure your MCP client to start
-`app/tool.py mcp` using the private Python environment. This uses CyToolsCore's
-existing MCP server; the editor does not implement a second scheduler or server.
+Start the editor and adapt the installation paths in
+[app/mcp.example.json](app/mcp.example.json). Use the private Python to run:
 
 ```powershell
 .\runtime\python\Scripts\python.exe app\tool.py describe
-.\runtime\python\Scripts\python.exe app\tool.py invoke scene_list
 .\runtime\python\Scripts\python.exe app\tool.py mcp
 ```
 
-The UI, native IPC and SDK operations use the same EditorCore and live document.
-Discover operations through `cy_list_operations` / `cy_describe_operation`, call
-`op_<id>`, and poll `cy_get_job` until Completed, Cancelled or Failed. A timed-out
-mutation may already have applied: inspect the current state before retrying.
-For several clients sharing one job runtime, use the existing authenticated Core
-HTTP service and MCP bridge; see [MultiClient](app/Docs/MultiClient.md).
+Discover operations with `cy_list_operations` / `cy_describe_operation`, invoke
+`op_<id>` and follow `cy_get_job` to Completed, Cancelled or Failed. After a mutation
+timeout, inspect live state before retrying. Shared clients use the existing
+Core authenticated HTTP service and MCP bridge.
 
-## Develop an editor for a game
+Build/setup details: [troubleshooting](app/Docs/LaunchRecovery.md),
+[CyUI integration](app/Docs/CyUIMigration.md),
+[CyDoc generation](app/Docs/CyDocIntegration.md).
 
-Start with [AI_GUIDE.md](AI_GUIDE.md), then
-[GameAdapterGuide](app/Docs/GameAdapterGuide.md). Copy
-[GamePortingTemplate](app/Docs/GamePortingTemplate.md) into the derived SDK's docs
-and fill in the game version, observed format details, tools, unknowns and validation
-fixtures. Use a separate project; preserve installed game files and this foundation.
-[ExampleGameAdapter.h](app/examples/adapters/ExampleGameAdapter.h) demonstrates the
-source-level adapter seam, without a game parser or runtime binding.
+</details>
 
-For shared meshes, rigs and animation interchange, read
-[CommonAssetFormat](app/Docs/CommonAssetFormat.md). CyPack v1 preserves GLB payloads,
-package IDs and unknown metadata. Conversion profiles describe capabilities;
-they do not implement a game's native codec.
+---
 
-Focused guides:
+## License
 
-- [Native 3D assets](app/Docs/Native3DAssets.md), [advanced authoring](app/Docs/AdvancedAuthoring.md)
-  and [animation tools](app/Docs/AnimationTools.md).
-- [Named types](app/Docs/NamedGraphTypes.md), [interfaces](app/Docs/GraphInterfaces.md),
-  [signature migration](app/Docs/SignatureMigration.md) and [type migration](app/Docs/TypeMigration.md).
-- [Collapse selection](app/Docs/GraphCollapse.md) and [expand call](app/Docs/GraphExpand.md).
-- [Material pipeline](app/Docs/MaterialPipeline.md), [build providers](app/Docs/BuildProviders.md)
-  and [game codecs](app/Docs/GameCodecs.md).
+**CyGameSDK's original code, documentation and examples use the [MIT license](LICENSE).**
+Retain its copyright and license notice when redistributing. Third-party libraries
+keep their own terms.
 
-## Verify a build
+### Native editor and SDK
 
-```powershell
-.\runtime\build\CyGameSDKTests.exe (Get-Location).Path
-$env:CYGAME_TEST_GUI='1'
-.\runtime\python\Scripts\python.exe -m unittest discover -s app\tests -p 'test_*.py' -v
-```
+| Library · source | License · terms | Use / scope |
+| --- | --- | --- |
+| [CyUI 1.2.0](https://github.com/MrMybal/CyUI) | [MIT and component notices](app/LICENCES/CyUI-MIT.txt) · [bundled notices](app/LICENCES/CyUI-THIRD-PARTY-NOTICES.md) | Selected native UI modules; exact revision in the dependency lock. |
+| [Dear ImGui, pinned CyUI snapshot](https://github.com/ocornut/imgui) | [MIT](app/LICENCES/Dear-ImGui-MIT.txt) | Docking and native widget rendering; one shared instance. |
+| [Bundled stb](https://github.com/nothings/stb) | [MIT option](app/LICENCES/Dear-ImGui-stb-MIT.txt) | Font/text helpers included with ImGui. |
+| [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) | [MIT](app/LICENCES/ImGuizmo-MIT.txt) | Viewport transform gizmos; pinned source snapshot. |
+| [nlohmann/json 3.11.3](https://github.com/nlohmann/json) | [MIT](app/LICENCES/nlohmann-json-MIT.txt) | Native document and operation JSON. |
+| [Lexilla, Scintilla and SciTE data](https://github.com/ScintillaOrg/lexilla) | [Permissive notice](app/LICENCES/Lexilla.txt) · [Scintilla](app/LICENCES/Scintilla.txt) · [SciTE](app/LICENCES/SciTE-Properties.txt) | Syntax engines, interface headers and properties through Code/Diff; no Scintilla editor UI. |
+| [CyToolsCore 0.10.1](https://github.com/MrMybal/CyToolsCore) | [MIT](app/LICENCES/CyToolsCore-MIT.txt) | Python MCP/AI SDK, authenticated sessions, jobs and workers. |
+| [CPython and Python packages](https://github.com/python/cpython) | [Python terms](app/LICENCES/Python.txt) · [package licenses/notices](app/licenses-python.json) | Separately configured MCP/worker environment; packages retain their listed licenses. |
+| Microsoft Windows SDK / Direct3D / C++ runtime | [Component scope](app/LICENCES/README.md) · Microsoft terms | Windows host and graphics toolchain; system fonts are not redistributed. |
 
-Tests use isolated workspaces under `data/reports`. Renderer captures can be made
-with the `app/capture_*.py` scripts. The 0.28 development checkpoint recorded native
-contracts, 181 Python scenarios and 16 focused expansion captures across English,
-French and six themes; those are bounded development results, not game compatibility
-or a guarantee for every display/layout combination. See each feature guide for
-its targeted commands and verification scope.
+### Documentation and build tools
 
-## License and component notices
+| Library · source | License · terms | Use / scope |
+| --- | --- | --- |
+| [CyDoc 0.1.0](https://github.com/MrMybal/CyDoc) | [MIT](app/LICENCES/CyDoc-MIT.txt) | Exported local reader; image, gallery and graph modules. |
+| [Node.js 22+](https://github.com/nodejs/node) | [MIT and component notices](https://github.com/nodejs/node/blob/main/LICENSE) | Documentation generation toolchain; not a reader runtime. |
+| [marked 17.0.6](https://github.com/markedjs/marked) | [MIT](https://github.com/markedjs/marked/blob/v17.0.6/LICENSE.md) | Build-time Markdown compilation in the locked application toolchain. |
+| [PrismJS 1.30.0](https://github.com/PrismJS/prism) | [MIT](https://github.com/PrismJS/prism/blob/v1.30.0/LICENSE) | Build-time code highlighting. |
+| [esbuild 0.25.12](https://github.com/evanw/esbuild) | [MIT](https://github.com/evanw/esbuild/blob/v0.25.12/LICENSE.md) | Bundling the offline reader and selected modules. |
+| [TypeScript](https://github.com/microsoft/TypeScript) | [Apache-2.0](https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt) | Building the pinned CyDoc package before export. |
 
-CyGameSDK's original code, documentation and examples are licensed under the
-[MIT License](LICENSE). Commercial use, modification and redistribution are
-permitted under its terms, including retention of the copyright and license notice.
+This table is an index, not a replacement for complete notices. Preserve
+[app/LICENCES](app/LICENCES/README.md), the Python package notices and the license
+files distributed with generated documentation and toolchain packages.
 
-Third-party components retain their own licenses. Their notices are preserved in
-[app/LICENCES](app/LICENCES/README.md).
+## References and links
+
+- [English manual](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview) · [Manuel en français](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/overview).
+- [Product website](https://mrmybal.github.io/CyGameSDK/) · [Source repository](https://github.com/MrMybal/CyGameSDK).
+- [Published source release](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.29.0) · [Issue tracker](https://github.com/MrMybal/CyGameSDK/issues).
+- [Portable asset contract](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/portable-assets) · [Source adapter example](app/examples/adapters/ExampleGameAdapter.h).
+
+<details>
+<summary><strong>AI Usage</strong></summary>
+
+- [Start here: primary AI guide](AI_GUIDE.md) — project overview, important files and the path to a game-specific SDK.
+- [Repository instructions](AGENTS.md) · [Native developer guide](app/AGENTS.md) — ownership, versions and implementation constraints.
+- [Build this application](app/Docs/LaunchRecovery.md) — setup and launch troubleshooting.
+- [Create a game adapter](app/Docs/GameAdapterGuide.md) · [Porting dossier](app/Docs/GamePortingTemplate.md) — source contracts and real game evidence.
+- [CyUI integration](app/Docs/CyUIMigration.md) · [CyDoc authoring/build](app/Docs/CyDocIntegration.md) — presentation modules and local help maintenance.
+
+</details>
