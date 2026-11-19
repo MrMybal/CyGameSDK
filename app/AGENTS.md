@@ -5,16 +5,17 @@ and the dossier in Docs/GamePortingTemplate.md. Check runtime/active-release.jso
 at the project root; preserved candidate sources are not active extensions.
 
 Read the root README.md, Docs/EditorArchitecture.md, Docs/CapabilityCoverage.md,
-CyTool.json and tool.py. The app began with cytools new --desktop, and replaces
-the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
+CyTool.json and tool.py. The native C++17 CyUI / ImGui / DX11 host uses isolated C++20 bridges for
+CodeEditor and CyMCPSDK; no SDK JSON types cross that boundary.
 
 - Read Docs/CyUIMigration.md and dependencies.lock.json, then the pinned CyUI
   checkout's docs/AI_GUIDE.md and docs/MODULES.md when editing native UI.
   Use explicit module headers/targets, palette roles, design-unit dimensions and
   stable IDs. beginProperties takes a design-unit width, not an already dp-scaled
   width. Keep English default/fallback, and raw user captions untranslated.
-- CyToolsCore remains the MCP/SDK/job implementation. Do not copy its runtime,
-  rewrite its scheduler/authentication/MCP parser, or modify sibling repositories.
+- Read Docs/CyMCPSDKIntegration.md. CyMCPSDK owns Registry, ChatUI, MCP and Executor/
+  process supervision. The host owns durable job records, recovery and identities.
+  Keep one shared business registry. Do not copy SDK code or modify sibling repositories.
 - app/build_manifest.py is the source of the operation catalogue. Regenerate
   CyTool.json after editing it. The GUI, native IPC and MCP use EditorCore::execute.
 - Keep game adapters and graph data independent of ImGui. Inject IGameAdapter;
@@ -23,7 +24,7 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   Do not claim an ABI-stable DLL/plugin loader, Blueprint compatibility, shader
   compilation or game build/play unless implemented and verified.
 - Graph/scene edits validate before committing and participate in document undo.
-  Long compiles/imports must become CyToolsCore jobs/workers, not UI-thread work.
+  Long compiles/imports must become SDK-owned durable jobs/workers, not UI-thread work.
 - English is the source/default/fallback UI language, independent of Windows locale.
   Preserve an explicitly selected language and keep other languages selectable.
 - Every visible label goes through the EN/FR catalogue app/locales/ui.json.
@@ -56,8 +57,8 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   against loaded parents first, preserve path confinement/cycle/type checks and
   include implicit parent edges in the asset reference index.
 - Build targets belong to IGameAdapter; trusted Python source providers run through
-  build_service.py and official CyToolsCore ProcessWorker. build_bridge.py is a GUI
-  SDK client, not a scheduler. Never accept compiler commands from asset JSON.
+  build_service.py and the app one-shot worker contract under CyMCPSDK Process.
+  native/BuildClient.cpp invokes CyGameCLI desktop, never a Python transport server. Never accept compiler commands from asset JSON.
   Outputs/diagnostics/snapshots use JobContext.path; desktop sessions are persistent.
   Read Docs/BuildProviders.md for the provider contract and current archive scope.
 
@@ -67,8 +68,8 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   watcher, arbitrary-version diff or visual graph merge is implemented yet.
 
 
-- Preview shaders compile only through shader_service.py and the official Core
-  ProcessWorker. Never put asset HLSL, includes or commands into a compiler request.
+- Preview shaders compile only through shader_service.py and the SDK-owned
+  compute worker. Never put asset HLSL, includes or commands into a compiler request.
   Read Docs/MaterialPipeline.md. Keep parameter ordering consistent in native plans
   and Python lowering; root defaults are uniforms, function defaults are program data.
   Presentation edits must not invalidate a shader. Check signatures, confined paths
@@ -87,7 +88,7 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   Preserve GLB bytes for identity transfer; game conversion must report losses and
   enforce coordinate/rig/format limits. Never treat an envelope integrity check as
   full glTF semantic or engine-output validation.
-- portable_assets.service registers optional handlers into the existing Core runtime.
+- portable_assets.service registers optional handlers into the existing native automation runtime.
   Declare their descriptors, skip native proxies for those IDs, and bind the desktop
   job path before exposing GUI actions. Native 0.20 uses model_* and asset_import
   with scene3d/model_service workers; optional portable_* remains opt-in.
@@ -107,7 +108,7 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   extend the existing interpreter. Preserve per-advance shared budgets, GUID object
   handles, macro expansion scopes and source trace mappings. Classes/instances are
   local simulation data, not reflection of arbitrary engine memory.
-- ModelAuthoring and model_process_service use official Core workers and hash-guarded
+- ModelAuthoring and model_process_service use SDK-owned compute workers and hash-guarded
   commits. Geometry edits invalidate LODs / mark collision review; providers must
   honor these markers. Bulk authoring metadata uses glTF extras and a checked
   CyPack manifest reference; unknown namespaces and UUIDs remain preserved.
@@ -119,8 +120,8 @@ the generated Python UI with a native C++17 CyUI / ImGui / DX11 host.
   root-motion pairs/reconstruction and trim/resample, using existing model_process.
   Keep the source clip/bind data unchanged, checked metadata clip indices and
   float32 pose fingerprints. A future clip reorder/delete must migrate pair indices.
-- The bridge terminal state must follow Core runtime closure; completion cannot
-  advertise files as ready for cleanup while its SQLite/worker handles remain open.
+- The desktop terminal state must follow native runtime closure. Retain results
+  after finish_task and SDK resource expiry; never replay interrupted jobs automatically.
 - --test-motion injects only isolated-host ImGui input; never global desktop input.
 
 - 0.23: Docs/NamedGraphTypes.md / TypeLibrary.cpp describe graph-local nominal enums
@@ -179,3 +180,11 @@ repository root and generated with `app/build_documentation.ps1`. Read
 packaging. Keep stable IDs/anchors and the official offline reader. Do not edit
 exported HTML/JS to repair authoring input. Keep this AI guide separate from the
 human manual. Preserve the exact CyDoc lock and the source-import translation gate.
+
+Native 0.30: UiPropertyAdapter supplies schema snapshots, SourceEditorBackend is
+the isolated C++20 presentation bridge, and EditorCommands owns shared bindings.
+Hierarchy/DataView map ordered selection back to Core without frame-time writes.
+Apply multi-cell and group/node changes through the atomic Core operations. Keep
+semantic graph clipboard translation; generic visual fragments omit runtime data.
+Use CYGAME_EDITOR_EXE for candidate test/capture runs; the candidate must resolve
+the installed native CLI and compute Python for desktop job checks. Never copy a venv.

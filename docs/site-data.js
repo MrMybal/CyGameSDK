@@ -1,10 +1,10 @@
 /* Application showcase content. The complete manual is exported by CyDoc. */
 window.CYGAME_SITE = {
   "shared": {
-    "version": "0.29.0",
+    "version": "0.31.0",
     "repo": "https://github.com/MrMybal/CyGameSDK",
-    "release": "https://github.com/MrMybal/CyGameSDK/releases/tag/v0.29.0",
-    "download": "https://github.com/MrMybal/CyGameSDK/releases/download/v0.29.0/CyGameSDK-0.29.0-source.zip"
+    "release": "https://github.com/MrMybal/CyGameSDK/releases/tag/v0.31.0",
+    "download": "https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-source.zip"
   },
   "en": {
     "title": "CyGameSDK — A foundation for your game editor.",
@@ -53,16 +53,16 @@ window.CYGAME_SITE = {
         "Get started"
       ]
     ],
-    "status": "Development preview · 0.29.0",
+    "status": "Development preview · 0.31.0",
     "heroLine": "A foundation for your game editor.",
     "heroBody": "Build game-specific SDKs and authoring tools around a native workspace, visual graphs and an AI-ready core.",
-    "heroMeta": "Windows x64 · Source release · MIT",
+    "heroMeta": "Windows x64 · Portable ZIP and source · MIT",
     "heroCaption": "The Sandbox workspace. Actual application capture, with example data.",
     "heroAlt": "CyGameSDK Sandbox workspace with viewport, transform gizmo, hierarchy, properties and Content Browser",
     "strip": [
       "Native C++17 / DX11",
       "Modular CyUI / Dear ImGui",
-      "MCP / CyToolsCore"
+      "Assistant / CyMCPSDK"
     ],
     "introKicker": "FOR THE TOOLS YOUR GAME NEEDS",
     "introTitle": "Start with an editor.\nMake it your own.",
@@ -159,7 +159,7 @@ window.CYGAME_SITE = {
     "materials": {
       "kicker": "03 / MATERIALS & IMAGES",
       "title": "From a texture\nto a surface.",
-      "body": "Use UV coordinates, procedural expressions and image samplers to build materials. Compile the supported expression subset through CyToolsCore workers, then inspect the real DX11 result.",
+      "body": "Use UV coordinates, procedural expressions and image samplers to build materials. Compile the supported expression subset through SDK-owned compute workers, then inspect the real DX11 result.",
       "bullets": [
         "Sphere or plane previews and live parameter uniforms",
         "Material instances with parent inheritance and typed overrides",
@@ -178,7 +178,7 @@ window.CYGAME_SITE = {
       {
         "image": "code",
         "title": "Look behind the preview.",
-        "body": "Read generated HLSL with highlighting and search. Compilation progress and diagnostics use the existing Core job system.",
+        "body": "Read generated HLSL with highlighting and search. Compilation progress and diagnostics use the durable application job system.",
         "alt": "Generated HLSL source displayed in the shader preview panel"
       }
     ],
@@ -220,7 +220,7 @@ window.CYGAME_SITE = {
     "automation": {
       "kicker": "05 / MCP & AI SDK",
       "title": "One editor.\nThe same operations for AI.",
-      "body": "The interface, native IPC and SDK use the same EditorCore. CyToolsCore supplies MCP, identities, sessions, jobs and ProcessWorker, so AI tooling connects to actual editor operations.",
+      "body": "The editor, AI Assistant, native CLI and MCP share 177 business operations and EditorCore validation. CyMCPSDK supplies ChatUI and transports; the application retains durable jobs and results after restart.",
       "steps": [
         [
           "Discover",
@@ -282,7 +282,7 @@ window.CYGAME_SITE = {
       ],
       [
         "What can I download?",
-        "Version 0.29.0 is available as source, with SHA-256 checksums. There is no packaged Windows installer in this release. Build the native host on Windows x64."
+        "Version 0.31.0 provides a portable Windows x64 ZIP, source ZIP, offline manual and SHA-256 checksums. Native editing/chat/MCP require no compiler or Python. Compute workers optionally use Python 3.11+."
       ],
       [
         "Is this Unreal Engine Blueprint?",
@@ -298,8 +298,8 @@ window.CYGAME_SITE = {
       ]
     ],
     "downloadTitle": "Build your next editor.",
-    "downloadBody": "Get the 0.29.0 source and start with the Sandbox. Connect your game one verified workflow at a time.",
-    "downloadNote": "Development preview · Windows x64 host · Source distribution · MIT",
+    "downloadBody": "Get the 0.31.0 source and start with the Sandbox. Connect your game one verified workflow at a time.",
+    "downloadNote": "Development preview · Windows x64 · Portable ZIP and source · MIT",
     "sourceButton": "Download source .zip",
     "releaseButton": "Release notes & checksums",
     "footer": "A native foundation for game-specific tools.",
@@ -353,16 +353,16 @@ window.CYGAME_SITE = {
         "Commencer"
       ]
     ],
-    "status": "Préversion de développement · 0.29.0",
+    "status": "Préversion de développement · 0.31.0",
     "heroLine": "Une base pour votre éditeur de jeu.",
     "heroBody": "Créez des SDK et des outils adaptés à un jeu, autour d’une interface native, de graphes visuels et d’un socle accessible aux IA.",
-    "heroMeta": "Windows x64 · Distribution source · MIT",
+    "heroMeta": "Windows x64 · ZIP portable et sources · MIT",
     "heroCaption": "L’espace Sandbox. Capture réelle de l’application, avec des données d’exemple.",
     "heroAlt": "Interface Sandbox de CyGameSDK avec viewport, gizmo, hiérarchie, propriétés et explorateur d’assets",
     "strip": [
       "C++17 natif / DX11",
       "CyUI modulaire / Dear ImGui",
-      "MCP / CyToolsCore"
+      "Assistant / CyMCPSDK"
     ],
     "introKicker": "LES OUTILS DONT VOTRE JEU A BESOIN",
     "introTitle": "Partez d’un éditeur.\nFaites-en le vôtre.",
@@ -459,7 +459,7 @@ window.CYGAME_SITE = {
     "materials": {
       "kicker": "03 / MATÉRIAUX ET IMAGES",
       "title": "De la texture\nà la surface.",
-      "body": "Combinez coordonnées UV, expressions procédurales et échantillonneurs d’images. Compilez le sous-ensemble d’expressions avec les workers CyToolsCore, puis examinez le résultat DX11 réel.",
+      "body": "Combinez coordonnées UV, expressions procédurales et échantillonneurs d’images. Compilez le sous-ensemble d’expressions avec les workers de calcul supervisés par le SDK, puis examinez le résultat DX11 réel.",
       "bullets": [
         "Aperçus sur sphère ou plan et paramètres uniformes en direct",
         "Instances avec héritage du parent et surcharges typées",
@@ -478,7 +478,7 @@ window.CYGAME_SITE = {
       {
         "image": "code",
         "title": "Regardez derrière l’aperçu.",
-        "body": "Lisez le HLSL généré avec coloration et recherche. La progression et les diagnostics utilisent le système de jobs Core existant.",
+        "body": "Lisez le HLSL généré avec coloration et recherche. La progression et les diagnostics utilisent le système de jobs durables de l’application.",
         "alt": "Code HLSL généré affiché dans le panneau d’aperçu de shader"
       }
     ],
@@ -520,7 +520,7 @@ window.CYGAME_SITE = {
     "automation": {
       "kicker": "05 / MCP ET SDK POUR IA",
       "title": "Un seul éditeur.\nLes mêmes opérations pour l’IA.",
-      "body": "Interface, IPC natif et SDK utilisent le même EditorCore. CyToolsCore fournit MCP, identités, sessions, jobs et ProcessWorker : les outils IA se connectent aux véritables opérations de l’éditeur.",
+      "body": "Éditeur, Assistant IA, CLI natif et MCP partagent 177 opérations métier et la validation EditorCore. CyMCPSDK fournit ChatUI et les transports ; l’application conserve jobs et résultats après redémarrage.",
       "steps": [
         [
           "Découvrir",
@@ -582,7 +582,7 @@ window.CYGAME_SITE = {
       ],
       [
         "Que puis-je télécharger ?",
-        "La version 0.29.0 est disponible en sources, avec sommes SHA-256. Cette release ne contient pas d’installeur Windows. L’hôte natif se compile sur Windows x64."
+        "La version 0.31.0 fournit un ZIP Windows x64 portable, les sources, le manuel hors ligne et les empreintes SHA-256. Édition/chat/MCP natifs ne demandent ni compilateur ni Python. Les calculs utilisent facultativement Python 3.11+."
       ],
       [
         "Est-ce le Blueprint d’Unreal Engine ?",
@@ -598,8 +598,8 @@ window.CYGAME_SITE = {
       ]
     ],
     "downloadTitle": "Construisez votre prochain éditeur.",
-    "downloadBody": "Récupérez les sources 0.29.0 et partez du Sandbox. Raccordez votre jeu un workflow vérifié à la fois.",
-    "downloadNote": "Préversion de développement · Hôte Windows x64 · Distribution source · MIT",
+    "downloadBody": "Récupérez les sources 0.31.0 et partez du Sandbox. Raccordez votre jeu un workflow vérifié à la fois.",
+    "downloadNote": "Préversion de développement · Windows x64 · ZIP portable et sources · MIT",
     "sourceButton": "Télécharger les sources .zip",
     "releaseButton": "Notes de version et sommes de contrôle",
     "footer": "Une base native pour les outils propres à votre jeu.",

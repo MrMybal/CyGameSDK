@@ -49,7 +49,7 @@ with tempfile.TemporaryDirectory(prefix="cyui-captures-",dir=REPORTS) as tempora
                     except tool.CyToolError:
                         if process.poll() is not None or time.monotonic()>deadline:raise
                         time.sleep(.03)
-                assert status["adapter"]["version"]=="0.29.0",status
+                assert status["adapter"]["version"]=="0.31.0",status
                 if mode=="code":
                     with tool.create_runtime(root/("code-job-"+language)) as runtime:
                         actor=runtime.authenticate(runtime.create_client("CyUI capture")["token"]);session=runtime.create_session(actor)

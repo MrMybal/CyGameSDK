@@ -1,8 +1,8 @@
-"""Optional operations for an existing CyToolsCore runtime/manifest, not a server."""
+"""Optional operations for an existing CyMCPSDK runtime/manifest, not a server."""
 from pathlib import Path
 import sys
-from cytools_core import CyToolError
-from cytools_core.workers import ProcessWorker
+from job_contract import CyToolError
+from job_contract import ProcessWorker
 
 OPERATION_IDS = frozenset(['portable_pack', 'portable_inspect', 'portable_export_glb'])
 
@@ -22,9 +22,10 @@ def operation_descriptors():
 def register_operations(runtime, input_root):
     """Declare operation_descriptors first; exclude these IDs from native proxies."""
     root = Path(input_root).resolve(strict=True)
+    if hasattr(runtime, 'configure_portable'):runtime.configure_portable(root)
     runtime_root = runtime.root.resolve()
     if root.is_relative_to(runtime_root) or runtime_root.is_relative_to(root):
-        raise ValueError('Keep the shared input root disjoint from private Core runtime storage')
+        raise ValueError('Keep the shared input root disjoint from private automation runtime storage')
     if not root.is_dir():
         raise ValueError('Configure a dedicated portable input directory')
     worker = ProcessWorker([sys.executable, str(Path(__file__).resolve().parents[1] / 'portable_asset_worker.py')], idle_timeout=120)

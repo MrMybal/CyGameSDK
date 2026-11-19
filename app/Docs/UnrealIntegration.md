@@ -1,25 +1,15 @@
-# Unreal integration
+# UnrealIntegration — current application contract
 
-[CyUEMCPSDK](https://github.com/MrMybal/CyUEMCPSDK) adapts CyToolsCore contracts
-to Unreal plugins. Follow its Docs/Integration.md and Docs/UpdateExistingPlugin.md.
-For an existing plugin, embed and adapt the C++ sources into its existing modules;
-the separate reference plugins are development examples, not mandatory dependencies.
-The Python companion uses CyToolsCore without copying its runtime or schemas.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#modules-and-build).
 
-Authentication, jobs, permissions and temporary task files retain the Core contract.
-Unreal assets integrated into a project remain persistent project changes.
-Provider transports are included in the SDK; CyAIConnectorLab is not a dependency.
-External MCP access and embedded assistant tool access require separate integration
-and validation. See the SDK validation guide for Windows Editor 5.3–5.8 coverage.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-The optional Unreal assistant can ship one offline ZIP containing portable Python,
-its official Core wheel and companion dependencies. Follow the SDK's
-Docs/AssistantRuntime.md: background detection, explicit first-use installation,
-shared user storage by default and optional plugin-local storage. Only immutable,
-compatible bundles are shared; plugin sessions, settings and task files stay isolated.
-This assistant-specific policy does not change private Python environments for
-inference CyTools.
+Start with [AI_GUIDE](../../AI_GUIDE.md) and [GameAdapterGuide](GameAdapterGuide.md).
+An Unreal plugin is a separate target; this application is a Win32/DX11 native host.
 
-
-Licence et redistribution commerciale : lire [Licensing.md](Licensing.md).
-Conserver les notices MIT du SDK et les licences distinctes des composants tiers.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

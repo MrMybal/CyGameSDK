@@ -8,7 +8,7 @@ Read CommonAssetFormat.md first for the portable identity/metadata contract.
 
 1. Content Browser > Add > Import source file. Choose a self-contained GLB or
    `.cypack`, destination `Imported/Name.cy3d`, Validate source, then Import.
-   The official CyToolsCore worker decodes it; native commit validates the result.
+   The official SDK-owned compute worker decodes it; native commit validates the result.
 2. Double-click the `.cy3d`. Each document gets a separate dockable editor tab.
    Tools > 3D Assets lists loaded documents. Closing a tab hides the view; Close
    document releases a saved document. Unsaved document changes block release.
@@ -27,7 +27,7 @@ Read CommonAssetFormat.md first for the portable identity/metadata contract.
    acquire a track before GLB export. LINEAR, STEP and CUBICSPLINE are evaluated;
    cubic tangents survive export, but this view does not provide tangent handles.
 7. Save asset persists the neutral document. Export GLB / Export CyPack starts an
-   official Core job. SDK clients must export job outputs before finish_task;
+   application durable job. SDK clients may export outputs explicitly; finish_task retains original job files;
    the desktop SDK session is persistent. Reimport refuses local/unsaved changes.
 
 Example assets are under `data/assets/Examples3D`: StaticTriangle.cy3d,
@@ -110,8 +110,8 @@ pinned optional Khronos validator. This evidence covers the test fixtures only.
 
 [AnimationTools](AnimationTools.md) documents offline fixed-root chain IK, extracted
 root-motion pairs with sampled reconstruction and trimmed/resampled clips. The
-existing model_process/Core worker/commit path is reused, with real native preview,
+existing model_process/worker/commit path is reused, with real native preview,
 Undo and GLB/CyPack export. MotionToolsView.cpp supplies translated property views.
-The desktop bridge now publishes terminal readiness after Core closes its handles.
+The desktop bridge now publishes terminal readiness after the native SDK runtime closes its handles.
 No joint limits/contact solver or engine movement/physics binding is supplied.
 Evidence: data/reports/motion-validation.json and motion-captures.json.

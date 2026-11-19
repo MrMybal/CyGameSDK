@@ -1,6 +1,6 @@
 # Component notices
 
-- CyUI 1.2.0 at `ff023e646c6a3038b3dfbfd53f6d2b4a2f5955e3`, MIT. CyUI-MIT.txt.
+- CyUI 1.2.0 at `6ef01cfcdb197f3a89d64618ce5ef8818c704728`, MIT. CyUI-MIT.txt.
   Upstream: https://github.com/MrMybal/CyUI
   CyUI-THIRD-PARTY-NOTICES.md is preserved verbatim; its relative paths refer to
   the locked CyUI checkout, not this notices directory.
@@ -9,7 +9,9 @@
   Upstream: https://github.com/ocornut/imgui
 - CyDoc 0.1.0 at `e038c474577e1f305df3eba421f2b9c03b0f1d8d`, MIT. CyDoc-MIT.txt.
   Upstream: https://github.com/MrMybal/CyDoc. Reader: image, gallery, graph.
-- CyToolsCore 0.10.1: installed official local wheel, MIT. CyToolsCore-MIT.txt.
+- CyMCPSDK 0.7.0 at 791d4d7d7680213b282ec8529d248a10f8494d77, MIT. CyMCPSDK-MIT.txt.
+  CyMCPSDK-THIRD-PARTY-NOTICES.md is retained verbatim.
+- The older CyToolsCore-MIT.txt remains a scaffolding provenance notice; that runtime is not distributed or required.
 - nlohmann/json 3.11.3: vendored single header, MIT. nlohmann-json-MIT.txt.
   Upstream: https://github.com/nlohmann/json/tree/v3.11.3
 - Python and installed dependencies: Python.txt, python/ and ../licenses-python.json.
@@ -28,5 +30,11 @@ licenses; the project license does not replace their copyright or license notice
   data: HPND-style permissive license. Lexilla.txt, Scintilla.txt and
   SciTE-Properties.txt. Exact source revisions/hashes: CyUI-code-syntax.lock.json.
   Code is linked through the Code/Diff modules; no Scintilla editor UI is linked.
-  CodeEditor/TextEditor, Audio, Gallery, CEF and Unreal runtimes are not distributed
-  by this application build.
+  The optional CodeEditor/TextEditor backend is now linked through an isolated C++20 bridge.
+  Audio, Gallery, CEF, Office and Unreal runtimes are not distributed by this application build.
+
+- Native TextEditor backend: MIT, TextEditor-MIT.txt. Built only for the selected CodeEditor module.
+- Bundled JetBrains Mono Regular 2.304: SIL Open Font License 1.1, JetBrains-Mono-OFL.txt. Embedded through CyUI Core; no system font installation is required.
+
+- SDK nlohmann/json 3.12.0, cpp-httplib and PicoSHA2: respective MIT notices in this directory.
+- MD4C Markdown parser through CyUI DocumentViews: MIT, MD4C-MIT.txt.

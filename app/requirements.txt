@@ -1,2 +1,2 @@
-# Native host: CyUI / ImGui / Direct3D 11. No Python UI dependency.
-cytools-core[mcp]==0.10.1
+# Native CyMCPSDK provides CLI/MCP/chat. Python is for bounded compute workers.
+jsonschema==4.26.0

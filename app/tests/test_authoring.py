@@ -1,11 +1,12 @@
 """Native Blueprint semantics and official Core authoring/codec jobs."""
+import os
 import base64,copy,hashlib,json,math,os,shutil,sys,tempfile,time,unittest,uuid
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import tool,scene3d,model_authoring as authoring
 import test_integration as integration
-from cytools_core import CyToolError
+from job_contract import CyToolError
 from game_codecs import GameCodecProvider
 
 class Algorithms(unittest.TestCase):
@@ -138,7 +139,7 @@ class NativeAuthoring(unittest.TestCase):
    with self.assertRaises(CyToolError):self.call('model_sample',{'modelId':mid,'lod':1})
    self.assertTrue(self.call('model_get',{'modelId':mid})['model']['extensions'][authoring.NS]['collisions'][0]['needsReview']);self.call('edit_undo');self.assertEqual(self.call('model_get',{'modelId':mid})['model'],before)
    self.call('model_save',{'modelId':mid});job=runtime.wait(actor,runtime.submit(actor,session['sessionId'],'model_export',{'modelId':mid,'format':'glb','lod':1})['jobId']);self.assertEqual(job['state'],'Completed',job)
-   output=Path(job['outputs']['outputPath']);self.assertEqual(len(scene3d.decode(output)['meshes'][0]['primitives'][0]['indices'])//3,frame['triangleCount']);runtime.finish_task(actor,session['sessionId']);self.assertFalse(output.exists())
+   output=Path(job['outputs']['outputPath']);self.assertEqual(len(scene3d.decode(output)['meshes'][0]['primitives'][0]['indices'])//3,frame['triangleCount']);runtime.finish_task(actor,session['sessionId']);self.assertTrue(output.exists()) # Durable app outputs survive task completion.
   plan=self.call('model_process_prepare',{'modelId':mid,'action':'collision','options':{}});result,summary=authoring.process(plan['model'],None,'collision',{})
   report=self.workspace/'stale-authoring.json';report.write_text(json.dumps({'format':'cygame-model-process','schemaVersion':1,'modelId':mid,'baseHash':plan['baseHash'],'sourceId':'','sourceHash':'','model':result,'summary':summary}),encoding='utf-8')
   self.call('model_node_set',{'modelId':mid,'node':0,'name':'Changed during work'})
@@ -163,14 +164,14 @@ class NativeAuthoring(unittest.TestCase):
    for extra in ({'acceptedLosses':[]},{'codecId':'missing'},{'options':{'corruptReport':True}},{'options':{'unverified':True}}):
     denied=runtime.wait(actor,runtime.submit(actor,session['sessionId'],'game_codec_export',{**p,**extra})['jobId']);self.assertEqual(denied['state'],'Failed',denied)
    job=runtime.wait(actor,runtime.submit(actor,session['sessionId'],'game_codec_export',p)['jobId']);self.assertEqual(job['state'],'Completed',job);path=Path(job['outputs']['outputPath']);self.assertTrue(path.read_bytes().startswith(b'CYSDKTEST'))
-   bad=runtime.wait(actor,runtime.submit(actor,session['sessionId'],'game_codec_export',{**p,'gameVersion':'unknown'})['jobId']);self.assertEqual(bad['state'],'Failed');runtime.finish_task(actor,session['sessionId']);self.assertFalse(path.exists())
+   bad=runtime.wait(actor,runtime.submit(actor,session['sessionId'],'game_codec_export',{**p,'gameVersion':'unknown'})['jobId']);self.assertEqual(bad['state'],'Failed');runtime.finish_task(actor,session['sessionId']);self.assertTrue(path.exists()) # Durable app outputs survive task completion.
 
  def test_09_graphical_type_switch_undo_and_macro_creation(self):
   if not self.gui:self.skipTest('Graphical host required')
   import subprocess
   root=self.workspace/'blueprint-gestures';(root/'app').mkdir(parents=True);shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');shutil.copyfile(APP/'interface_features.json',root/'app/interface_features.json')
   report=ROOT/'data/reports/authoring-blueprint-gestures.json';report.unlink(missing_ok=True)
-  result=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--test-blueprint',str(report),'--exit-after','25'],timeout=40)
+  result=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--test-blueprint',str(report),'--exit-after','25'],timeout=40)
   fatal=root/'data/logs/native-fatal.json'
   if fatal.exists():shutil.copyfile(fatal,ROOT/'data/reports/authoring-blueprint-fatal.json')
   self.assertEqual(result.returncode,0,report.read_text('utf-8') if report.exists() else fatal.read_text('utf-8') if fatal.exists() else 'No gesture report');self.assertTrue(json.loads(report.read_text('utf-8'))['passed'])

@@ -132,7 +132,10 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
     if(frameAll&&!nodes.empty()){
         cyui::Point low{1e9,1e9},high{-1e9,-1e9};for(const auto& n:nodes){low.x=std::min(low.x,n.position.x);low.y=std::min(low.y,n.position.y);high.x=std::max(high.x,n.position.x+cyui::dp(205));high.y=std::max(high.y,n.position.y+cyui::dp(34+27*float(std::max(n.inputs.size(),n.outputs.size()))+8));}state.canvas.view.fit(low,high,size,cyui::dp(35));
     }
-    cyui::NodeOptions options;options.width=205;options.header=34;options.row=27;options.revision=core.revision();
+    const auto comments=graph.value("comments",Json::array());std::vector<cyui::NodeGroup> groups;std::map<cyui::ItemId,std::string> groupNames;
+    for(const auto& comment:comments){cyui::NodeGroup group;group.id=uiId("group/"+viewKey+comment.at("id").get<std::string>());if(!groupNames.emplace(group.id,comment.at("id")).second)throw std::runtime_error("UI group identity collision");group.label=comment.at("text");group.position={comment.at("position")[0].get<double>()*dpi,comment.at("position")[1].get<double>()*dpi};group.size={comment.at("size")[0].get<double>()*dpi,comment.at("size")[1].get<double>()*dpi};groups.push_back(group);}
+    cyui::NodeOptions options;options.width=205;options.header=34;options.row=27;options.revision=core.revision();options.groups=groups;
+    if(interfaceProbe)for(const auto& group:groups){const auto low=state.canvas.view.screen(group.position,start);interfaceProbe("graph/group/"+groupNames.at(group.id),{low.x+cyui::dp(8),low.y+cyui::dp(2)},{low.x+float(group.size.x*state.canvas.view.zoom)-cyui::dp(12),low.y+cyui::dp(20)*float(state.canvas.view.zoom)});}
     options.canConnect=[&](cyui::ItemId from,cyui::ItemId to){return pins.count(from)&&pins.count(to)&&pins.at(from).type==pins.at(to).type;};
     options.drawBody=[&](const cyui::Node& node,const cyui::Rect& rect){
         const auto& id=nodeNames.at(node.id);for(const auto& n:graph.at("nodes"))if(n.at("id")==id){auto* draw=ImGui::GetWindowDrawList();const float zoom=float(state.canvas.view.zoom);
@@ -141,18 +144,51 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
             if(!n.value("comment","").empty()&&rect.contains(ImGui::GetIO().MousePos))ImGui::SetTooltip("%s",n.at("comment").get_ref<const std::string&>().c_str());
         }
     };
+    const std::string clipboardBefore=ImGui::GetClipboardText()?ImGui::GetClipboardText():"";
     const bool wasBoxing=state.boxing;const auto boxAnchor=state.boxStart;const auto result=cyui::nodeEditor("##canvas",state,nodes,links,size,options);
     auto* draw=ImGui::GetWindowDrawList();auto& io=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered();
-    if(result.moved.committed()){
-        Json positions=Json::array();bool changed=false;for(const auto& moved:result.moved.value){const auto& name=nodeNames.at(moved.id);positions.push_back({{"nodeId",name},{"position",{moved.position.x/dpi,moved.position.y/dpi}}});for(const auto& n:graph.at("nodes"))if(n.at("id")==name)changed|=std::abs(n.at("position")[0].get<double>()-moved.position.x/dpi)>.001||std::abs(n.at("position")[1].get<double>()-moved.position.y/dpi)>.001;}
-        if(changed)command("graph_nodes_move",{{"graphId",graphId},{"positions",positions},{"expectedRevision",state.revision}});
+    // CyUI's generic fragment omits runtime types, values and local declarations.
+    // Translate its copy request back through the application's semantic exporter.
+    const std::string commonClipboard=ImGui::GetClipboardText()?ImGui::GetClipboardText():"";
+    if(commonClipboard!=clipboardBefore){
+        cyui::NodeFragment copied;std::string error;
+        if(cyui::nodesFromJson(commonClipboard,copied,error)){
+            Json nodeIds=Json::array(),commentIds=Json::array();bool known=true;
+            for(const auto& n:copied.nodes){known&=nodeNames.count(n.id)!=0;if(nodeNames.count(n.id))nodeIds.push_back(nodeNames.at(n.id));}
+            for(const auto& group:copied.groups){known&=groupNames.count(group.id)!=0;if(groupNames.count(group.id))commentIds.push_back(groupNames.at(group.id));}
+            if(known&&(!nodeIds.empty()||!commentIds.empty())){
+                auto exported=command("graph_fragment_copy",{{"graphId",graphId},{"nodeIds",nodeIds},{"commentIds",commentIds}});
+                if(exported.contains("fragment"))ImGui::SetClipboardText(exported.at("fragment").dump().c_str());
+                else ImGui::SetClipboardText(clipboardBefore.c_str());
+            }else ImGui::SetClipboardText(clipboardBefore.c_str());
+        }
     }
+    Json layout={{"graphId",graphId},{"expectedRevision",state.revision}};
+    if(result.moved.committed()){
+        Json positions=Json::array();bool changed=false;
+        for(const auto& moved:result.moved.value){
+            const auto& name=nodeNames.at(moved.id);positions.push_back({{"nodeId",name},{"position",{moved.position.x/dpi,moved.position.y/dpi}}});
+            for(const auto& n:graph.at("nodes"))if(n.at("id")==name)changed|=std::abs(n.at("position")[0].get<double>()-moved.position.x/dpi)>.001||std::abs(n.at("position")[1].get<double>()-moved.position.y/dpi)>.001;
+        }
+        if(changed)layout["positions"]=positions;
+    }
+    if(result.groups.committed()){
+        Json edits=Json::array();for(const auto& group:result.groups.value)if(groupNames.count(group.id)){
+            const auto& name=groupNames.at(group.id);Json edit={{"commentId",name},{"text",group.label},{"position",{group.position.x/dpi,group.position.y/dpi}},{"size",{group.size.x/dpi,group.size.y/dpi}}};
+            for(const auto& before:comments)if(before.at("id")==name&&(before.at("text")!=edit.at("text")||before.at("position")!=edit.at("position")||before.at("size")!=edit.at("size")))edits.push_back(edit);
+        }if(!edits.empty())layout["comments"]=edits;
+    }
+    for(const auto id:result.removeNodes)if(nodeNames.count(id))layout["removeNodes"].push_back(nodeNames.at(id));
+    std::set<std::string> removedLinks;
+    if(result.linkRemoved&&linkNames.count(result.removeLink))removedLinks.insert(linkNames.at(result.removeLink));
+    for(const auto id:result.removeLinks)if(linkNames.count(id))removedLinks.insert(linkNames.at(id));
+    if(!removedLinks.empty())layout["removeLinks"]=removedLinks;
+    for(const auto id:result.removeGroups)if(groupNames.count(id))layout["removeComments"].push_back(groupNames.at(id));
+    if(layout.size()>2)command("graph_layout_apply",layout);
     if(result.connect){const auto& from=pins.at(result.connectFrom);const auto& to=pins.at(result.connectTo);command("graph_link_add",{{"graphId",graphId},{"fromNode",from.node},{"fromPin",from.key},{"toNode",to.node},{"toPin",to.key}});view.wireNode.clear();}
-    if(result.linkRemoved&&linkNames.count(result.removeLink))command("graph_link_remove",{{"graphId",graphId},{"linkId",linkNames.at(result.removeLink)}});
-    if(!result.removeNodes.empty()){Json names=Json::array();for(const auto id:result.removeNodes)if(nodeNames.count(id))names.push_back(nodeNames.at(id));if(!names.empty())command("graph_nodes_remove",{{"graphId",graphId},{"nodeIds",names}});}
     Json boxes=Json::array();
     // Application overlays supply type colors, breakpoints and authored comment
-    // groups; common Nodes owns cards, wires, hit testing, navigation and gestures.
+    // groups are now common Nodes objects; only domain pin/debug overlays stay here.
     for(const auto& n:nodes){auto pos=n.position;for(const auto& moved:state.preview)if(moved.id==n.id)pos=moved.position;const auto origin=state.canvas.view.screen(pos,start);const float zoom=float(state.canvas.view.zoom),width=cyui::dp(205)*zoom,height=cyui::dp(34+27*float(std::max<size_t>(1,std::max(n.inputs.size(),n.outputs.size())))+8)*zoom;const ImVec2 end{origin.x+width,origin.y+height};
         boxes.push_back({{"id",nodeNames.at(n.id)},{"a",{origin.x,origin.y}},{"b",{end.x,end.y}}});
         if(wasBoxing&&ImGui::IsMouseReleased(0)){const auto anchor=state.canvas.view.screen(boxAnchor,start);const cyui::Rect selection{{std::min(anchor.x,io.MousePos.x),std::min(anchor.y,io.MousePos.y)},{std::max(anchor.x,io.MousePos.x),std::max(anchor.y,io.MousePos.y)}};if(origin.x<selection.max.x&&end.x>selection.min.x&&origin.y<selection.max.y&&end.y>selection.min.y&&!cyui::selected(state.selection,n.id))state.selection.push_back(n.id);}
@@ -165,11 +201,11 @@ void EditorApp::graphEditor(const std::string& graphId,const std::string& functi
         }if(!clicked)view.wireNode.clear();
     }
     if(ImGui::IsKeyPressed(ImGuiKey_Escape)||result.moved.phase==cyui::EditPhase::cancel)view.wireNode.clear();
-    const auto comments=graph.value("comments",Json::array());draw->PushClipRect(start,{start.x+size.x,start.y+size.y},true);
-    for(const auto& comment:comments){const auto low=state.canvas.view.screen({comment.at("position")[0].get<double>()*dpi,comment.at("position")[1].get<double>()*dpi},start),high=state.canvas.view.screen({(comment.at("position")[0].get<double>()+comment.at("size")[0].get<double>())*dpi,(comment.at("position")[1].get<double>()+comment.at("size")[1].get<double>())*dpi},start);draw->AddRect(low,high,cyui::alpha(pal.info,.5f),cyui::dp(4));draw->AddText({low.x+cyui::dp(8),low.y+cyui::dp(8)},pal.textDim,comment.at("text").get_ref<const std::string&>().c_str());}
+    draw->PushClipRect(start,{start.x+size.x,start.y+size.y},true);
+
     if(!view.wireNode.empty())for(const auto& [id,pin]:pins)if(pin.node==view.wireNode&&pin.key==view.wirePin&&pin.output==view.wireOutput&&!state.wiring)draw->AddLine(pin.point,io.MousePos,pal.accent,cyui::dp(2));
     draw->AddText({start.x+cyui::dp(12),start.y+size.y-cyui::dp(24)},pal.textFaint,tr("MMB pan | Wheel zoom | Click pins to connect | RMB add"));draw->PopClipRect();
-    if(hovered&&ImGui::IsMouseClicked(1)&&!result.linkRemoved){const auto point=state.canvas.view.world(io.MousePos,start);view.newNodeAt={float(point.x/dpi),float(point.y/dpi)};ImGui::OpenPopup("##canvasMenu");}
+    if(hovered&&ImGui::IsMouseClicked(1)&&!result.linkRemoved&&state.contextKind==0){const auto point=state.canvas.view.world(io.MousePos,start);view.newNodeAt={float(point.x/dpi),float(point.y/dpi)};ImGui::OpenPopup("##canvasMenu");}
     if(ImGui::BeginPopup("##canvasMenu")) {
         for(const auto& [type,spec]:nodeTypes().items())if(type.rfind("function.",0)!=0&&(domain=="function"||spec["domain"]=="both"||spec["domain"]==domain)) {
             if(domain=="function"&&(type=="event.begin"||type=="material.output"))continue;

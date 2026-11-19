@@ -73,7 +73,7 @@ restart it. Existing watches are not remapped. There is no cross-asset refactori
 
 The catalogue has 175 editor operations / 196 tools including Core controls.
 Both new operations share EditorCore::execute with the GUI and native IPC, through
-the existing official CyToolsCore authenticate / submit / wait job path.
+the existing official CyMCPSDK authenticate / submit / wait job path.
 
 ```json
 {"graphId":"asset:BlueprintExamples/Example_BlueprintExpand.cyasset","nodeId":"calculate"}
@@ -101,7 +101,7 @@ Plans contain no executable commands, and no data-driven codec/provider is enabl
 - tests/test_graph_expand.py: deterministic previews, metadata/wire/defaults, Undo,
   passthrough/fanout, eager/lazy guards including nested macros and UV branches,
   local contexts, named/container types, actual material shader compilation,
-  object reads, budgets, bounded invalid reports, official Core jobs and saves.
+  object reads, budgets, bounded invalid reports, application durable jobs and saves.
 - --test-expand: isolated-host ImGui canvas selection, function/macro modal,
   preview/apply and real Ctrl+Z/Ctrl+Y, in EN/FR. No global input is injected.
 - capture_expand.py: official Core caller/helper examples, full and partial GUI

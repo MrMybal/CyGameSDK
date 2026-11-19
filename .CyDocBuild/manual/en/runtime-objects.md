@@ -4,7 +4,7 @@ title: Runtime time, events and objects
 description: Runtime time, events and objects
 section: Graphs
 order: 15
-revision: 1
+revision: 2
 parent: graphs
 ---
 
@@ -16,4 +16,4 @@ Inspect object fields with `graph_debug_status` and edit supported values with `
 
 ## Keep ownership clear {#ownership}
 
-Core jobs run imports, material compilation and build providers outside the UI. Their identities, cancellation, sessions and output lifetimes belong to CyToolsCore. [Worker jobs](doc:jobs) describe that separate lifecycle. Runtime variables and object field edits do not silently rewrite graph declarations or saved source assets.
+Native SDK/host jobs run imports, material compilation and build providers outside the UI. The host retains ownership and durable results; the SDK supplies cancellation and owned processes. [Worker jobs](doc:jobs) describe that separate lifecycle. Runtime variables and object field edits do not silently rewrite graph declarations or saved source assets.

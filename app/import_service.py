@@ -1,8 +1,8 @@
-"""Trusted importer registry; CyToolsCore owns workers, progress and cancellation."""
+"""Trusted importer registry; CyMCPSDK owns workers, progress and cancellation."""
 import json,sys
 from pathlib import Path
-from cytools_core import CyToolError
-from cytools_core.workers import ProcessWorker
+from job_contract import CyToolError
+from job_contract import ProcessWorker
 
 class ImportProvider:
     def __init__(self,id,command):self.id=id;self.worker=ProcessWorker(command,idle_timeout=120)

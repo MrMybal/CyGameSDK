@@ -3,6 +3,7 @@
 #include "Graph.h"
 #include "Image.h"
 #include <algorithm>
+#include <set>
 #include <cctype>
 #include <cmath>
 #include <fstream>
@@ -33,7 +34,7 @@ std::string uniqueId() {
     wchar_t text[40]{}; StringFromGUID2(id, text, 40); return std::string(text + 1, text + 37);
 }
 // Native boundary enforces the subset used in the shipped descriptors.
-// CyToolsCore performs full Draft 2020-12 validation at its own boundary.
+// CyMCPSDK validates projected schemas; the host also validates original constraints.
 void validateValue(const Json& v, const Json& s, const std::string& path) {
     const auto t = s.value("type", "");
     bool valid = t.empty() || (t == "object" && v.is_object()) || (t == "array" && v.is_array()) ||
@@ -70,7 +71,7 @@ void validateValue(const Json& v, const Json& s, const std::string& path) {
 namespace {
 class SandboxAdapter final : public IGameAdapter {
 public:
-    Json descriptor() const override { return {{"id","sandbox"},{"name","Sandbox"},{"version","0.29.0"},{"capabilities",{{"scene",true},{"properties",true},{"preview",true},{"build",false},{"package",true},{"play",false}}}}; }
+    Json descriptor() const override { return {{"id","sandbox"},{"name","Sandbox"},{"version","0.31.0"},{"capabilities",{{"scene",true},{"properties",true},{"preview",true},{"build",false},{"package",true},{"play",false}}}}; }
     Json buildTargets()const override {
         Json options={{"type","object"},{"properties",{{"compression",{{"type","string"},{"enum",{"Stored","Deflated"}},{"default","Deflated"}}},{"includeMaterialValues",{{"type","boolean"},{"default",true}}}}},{"additionalProperties",false}};
         return Json::array({{{"id","sandbox.document"},{"name","Sandbox document archive"},{"providerId","sandbox.archive"},{"platform","Any"},{"configurations",{"Development"}},{"optionsSchema",options},{"gameExecutable",false}}});
@@ -128,7 +129,7 @@ EditorCore::EditorCore(fs::path root,std::unique_ptr<IGameAdapter> adapter) : ro
     }
     registerImporter({{{"id","scene3d.glb"},{"name","Portable 3D (GLB / CyPack)"},{"extensions",{".glb",".cypack"}},{"outputExtensions",{".cy3d"}},{"maxBytes",32*1024*1024}},[](const fs::path& file){if(file.extension()==".cy3d"){auto model=readJson(file);validateScene3D(model);return Json{{"format","cygame-scene3d"},{"assetId",model.at("assetId")}};}return Json{{"format","portable-3d-source"},{"bytes",fs::file_size(file)}};}});
     registerImporter({{{"id","image.copy"},{"name","Image (original file)"},{"extensions",{".png",".jpg",".jpeg",".bmp"}},{"maxBytes",32*1024*1024}},[](const fs::path& file){return readImageFile(file,true).info;}});
-    log("CyGameSDK 0.29.0 | Sandbox adapter | editor API ready");
+    log("CyGameSDK 0.31.0 | Sandbox adapter | editor API ready");
 }
 void EditorCore::registerCommand(Command c) {
     const std::string id = c.descriptor.at("id");
@@ -192,6 +193,22 @@ Json EditorCore::nativeCommand(const std::string& id, const Json& p) {
     if(id=="game_codec_describe")return {{"adapterId",adapter_->descriptor().at("id")},{"declarations",adapter_->assetCodecs()},{"note","Declarations are not proof of codec execution or game compatibility"}};
     if (id=="scene_list") return {{"entities",entities()},{"selected",selected_},{"selection",selectedIds_},{"revision",revision_},{"propertySchema",adapter_->propertySchema(Json::object())}};
     if(id.rfind("scene_",0)==0&&id!="scene_validate"&&id!="scene_list")return sceneCommand(id,p);
+    if(id=="property_set_many"){
+        std::set<std::pair<std::string,std::string>> seen;
+        for(const auto& edit:p.at("edits")){
+            const std::string entityId=edit.at("entityId"),key=edit.at("propertyId");
+            if(!seen.emplace(entityId,key).second)throw std::runtime_error("Duplicate property target");
+            const auto& e=entity(entityId);if(e.value("editorLocked",false))throw std::runtime_error("Object is locked");
+            const auto fields=adapter_->propertySchema(e).at("properties");
+            if(!fields.contains(key)||fields.at(key).value("readOnly",false))throw std::runtime_error("Property unavailable: "+key);
+            validateValue(edit.at("value"),fields.at(key),key);
+        }
+        // execute owns rollback, expected revision and one Undo for this whole batch.
+        for(const auto& edit:p.at("edits"))entity(edit.at("entityId"))["properties"][edit.at("propertyId").get<std::string>()]=edit.at("value");
+        const auto checked=adapter_->validateScene(entities());
+        if(!checked.value("valid",true))throw std::runtime_error("Adapter rejected property batch");
+        return {{"updatedCount",p.at("edits").size()}};
+    }
     if (id=="property_set") {
         auto& e=entity(p.at("entityId"));if(e.value("editorLocked",false))throw std::runtime_error("Object is locked"); std::string key=p.at("propertyId"); const auto schema=adapter_->propertySchema(e).at("properties");
         if (!schema.contains(key) || schema.at(key).value("readOnly",false)) throw std::runtime_error("Property unavailable: "+key);

@@ -16,7 +16,7 @@ Json graphValueSchema(const std::string& type){
     throw std::runtime_error("Unsupported graph value type: "+type);
 }
 Json graphDefaultValue(const std::string& type){if(type=="float")return 0.;if(type=="int")return 0;if(type=="bool")return false;if(type=="string"||type=="object")return "";if(type=="color")return Json::array({.5,.5,.5});if(type=="vector3")return Json::array({0.,0.,0.});if(type.rfind("map.",0)==0)return Json::object();graphValueSchema(type);return Json::array();}
-Json graphWidget(const std::string& type){auto spec=graphValueSchema(type);if(type=="color")spec["x-editor-widget"]="color";if(type.find('.')!=std::string::npos)spec["type"]="json";return spec;}
+Json graphWidget(const std::string& type){auto spec=graphValueSchema(type);if(type=="color")spec["x-editor-widget"]="color";if(type.find('.')!=std::string::npos)spec["x-editor-container"]=type;return spec;}
 void extendBlueprintNodes(Json& types){
     extendTypeNodes(types);
     auto node=[&](const std::string& id,const std::string& title,Json inputs,Json outputs,Json defaults){types[id]={{"title",title},{"domain","logic"},{"inputs",inputs},{"outputs",outputs},{"defaults",defaults}};};

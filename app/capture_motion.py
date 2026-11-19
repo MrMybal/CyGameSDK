@@ -1,4 +1,5 @@
 """Renderer QA of real desktop animation jobs, in isolated content roots."""
+import os
 import json,shutil,subprocess,sys,tempfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];APP=ROOT/'app';REPORTS=ROOT/'data/reports'
@@ -11,7 +12,7 @@ with tempfile.TemporaryDirectory(prefix='motion-capture-',dir=REPORTS) as tempor
  shutil.copytree(APP/'locales',root/'app/locales');shutil.copyfile(APP/'examples/ChainMotion.cy3d',root/'data/assets/Examples/ChainMotion.cy3d')
  def capture(name,language,mode,theme='unreal-dark'):
   output=REPORTS/('motion-'+name+'.bmp');output.unlink(missing_ok=True);marker=root/'ready';marker.unlink(missing_ok=True)
-  process=subprocess.Popen([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--asset','Examples/ChainMotion.cy3d','--model-tab','Motion tools','--lang',language,'--theme',theme,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','60']);previous=tool.ROOT;tool.ROOT=root
+  process=subprocess.Popen([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--asset','Examples/ChainMotion.cy3d','--model-tab','Motion tools','--lang',language,'--theme',theme,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','60']);previous=tool.ROOT;tool.ROOT=root
   try:
    deadline=time.monotonic()+15
    while True:

@@ -3,6 +3,7 @@
 #include "BuildClient.h"
 #include "EditorTheme.h"
 #include "Documentation.h"
+#include "UiPropertyAdapter.h"
 #include <shellapi.h>
 #include <imgui_internal.h>
 #include <algorithm>
@@ -37,13 +38,14 @@ EditorApp::EditorApp(EditorCore& h):core(h) {
     try{preferences_=readJson(core.root()/"data/settings/ui-preferences.json");}catch(...){preferences_=Json::object();}
     if(!preferences_.is_object())preferences_=Json::object();
     for(const auto& key:{"language","theme","density"})if(preferences_.contains(key)&&!preferences_[key].is_string())preferences_.erase(key);
-    for(const auto& key:{"autosave","diagnostics"})if(preferences_.contains(key)&&!preferences_[key].is_boolean())preferences_.erase(key);
+    for(const auto& key:{"autosave","diagnostics","outlinerTable"})if(preferences_.contains(key)&&!preferences_[key].is_boolean())preferences_.erase(key);
     if(preferences_.contains("textScale")&&!preferences_["textScale"].is_number())preferences_.erase("textScale");
     if(preferences_.contains("panels")&&!preferences_["panels"].is_object())preferences_.erase("panels");
     cyui::TranslationCatalog en,fr;for(const auto& [key,value]:translations_.items()){
         if(value.contains("en"))en[key]=value.at("en").get<std::string>();if(value.contains("fr"))fr[key]=value.at("fr").get<std::string>();
     }cyui::registerTranslations("en",en);cyui::registerTranslations("fr",fr);
     language_=preferences_.value("language","en");if(language_!="fr")language_="en";cyui::setLocale(language_.c_str());
+    outlinerTable_=preferences_.value("outlinerTable",false);
     density_=preferences_.value("density",std::string("compact"));if(density_!="comfortable")density_="compact";
     theme_=preferences_.value("theme","unreal-dark");
     if(!editorThemeKnown(theme_))theme_="unreal-dark";
@@ -59,6 +61,7 @@ EditorApp::EditorApp(EditorCore& h):core(h) {
         {"logic","Logic Graph","core",[this]{graphEditor("logic");}},
         {"material","Material Graph","core",[this]{graphEditor("material");}},
         {"operations","MCP / Operations","core",[this]{operations();},false},
+        {"assistant","AI Assistant","core",[this]{drawAssistant();},false},
         {"options","Options","core",[this]{options();},false},
         {"asset","Asset Editor","core",[this]{assetEditor();},false},
         {"interface","Editor Overview","core",[this]{interfaceOverview();},false},
@@ -135,9 +138,10 @@ EditorApp::EditorApp(EditorCore& h):core(h) {
     if(!preferences_.contains("panels"))selectWorkspace(workspacePreset_);
     else for(auto& panel:core.panels)if(preferences_["panels"].contains(panel.id)&&preferences_["panels"][panel.id].is_boolean())panel.open=preferences_["panels"][panel.id];
     if(!pluginEnabled_)for(auto& panel:core.panels)if(panel.owner==diagnostics_->id())panel.open=false;
+    prepareCommands();
     assetsRefresh();
 }
-EditorApp::~EditorApp(){try{if(persistSettings)savePreferences();}catch(...){}}
+EditorApp::~EditorApp(){shutdownAssistant();try{if(persistSettings)savePreferences();}catch(...){}}
 void EditorApp::registerAssetEditor(AssetEditorDefinition definition){
     if(definition.id.empty()||!definition.open)throw std::runtime_error("Invalid asset editor");
     for(const auto& handler:assetEditors_)if(handler.id==definition.id)throw std::runtime_error("Duplicate asset editor");
@@ -163,7 +167,7 @@ std::string EditorApp::label(const std::string& text,const std::string& id)const
 void EditorApp::savePreferences(){
     if(!persistSettings)return;
     Json panels=Json::object();for(const auto& p:core.panels)panels[p.id]=p.open;
-    writeJson(core.root()/"data/settings/ui-preferences.json",{{"density",density_},{"language",language_},{"theme",theme_},{"textScale",textScale_},{"autosave",autoSave_},{"diagnostics",pluginEnabled_},{"viewportCount",viewportCount_},{"panels",panels},{"favorites",favorites_},{"assetGrid",assetGrid_},{"workspace",workspacePreset_}});
+    writeJson(core.root()/"data/settings/ui-preferences.json",{{"outlinerTable",outlinerTable_},{"keyBindings",shortcuts_.bindingsJson()},{"density",density_},{"language",language_},{"theme",theme_},{"textScale",textScale_},{"autosave",autoSave_},{"diagnostics",pluginEnabled_},{"viewportCount",viewportCount_},{"panels",panels},{"favorites",favorites_},{"assetGrid",assetGrid_},{"workspace",workspacePreset_}});
 }
 Json EditorApp::invoke(const std::string& id,const Json& p){
     try{
@@ -241,7 +245,9 @@ void EditorApp::menuBar(){
     };
     auto item=[&](const char* title,const char* shortcut=nullptr,bool selected=false,bool enabled=true){
         if(!filter->matches(title))return false;
-        const bool clicked=ImGui::MenuItem(tr(title),shortcut,selected,enabled);probeInterface(std::string("action/")+title);return clicked;
+        const std::map<std::string,std::string> shared={{"Save project","project_save"},{"Load project","project_load"},{"Undo","edit_undo"},{"Redo","edit_redo"},{"Search everything","search"},{"Context Help","help"}};
+        const auto found=shared.find(title);
+        const bool clicked=found==shared.end()?ImGui::MenuItem(tr(title),shortcut,selected,enabled):shortcuts_.menuItem(uiId("editor/action/"+found->second));probeInterface(std::string("action/")+title);return clicked;
     };
     if(beginMenu("File",0)){
         if(item("Save project","Ctrl+S"))invoke("project_save");
@@ -285,6 +291,7 @@ void EditorApp::menuBar(){
         if(item("Material Compiler"))open("compiler");
         if(item("Graph Navigator"))open("navigator");
         if(item("Reference Viewer"))open("references");
+        if(item("AI Assistant"))open("assistant");
         if(item("MCP / Operations"))open("operations");
         if(item("Options"))open("options");
         ImGui::EndMenu();
@@ -309,9 +316,9 @@ void EditorApp::topBar(){
             for(const auto* preset:{"Level","Scripting","Materials"})if(ImGui::Selectable(tr(preset),workspacePreset_==preset))invoke("workspace_layout",{{"preset",preset}});
             ImGui::EndCombo();
         }cyui::toolbarSeparator();
-        if(cyui::iconButton(cyui::icon::save,tr("Save project (Ctrl+S)")))invoke("project_save");
-        ImGui::SameLine();if(cyui::iconButton(cyui::icon::undo,tr("Undo (Ctrl+Z)"),false)){if(core.canUndo())invoke("edit_undo");}
-        ImGui::SameLine();if(cyui::iconButton(cyui::icon::redo,tr("Redo (Ctrl+Y)"),false)){if(core.canRedo())invoke("edit_redo");}
+        if(shortcuts_.toolbarButton(uiId("editor/action/project_save"),cyui::icon::save))invoke("project_save");
+        ImGui::SameLine();if(shortcuts_.toolbarButton(uiId("editor/action/edit_undo"),cyui::icon::undo)){if(core.canUndo())invoke("edit_undo");}
+        ImGui::SameLine();if(shortcuts_.toolbarButton(uiId("editor/action/edit_redo"),cyui::icon::redo)){if(core.canRedo())invoke("edit_redo");}
         cyui::toolbarSeparator();
         if(cyui::iconTextButton(cyui::icon::add,tr("Add cube")))invoke("scene_create",{{"name","SM_Cube"}});
         ImGui::SameLine();if(cyui::ghostButton(tr("Validate scene")))invoke("scene_validate");
@@ -320,7 +327,7 @@ void EditorApp::topBar(){
         ImGui::SameLine();if(cyui::iconTextButton(cyui::icon::code,tr("Build / Package")))open("build");
         cyui::tooltip(tr("The Sandbox adapter has no game runtime or compiler."));
         ImGui::SameLine();cyui::alignRight(cyui::dp(330));
-        if(cyui::ghostButton(tr("Search everything   Ctrl+P"),{cyui::dp(330),0})){searchOpen_=true;}
+        if(cyui::ghostButton((std::string(tr("Search everything"))+"   "+shortcuts_.find(uiId("editor/action/search"))->shortcut).c_str(),{cyui::dp(330),0})){searchOpen_=true;}
     }cyui::endTopBar();
 }
 void EditorApp::layout(ImGuiID id){
@@ -352,66 +359,94 @@ std::string EditorApp::rawCaption(const std::string& id,const std::string& text)
     if(rawCaptions_[key]!=text){rawCaptions_[key]=text;cyui::registerTranslations("en",{{key,text}});cyui::registerTranslations("fr",{{key,text}});}return key;
 }
 bool EditorApp::editProperty(const std::string& key,const std::string& caption,const Json& spec,const Json& original,Json& committed){
-    const auto type=spec.value("type","");
-    if((type=="boolean"||type=="number"||type=="integer"||type=="string")&&!spec.contains("enum"))return editValue(key,spec,original,committed,caption);
-    bool changed=false;if(cyui::beginProperties(key.c_str())){cyui::property(caption.c_str());changed=editValue(key,spec,original,committed,caption);cyui::endProperties();}return changed;
+    return editValue(key,spec,original,committed,caption);
 }
 bool EditorApp::editValue(const std::string& key,const Json& spec,const Json& original,Json& committed,const std::string& caption){
-    if(spec.value("x-editor-widget","")=="record"){
-        if(!original.is_object()){cyui::textDim("%s",tr("Draft type unavailable; choose a type or reload."));return false;}for(const auto& field:spec.at("properties").items())if(!original.contains(field.key())){cyui::textDim("%s",tr("Draft type unavailable; choose a type or reload."));return false;}
-        Json next=original;bool changed=false;ImGui::PushID(key.c_str());
-        if(ImGui::TreeNodeEx(tr("Fields"),ImGuiTreeNodeFlags_DefaultOpen)){
-            for(const auto& [name,field]:spec.at("properties").items()){Json value;if(editProperty(key+"/"+name,name,field,original.at(name),value)){next[name]=value;changed=true;}}ImGui::TreePop();
-        }ImGui::PopID();if(changed)committed=next;return changed;
+    cyui::Property property;property.id=uiId(key);property.key=key;property.label=rawCaption("property/"+key,caption);
+    // A nominal library remains local to its graph. Unowned forms get their own scope.
+    std::string scope=key;
+    for(const auto& [graphId,graph]:core.graphs().items()){
+        const auto at=key.find(graphId);
+        if(at!=std::string::npos&&(at==0||key[at-1]=='/')&&(at+graphId.size()==key.size()||key[at+graphId.size()]=='/'||key[at+graphId.size()]=='#')){scope="graph/"+graphId;break;}
     }
-    const auto scalarType=spec.value("type","");
-    if((scalarType=="boolean"||scalarType=="number"||scalarType=="integer"||scalarType=="string")&&!spec.contains("enum")){
-        cyui::Property property;property.id=uiId(key);property.label=rawCaption("property/"+key,caption);
-        if(original.is_boolean())property.value=original.get<bool>();else if(scalarType=="integer")property.value=original.get<int64_t>();else if(original.is_number())property.value=original.get<double>();else property.value=original.get<std::string>();
-        property.bounded=spec.contains("minimum")||spec.contains("maximum");property.minimum=spec.value("minimum",-std::numeric_limits<double>::max());property.maximum=spec.value("maximum",std::numeric_limits<double>::max());if(scalarType=="integer"){property.integerMinimum=spec.value("minimum",std::numeric_limits<int64_t>::lowest());property.integerMaximum=spec.value("maximum",std::numeric_limits<int64_t>::max());}
-        auto jsonValue=[](const cyui::PropertyValue& value){return std::visit([](const auto& item)->Json{return item;},value);};
-        auto validator=[&](cyui::ItemId,const cyui::PropertyValue& value){try{validateValue(jsonValue(value),spec,key);return std::string{};}catch(const std::exception& e){return std::string(e.what());}};
-        auto& state=inspectors_[key];const auto frame=ImGui::GetFrameCount();const bool hidden=inspectorFrames_[key]!=frame-1&&inspectorFrames_[key]!=frame;const auto previous=state.drafts.find(property.id);const bool replaced=previous!=state.drafts.end()&&(previous->second.value.index()!=property.value.index()||(previous->second.active&&previous->second.before!=property.value));bool activeDraft=false;for(const auto& draft:state.drafts)activeDraft|=draft.second.active;
-        if((hidden||replaced||state.revision!=core.revision())&&activeDraft){inspectorBlockedUntil_[key]=frame+1;if(inspectorActiveIds_[key]&&ImGui::GetActiveID()==inspectorActiveIds_[key])ImGui::ClearActiveID();}
-        property.readOnly=spec.value("readOnly",false)||inspectorBlockedUntil_[key]>=frame;if(hidden||replaced)state={};inspectorFrames_[key]=frame;
-        const auto edits=cyui::inspector(key.c_str(),state,{&property,1},core.revision(),validator);inspectorActiveIds_[key]=state.drafts[property.id].active?ImGui::GetActiveID():0;
-        if(interfaceProbe){auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();a.x+=std::max(cyui::dp(80),(b.x-a.x)*.38f)+ImGui::GetStyle().CellPadding.x;interfaceProbe("types/value/"+key,a,b);}
-        for(const auto& edit:edits)if(edit.edit.committed()){committed=jsonValue(edit.edit.value);return committed!=original;}return false;
+    try{property.value=uiPropertyValue(spec,original,scope,[this](const auto& id,const auto& text){return rawCaption(id,text);});}
+    catch(const std::exception& e){cyui::textDim("%s",tr(e.what()));return false;}
+    cyui::PropertyMetadata metadata;uiPropertyMetadata(metadata,spec);
+    property.bounded=metadata.bounded;property.minimum=metadata.minimum;property.maximum=metadata.maximum;
+    // Numeric vector bounds belong to each component.
+    if(std::holds_alternative<cyui::PropertyVector>(property.value)&&spec.contains("items")){cyui::PropertyMetadata item;uiPropertyMetadata(item,spec.at("items"));property.bounded=item.bounded;property.minimum=item.minimum;property.maximum=item.maximum;}
+    property.integerMinimum=metadata.integerMinimum;property.integerMaximum=metadata.integerMaximum;
+    property.password=metadata.password;property.multiline=metadata.multiline;
+    auto jsonValue=[&](const cyui::PropertyValue& value){return jsonPropertyValue(spec,value,original);};
+    Json validation=spec;if(validation.value("type","")=="json")validation.erase("type");
+    auto validator=[&](cyui::ItemId,const cyui::PropertyValue& value){try{validateValue(jsonValue(value),validation,key);return std::string{};}catch(const std::exception& e){return std::string(e.what());}};
+    auto& state=inspectors_[key];const auto frame=ImGui::GetFrameCount();
+    const bool hidden=inspectorFrames_[key]!=frame-1&&inspectorFrames_[key]!=frame;
+    const auto previous=state.drafts.find(property.id);
+    const bool replaced=previous!=state.drafts.end()&&(previous->second.value.index()!=property.value.index()||(previous->second.active&&!(previous->second.before==property.value)));
+    bool activeDraft=false;for(const auto& draft:state.drafts)activeDraft|=draft.second.active;
+    if((hidden||replaced||state.revision!=core.revision())&&activeDraft){
+        inspectorBlockedUntil_[key]=frame+1;
+        if(inspectorActiveIds_[key]&&ImGui::GetActiveID()==inspectorActiveIds_[key])ImGui::ClearActiveID();
     }
-    if(activeField_!=key)drafts_[key]=original;
-    auto& v=drafts_[key];bool changed=false,immediate=false;
-    ImGui::PushID(key.c_str());ImGui::SetNextItemWidth(-1);
-    const auto type=spec.value("type","");
-    Json draftSpec=spec;if(type=="json"){draftSpec.erase("type");if(v.type()!=original.type()&&!(v.is_number()&&original.is_number()))v=original;}
-    try{validateValue(v,draftSpec,key);}catch(...){v=original;if(activeField_==key)activeField_.clear();}
-    if(spec.contains("enum")){
-        const auto value=v.is_string()?v.get<std::string>():v.dump();
-        if(ImGui::BeginCombo("##v",spec.value("x-editor-localizeEnum",false)?tr(value.c_str()):value.c_str())){
-            for(const auto& item:spec["enum"]){auto text=item.is_string()?item.get<std::string>():item.dump();if(ImGui::Selectable(spec.value("x-editor-localizeEnum",false)?tr(text.c_str()):text.c_str(),item==v)){v=item;changed=immediate=true;}}
-            ImGui::EndCombo();
+    property.readOnly=metadata.readOnly||inspectorBlockedUntil_[key]>=frame;
+    if(hidden||replaced)state={};inspectorFrames_[key]=frame;
+    cyui::InspectorOptions options;
+    options.editCustom=[&](cyui::ItemId,const std::vector<std::string>&,const cyui::PropertyCustom& custom){
+        cyui::Edit<cyui::PropertyCustom> edit;edit.value=custom;
+        const auto marker=custom.type.rfind("/schema:");
+        if(marker!=std::string::npos){
+            const auto schema=Json::parse(custom.type.substr(marker+8));const auto selected=Json::parse(custom.json);
+            const auto text=selected.is_string()?selected.get<std::string>():selected.dump();
+            cyui::ScopedDisabled disabled(property.readOnly);
+            if(ImGui::BeginCombo("##enum",schema.value("x-editor-localizeEnum",false)?tr(text.c_str()):text.c_str())){
+                for(const auto& item:schema.at("enum")){
+                    const auto label=item.is_string()?item.get<std::string>():item.dump();
+                    if(ImGui::Selectable(schema.value("x-editor-localizeEnum",false)?tr(label.c_str()):label.c_str(),item==selected)){
+                        edit.value.json=item.dump();edit.phase=cyui::EditPhase::commit;
+                    }
+                }ImGui::EndCombo();
+            }
+            return edit;
         }
-    }else if(type=="array"&&v.size()>=2&&v.size()<=4&&spec.value("items",Json::object()).value("type","")=="integer"){
-        int a[4]{};for(size_t i=0;i<v.size();++i)a[i]=v[i].get<int>();const auto item=spec.at("items");changed=ImGui::DragScalarN("##v",ImGuiDataType_S32,a,int(v.size()),1.f,nullptr,nullptr,"%d");if(changed){v=Json::array();for(size_t i=0;i<original.size();++i)v.push_back(std::clamp(a[i],item.value("minimum",-100000),item.value("maximum",100000)));}
-    }else if(type=="array"&&v.size()==2){
-        float a[2]={v[0],v[1]};changed=ImGui::DragFloat2("##v",a,.5f,spec.value("items",Json::object()).value("minimum",-100000.f),spec.value("items",Json::object()).value("maximum",100000.f),"%.1f",ImGuiSliderFlags_AlwaysClamp);if(changed)v={a[0],a[1]};
-    }else if(type=="array"&&v.size()==3){
-        float a[3]={v[0],v[1],v[2]};
-        if(spec.value("x-editor-widget","")=="color")changed=ImGui::ColorEdit3("##v",a,ImGuiColorEditFlags_Float);
-        else changed=ImGui::DragFloat3("##v",a,0.05f,spec.value("items",Json::object()).value("minimum",-10000.f),spec.value("items",Json::object()).value("maximum",10000.f),"%.2f",ImGuiSliderFlags_AlwaysClamp);
-        if(changed)v={a[0],a[1],a[2]};
-    }else if(type=="array"&&v.size()==4){
-        float a[4]={v[0],v[1],v[2],v[3]};changed=ImGui::DragFloat4("##v",a,.01f,0,0,"%.3f");if(changed)v={a[0],a[1],a[2],a[3]};
-    }else{
-        if(v.dump().size()>4096){ImGui::TextUnformatted(tr("Large JSON value (use SDK to edit)"));ImGui::PopID();return false;}
-        char text[4097]{};bufferCopy(text,sizeof(text),v.dump());
-        if(ImGui::InputText("##v",text,sizeof(text),ImGuiInputTextFlags_EnterReturnsTrue)){try{v=Json::parse(text);changed=immediate=true;}catch(...){cyui::notify(tr("Invalid JSON value"),cyui::Tone::error);}}
-    }
-    probeInterface("types/value/"+key);
-    const bool active=ImGui::IsItemActive(),finished=ImGui::IsItemDeactivatedAfterEdit(),deactivated=ImGui::IsItemDeactivated();
-    if(active)activeField_=key;
-    if(deactivated&&activeField_==key)activeField_.clear();
-    ImGui::PopID();
-    if(immediate||finished){committed=v;return true;}
+        if(custom.type=="cygame.rgb"){
+            const auto value=Json::parse(custom.json);float rgb[3]{value[0],value[1],value[2]};
+            cyui::ScopedDisabled disabled(property.readOnly);
+            const bool changed=ImGui::ColorEdit3("##rgb",rgb,ImGuiColorEditFlags_Float);
+            edit.value.json=Json::array({rgb[0],rgb[1],rgb[2]}).dump();
+            if(ImGui::IsKeyPressed(ImGuiKey_Escape))edit.phase=cyui::EditPhase::cancel;
+            else if(ImGui::IsItemDeactivatedAfterEdit())edit.phase=cyui::EditPhase::commit;
+            else if(ImGui::IsItemActivated())edit.phase=cyui::EditPhase::begin;
+            else if(changed||ImGui::IsItemActive())edit.phase=cyui::EditPhase::update;
+            return edit;
+        }
+        const auto draftKey="custom-json/"+key;
+        {cyui::ScopedDisabled disabled(property.readOnly);
+        if(cyui::ghostButton(tr("Edit JSON..."))){
+            drafts_[draftKey]={{"text",custom.json},{"before",custom.json},{"schema",spec},{"revision",core.revision()}};
+            ImGui::OpenPopup("##customJson");
+        }}
+        if(ImGui::BeginPopup("##customJson")){
+            const bool stale=drafts_.find(draftKey)==drafts_.end()||property.readOnly||drafts_.at(draftKey).at("before")!=custom.json||drafts_.at(draftKey).at("schema")!=spec||drafts_.at(draftKey).at("revision")!=core.revision();
+            if(stale){ImGui::CloseCurrentPopup();edit.phase=cyui::EditPhase::cancel;}
+            else{
+                auto& draft=drafts_.at(draftKey);std::vector<char> buffer(1024*1024+1);
+                std::snprintf(buffer.data(),buffer.size(),"%s",draft.at("text").get_ref<const std::string&>().c_str());
+                if(editSource(draftKey,buffer.data(),buffer.size(),cyui::dp(480,180)))draft["text"]=std::string(buffer.data());
+                if(cyui::primaryButton(tr("Apply"))){edit.value.json=draft.at("text");try{
+                    auto candidate=property.value;candidate=edit.value;auto error=validator(property.id,candidate);
+                    if(error.empty()){edit.phase=cyui::EditPhase::commit;ImGui::CloseCurrentPopup();}
+                    else cyui::notify(error.c_str(),cyui::Tone::error);
+                }catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}}
+                ImGui::SameLine();if(cyui::ghostButton(tr("Cancel"))||ImGui::IsKeyPressed(ImGuiKey_Escape)){edit.phase=cyui::EditPhase::cancel;ImGui::CloseCurrentPopup();}
+            }ImGui::EndPopup();
+        }
+        return edit;
+    };
+    const auto edits=cyui::inspector(key.c_str(),state,{&property,1},core.revision(),validator,options);
+    inspectorActiveIds_[key]=state.drafts[property.id].active?ImGui::GetActiveID():0;
+    if(interfaceProbe){auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();a.x+=std::max(cyui::dp(80),(b.x-a.x)*.38f)+ImGui::GetStyle().CellPadding.x;interfaceProbe("types/value/"+key,a,b);if(key.rfind("model/",0)==0&&key.size()>=10&&key.substr(key.size()-10)=="/positions")interfaceProbe("model/vertex",a,b);}
+    for(const auto& edit:edits)if(edit.edit.committed()){committed=jsonValue(edit.edit.value);return committed!=original;}
     return false;
 }
 void EditorApp::details(){
@@ -462,19 +497,10 @@ void EditorApp::modules(){
     cyui::textFaint("%s",tr("Source plugin"));
     if(enabled&&cyui::ghostButton(tr("Open diagnostics")))open("diagnostics");
     cyui::divider();if(cyui::iconTextButton(cyui::icon::settings,tr("Options")))open("options");
+    if(cyui::iconTextButton(cyui::icon::globe,tr("AI Assistant")))open("assistant");
     if(cyui::iconTextButton(cyui::icon::globe,tr("MCP / Operations")))open("operations");
 }
-void EditorApp::sourceView(const std::string& key,const std::string& text,cyui::CodeLanguage language,ImVec2 size,bool selectTextOnly){
-    ImGui::PushID(key.c_str());auto& view=sourceViews_[key];
-    if(cyui::ghostButton(tr("Copy text")))ImGui::SetClipboardText(text.c_str());if(selectTextOnly)view.selectText=true;else{ImGui::SameLine();ImGui::Checkbox(tr("Text selection"),&view.selectText);}
-    if(size.y>0)size.y=std::max(cyui::dp(32),size.y-ImGui::GetFrameHeightWithSpacing());
-    if(view.selectText){
-        // Code's viewer selects lines. Retain ImGui's native character selection
-        // only on explicit request; syntax/search/scrolling belong to CyUI Code.
-        std::vector<char> buffer(text.begin(),text.end());buffer.push_back(0);ImGui::InputTextMultiline("##raw",buffer.data(),buffer.size(),size,ImGuiInputTextFlags_ReadOnly);
-    }else{view.document.setText(text,language);cyui::codeViewer("##source",view.state,view.document,size);}
-    ImGui::PopID();
-}
+
 void EditorApp::assetEditor(){
     cyui::heading(assetPath_.empty()?tr("Asset Editor"):assetPath_.c_str(),2);
     ImGui::TextWrapped("%s",tr("Graph and supported image assets have specialized views. Other formats expose metadata until an adapter registers an editor."));
@@ -491,7 +517,7 @@ void EditorApp::logPanel(){
 void EditorApp::saveRecipe(){
     auto parameters=Json::parse(operationParams_);bool valid=true;std::string reason;
     for(const auto& d:core.describeCommands())if(d.at("id")==operation_){try{validateValue(parameters,d["inputSchema"]);}catch(const std::exception& e){valid=false;reason=e.what();}}
-    Json recipe={{"format","cytools-generation-config"},{"schemaVersion",1},{"toolId","cy.editor.gamesdk"},{"toolVersion","0.29.0"},{"operationId",operation_},{"parameters",parameters},{"backendId",""},{"modelId",""},{"validParameters",valid},{"validationMessage",reason},{"uiState",Json::object()},{"jobId",nullptr}};
+    Json recipe={{"format","cytools-generation-config"},{"schemaVersion",1},{"toolId","cy.editor.gamesdk"},{"toolVersion","0.31.0"},{"operationId",operation_},{"parameters",parameters},{"backendId",""},{"modelId",""},{"validParameters",valid},{"validationMessage",reason},{"uiState",Json::object()},{"jobId",nullptr}};
     // Parameters only; connection credentials and editor endpoint are not included.
     auto path=core.root()/("data/configurations/"+uniqueId()+".json");writeJson(path,recipe);
     bufferCopy(recipePath_,sizeof(recipePath_),path.u8string());cyui::notify(tr("Configuration saved"),cyui::Tone::success);
@@ -506,7 +532,7 @@ void EditorApp::loadRecipe(){
     cyui::notify(tr("Configuration loaded without execution"),cyui::Tone::success);
 }
 void EditorApp::operations(){
-    cyui::textDim("%s",tr("CyToolsCore provides MCP, SDK, validation, jobs and transports."));
+    cyui::textDim("%s",tr("CyMCPSDK provides the assistant, CLI, MCP and owned worker processes."));
     ImGui::SetNextItemWidth(cyui::dp(230));
     if(ImGui::BeginCombo("##operation",operation_.c_str())){
         cyui::searchField("##operationFilter",operationSearch_,sizeof(operationSearch_),tr("Filter operations"),-1);
@@ -525,7 +551,7 @@ void EditorApp::operations(){
     }
     ImGui::BeginChild("##params",{ImGui::GetContentRegionAvail().x*0.48f,0});
     ImGui::TextUnformatted(tr("Parameters (JSON)"));
-    ImGui::InputTextMultiline("##paramsJson",operationParams_,sizeof(operationParams_),{-1,cyui::dp(130)});
+    editSource("##paramsJson",operationParams_,sizeof(operationParams_),{-1,cyui::dp(180)});
     if(cyui::ghostButton(tr("Save configuration"))){try{saveRecipe();}catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}}
     ImGui::SameLine();if(cyui::ghostButton(tr("Load configuration"))){try{loadRecipe();}catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}}
     ImGui::SetNextItemWidth(-1);ImGui::InputText("##recipePath",recipePath_,sizeof(recipePath_));
@@ -552,8 +578,18 @@ void EditorApp::options(){
     if(cyui::ghostButton(tr("Save configuration"))){try{saveRecipe();}catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}}
     if(cyui::ghostButton(tr("Load configuration"))){try{loadRecipe();}catch(const std::exception& e){cyui::notify(e.what(),cyui::Tone::error);}}
     ImGui::SetNextItemWidth(-1);ImGui::InputText("##recipe",recipePath_,sizeof(recipePath_));
+    if(cyui::beginSection(tr("Keyboard shortcuts"),false)){
+        for(const auto& command:shortcuts_.commands()){
+            ImGui::PushID(int(command.id));cyui::textDim("%s",tr(command.label.c_str()));
+            auto chord=cyui::parseShortcut(command.shortcut);
+            if(cyui::shortcutEditor("##binding",chord)){
+                if(shortcuts_.rebind(command.id,chord))savePreferences();
+                else cyui::notify(tr("Shortcut conflicts with another command."),cyui::Tone::warning);
+            }ImGui::PopID();
+        }cyui::endSection();
+    }
     cyui::sectionTitle(tr("Licenses"));
-    ImGui::TextWrapped("CyUI: MIT\nDear ImGui: MIT\nImGuizmo: MIT\nLexilla / Scintilla / SciTE: permissive license\nCyToolsCore: MIT\nnlohmann/json 3.11.3: MIT\nWindows SDK / Direct3D: Microsoft SDK terms\nSegoe UI: Windows system font");
+    ImGui::TextWrapped("CyUI: MIT\nTextEditor: MIT\nJetBrains Mono: SIL OFL 1.1\nDear ImGui: MIT\nImGuizmo: MIT\nLexilla / Scintilla / SciTE: permissive license\nCyMCPSDK: MIT\nMD4C / cpp-httplib / PicoSHA2: MIT\nnlohmann/json 3.11.3 / 3.12: MIT\nWindows SDK / Direct3D: Microsoft SDK terms\nSegoe UI: Windows system font");
     cyui::textDim("%s",tr("Full notices: app/LICENCES"));
     cyui::sectionTitle(tr("Development status"));
     ImGui::TextWrapped("%s",tr("Windows foundation. Sandbox adapter, preview shaders and source plugins. Game compilation and Blueprint compatibility require further development."));
@@ -561,7 +597,7 @@ void EditorApp::options(){
 void EditorApp::searchPopup(){
     if(!searchOpen_&&!commandState_.wasOpen)return;
     const auto results=core.search("");std::vector<cyui::Command> commands;std::map<cyui::ItemId,Json> actions;
-    for(const auto& result:results){const std::string kind=result.at("kind"),id=result.at("id"),title=result.at("label");const auto key=uiId("command/"+kind+"/"+id);commands.push_back({key,kind=="entity"?rawCaption("command/entity/"+id,title):title,"",kind+" "+id,true});actions[key]=result;}
+    for(const auto& result:results){const std::string kind=result.at("kind"),id=result.at("id"),title=result.at("label");const auto key=uiId("command/"+kind+"/"+id);const auto shared=shortcuts_.find(uiId("editor/action/"+id));commands.push_back({key,kind=="entity"?rawCaption("command/entity/"+id,title):title,shared?shared->shortcut:"",kind+" "+id,shared?shared->enabled:true});actions[key]=result;}
     const auto requested=cyui::commandPalette("Search everything###globalSearch",searchOpen_,commandState_,commands,cyui::dp(650,480));
     if(!requested||!actions.count(requested))return;const auto& result=actions.at(requested);const std::string kind=result.at("kind"),id=result.at("id"),title=result.at("label");
     if(kind=="panel")open(id);else if(kind=="entity")invoke("scene_select",{{"entityId",id}});
@@ -573,24 +609,18 @@ void EditorApp::searchPopup(){
 
 }
 void EditorApp::frame(){
+    if(assistantRevision_!=core.revision()||assistantSelection_!=core.selectedIds()){assistantRevision_=core.revision();assistantSelection_=core.selectedIds();writeJson(core.root()/"data/ipc/revision.json",{{"revision",assistantRevision_},{"selection",assistantSelection_}});}
     cyui::setLocale(language_.c_str());
     if(stylePending_)configureStyle(styleDpi_);
     auto& io=ImGui::GetIO();
-    if(ImGui::IsKeyPressed(ImGuiKey_F1,false))openDocumentation();
-    if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_Space))invoke("content_drawer_toggle");
-    if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_P)){searchOpen_=true;}
-    if(!io.WantTextInput){
-        if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_S))invoke("project_save");
-        if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_O))invoke("project_load");
-        if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_Z)&&core.canUndo())invoke("edit_undo");
-        if(io.KeyCtrl&&ImGui::IsKeyPressed(ImGuiKey_Y)&&core.canRedo())invoke("edit_redo");
-    }
+    prepareCommands();pollEditorCommands();
     menuBar();topBar();
+    importFilePicker();
     if(cyui::beginStatusBar("##status")){
-        if(cyui::ghostButton(tr("Content Drawer   Ctrl+Space")))invoke("content_drawer_toggle");
+        if(cyui::ghostButton((std::string(tr("Content Drawer"))+"   "+shortcuts_.find(uiId("editor/action/drawer"))->shortcut).c_str()))invoke("content_drawer_toggle");
         ImGui::SameLine();if(cyui::ghostButton(tr("Output Log")))open("log");
         ImGui::SameLine();cyui::statusText(cyui::Tone::success,"%s",tr("EDITOR API READY"));
-        ImGui::SameLine(0,cyui::dp(24));cyui::statusText(cyui::Tone::neutral,"%s",tr("CyToolsCore MCP / SDK"));
+        ImGui::SameLine(0,cyui::dp(24));cyui::statusText(cyui::Tone::neutral,"%s",tr("CyMCPSDK MCP / AI"));
         ImGui::SameLine(0,cyui::dp(24));cyui::statusText(cyui::Tone::neutral,"%zu %s",core.entities().size(),tr("objects"));
         ImGui::SameLine();cyui::alignRight(cyui::dp(175));cyui::statusText(cyui::Tone::neutral,"%.0f FPS  /  %s",io.Framerate,core.dirty()?tr("Unsaved changes"):tr("Saved"));
     }cyui::endStatusBar();
@@ -608,7 +638,7 @@ void EditorApp::frame(){
         const Panel panel=*found;found->focus=false;
         bool opened=true;if(panel.focus)ImGui::SetNextWindowFocus();
         ImGui::SetNextWindowSize(cyui::dp(500,400),ImGuiCond_FirstUseEver);
-        if(panel.id.rfind("json:",0)==0||panel.id=="mesh"||panel.id.rfind("model:",0)==0||panel.id.rfind("viewport.",0)==0||panel.id=="interface"||panel.id=="codecs"||panel.id.rfind("graph:",0)==0||panel.id.rfind("fn:",0)==0||panel.id=="references"||panel.id=="build"||panel.id=="typeMigration"||panel.id=="signatureMigration"||panel.id=="changes"||panel.id=="compiler"||panel.id=="imports"||panel.id.rfind("texture:",0)==0){auto* target=ImGui::FindWindowByName(workspacePreset_=="Materials"?"###material":workspacePreset_=="Scripting"?"###logic":"###viewport");if(target&&target->DockId)ImGui::SetNextWindowDockID(target->DockId,ImGuiCond_FirstUseEver);}
+        if(panel.id=="assistant"||panel.id.rfind("json:",0)==0||panel.id=="mesh"||panel.id.rfind("model:",0)==0||panel.id.rfind("viewport.",0)==0||panel.id=="interface"||panel.id=="codecs"||panel.id.rfind("graph:",0)==0||panel.id.rfind("fn:",0)==0||panel.id=="references"||panel.id=="build"||panel.id=="typeMigration"||panel.id=="signatureMigration"||panel.id=="changes"||panel.id=="compiler"||panel.id=="imports"||panel.id.rfind("texture:",0)==0){auto* target=ImGui::FindWindowByName(workspacePreset_=="Materials"?"###material":workspacePreset_=="Scripting"?"###logic":"###viewport");if(target&&target->DockId)ImGui::SetNextWindowDockID(target->DockId,ImGuiCond_FirstUseEver);}
         if(ImGui::Begin(label(panelTitle(panel),panel.id).c_str(),&opened)){
             if(ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows))helpContext_=panel.id;
             if((panel.id=="logic"||panel.id=="material")&&ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){activeGraph_=panel.id;activeFunction_.clear();}

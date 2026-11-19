@@ -1,4 +1,4 @@
-"""Official Core ProcessWorker for bounded model processing."""
+"""SDK-owned compute worker for bounded model processing."""
 import json,sys
 from pathlib import Path
 from portable_assets.glb import strict_json

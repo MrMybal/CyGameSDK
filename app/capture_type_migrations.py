@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];APP=ROOT/'app';REPORTS=ROOT/'data/reports'
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'));import tool
 from test_interface import stop_owned
-native_sha=hashlib.sha256((ROOT/'CyGameEditor.exe').read_bytes()).hexdigest();fixture_sha=hashlib.sha256((APP/'examples/Example_BlueprintTypeMigration.cyasset').read_bytes()).hexdigest()
+native_sha=hashlib.sha256((Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))).read_bytes()).hexdigest();fixture_sha=hashlib.sha256((APP/'examples/Example_BlueprintTypeMigration.cyasset').read_bytes()).hexdigest()
 requested=set(filter(None,os.environ.get('CYGAME_TYPE_MIGRATION_CAPTURES','').split(',')))
 results=json.loads((REPORTS/'type-migrations-captures.json').read_text('utf-8')) if requested and (REPORTS/'type-migrations-captures.json').exists() else []
 results=[r for r in results if r['name'] not in requested]
@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='type-migrations-capture-',dir=REPORTS) 
  def capture(name,lang,theme='unreal-dark',phase=190,example=False):
   if requested and name not in requested:return
   output=REPORTS/('type-migrations-'+name+'.bmp');output.unlink(missing_ok=True);report=root/'gesture.json';report.unlink(missing_ok=True);marker=root/'ready';marker.unlink(missing_ok=True)
-  args=[str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','45']
+  args=[str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','45']
   if example:args+=['--asset','Examples/Example_BlueprintTypeMigration.cyasset','--capture-ready',str(marker)]
   else:args+=['--test-type-migration',str(report)]
   process=subprocess.Popen(args);previous=tool.ROOT;tool.ROOT=root;proof={}

@@ -1,184 +1,193 @@
-# CyUI modular migration — native 0.29
+# CyUI integration — native 0.31
 
-CyGameSDK uses CyUI 1.2.0 at the exact commit
-`ff023e646c6a3038b3dfbfd53f6d2b4a2f5955e3`, from
-https://github.com/MrMybal/CyUI. This is a presentation migration; the 175 editor
-operations / 196 tools and game adapter boundaries stay in place.
-`dependencies.lock.json` records the revision and selected modules.
-If the upstream repository is private, Git must already be authenticated with an
-authorized account. Alternatively, use `-CyUIRoot` with an authorized offline
-checkout at the locked revision. Credentials belong in Git's credential manager,
-never in the lock file, source tree or CMake arguments.
+CyGameSDK pins CyUI's current modular implementation at
+`6ef01cfcdb197f3a89d64618ce5ef8818c704728`. Upstream still declares version
+1.2.0; the exact commit in `app/dependencies.lock.json` identifies these newer
+editor APIs. CyDoc and CyMCPSDK have independent exact locks. DocumentViews supplies the
+shared ChatUI transcript; no local conversation renderer is copied.
 
-## Previous integration and build
+This application owns documents, engine/game adapters, validation, resource access,
+persistence and Undo. CyUI supplies presentation models and gestures. No sibling
+repository is modified. The previous 0.29 source and executable are preserved as
+local development checkpoints, not dependencies.
 
-The previous native build used a sibling CyImgui_Interface checkout, an umbrella
-header/library and a separate manual MSVC source list. It compiled unused Audio,
-Gallery and ImGui demo sources. Graph cards/wires/navigation, texture canvas,
-command popup, property drafts, logs and diff detail panes had local renderers.
-The app's theme, schema/graph semantics, folder operations and DX11 renderers are
-application-specific adaptations, rather than shared presentation libraries.
+## Build and module selection
 
-`build.ps1` and `build_native.cmd` now both use CMake. The default configure fetches
-only the pinned repository revision into the private `runtime/dependencies`
-cache. `-CyUIRoot` accepts an existing clean checkout of that exact revision for
-offline builds. Neither path modifies a sibling repository. CMake rejects a
-mismatched revision or dirty dependency checkout. No machine-specific include or
-library paths are embedded in the source.
+Configure `CYUI_MODULES` from the lock before adding the library and link explicit
+targets. One host-owned `editor_imgui` target supplies the pinned docking snapshot
+to every module, backend and the existing ImGuizmo adapter.
 
-`CYUI_MODULES` is populated from the lock before `add_subdirectory`. Targets use
-explicit `CyUI::<Module>` links and matching headers. There is no production
-`All`, umbrella link/header, Audio, Gallery, Demo, CodeEditor, Web or CEF. The host
-provides `editor_imgui` through `CYUI_IMGUI_TARGET`; the app, modules, DX11/Win32
-backends and `editor_imguizmo` share that one ImGui. The locked snapshot reports
-ImGui 1.93.0 WIP (`IMGUI_VERSION_NUM=19297`), above the 1.92 minimum. The host stays
-C++17. No Python UI, Unreal connector or embedded browser is used by this host.
+| Module | Application integration |
+| --- | --- |
+| Core | Palette, density/DPI, fonts, localization, layout, ordinary widgets, filters and notifications |
+| Nodes / Canvas | Logic/material/function cards, wires, navigation, selection and comment-group gestures |
+| Inspector | Exact scalar values, numeric expressions, vectors, typed records and virtual arrays/Sets/Maps |
+| Hierarchy | World Outliner navigation, selection, rename, visibility, locking and folder drop proposals |
+| DataView | Adapter-driven scene property table, sorting/filtering, rectangular selection and atomic typed TSV paste |
+| FilePicker | Native source-file selection with cached asynchronous host filesystem listings |
+| Code / Diff | Generated source/result presentation, syntax colors, search and saved/current comparisons |
+| CodeEditor | Editable JSON fields and read-only character selection through the common native text backend |
+| Assets | Existing content tiles/list, filtering, thumbnails, selection and standard actions |
+| Images / Viewport | Existing texture/model surfaces, pan/zoom and host rendering callbacks |
+| ImGuizmo adapter | Existing revision-aware scene transforms and snapping |
+| Timeline | Existing bounded animation track, marker and playhead presentation |
+| Commands | Palette plus shared menu/toolbar/keyboard metadata and persisted shortcut bindings |
+| DocumentViews | Shared CyMCPSDK ChatUI conversation documents |
+| Diagnostics | Bounded output logs and navigable graph/shader diagnostics |
 
-## Selected modules and replacements
+Canvas and Images are enabled transitively. Audio, AudioViews, Gallery, demos,
+Web/CEF, Media, Office and document-authoring modules are not application
+dependencies. No `All` or umbrella target is used.
 
-| Module | Migrated application view / reason |
-|---|---|
-| Core | Theme/palette, fonts/icons, layout, notifications, widgets and independent localized menu TextFilters |
-| Nodes | Logic/material/function graph cards, pin/wire rendering, hit tests, drag connections, selection, movement and removal requests |
-| Canvas (automatic) | Graph/image navigation, grid, scrolling and zoom |
-| Inspector | Schema-driven boolean, int64, double and string drafts, validation events and edit phases |
-| Assets | Common asset grid/list, selection, quick filter, folder navigation, standard context actions and numeric drag payload |
-| Images (automatic) | Image surface, checkerboard, fit, pan/zoom and pixel inspection |
-| Viewport | Common DX11 model texture surface; host retains its established camera, skeleton/collision overlays and renderer |
-| ImGuizmo adapter | Scene transform gesture lifecycle, snapping, operation/mode and revision-aware cancellation |
-| Timeline | Animation track/marker display, playhead, seek, range navigation and scrolling |
-| Commands | Global Ctrl+P modal, filtering, keyboard ranking/navigation and command requests |
-| Diagnostics | Bounded/filterable output log and graph/shader diagnostic lists with host node navigation |
-| Code | Searchable, highlighted HLSL, JSON metadata and operation results; shared code rendering for Diff |
-| Diff | Saved/current graph entry detail, split/unified code comparison, search and hunk navigation |
+CodeEditor and CyMCPSDK need C++20. Their private bridges isolate SDK headers and
+JSON types from the C++17 domain/host. Read [CyMCPSDK integration](CyMCPSDKIntegration.md).
 
-Code brings CyUI's pinned Lexilla engines, Scintilla **interface headers** and
-SciTE keyword data. It does not bring a Scintilla editor UI. The upstream module
-build selects these dependencies automatically. Notices and their syntax-source
-lock are retained under `app/LICENCES`. No CodeEditor/TextEditor or CEF runtime is
-linked. The optional standalone portable-assets component remains independent.
-
-Removed local implementations include the hand-painted node/wire canvas and drag
-state, image pan/zoom/checkerboard loop, asset tile/table renderer, scalar draft
-widgets, global command popup, log text renderer, direct ImGuizmo manipulation and
-plain diff/source default views. The manual MSVC compilation list and unused
-Audio/Gallery/demo dependencies were removed. No Core/MCP scheduler was replaced.
-
-## Ownership and transaction rules
-
-- EditorCore owns entities, graph types/functions/interfaces, model/key data,
-  parsers, validation, runtime/compilation, persistence and document Undo/Redo.
-  CyUI models are temporary snapshots of those data, never a second document.
-- Stable namespaced numeric IDs are derived from untranslated source identities.
-  Explicit collision checks protect node/pin/asset maps. Localized captions and
-  density changes do not alter source IDs or persisted graph positions.
-- Nodes receives the live revision. Only a committed movement with an actual
-  position change invokes the existing atomic `graph_nodes_move` with that
-  gesture's expected revision. Begin/update/cancel only affect presentation.
-  Toolbar/modal replacements refresh the model before rendering the new selection.
-- Inspector maps scalar variants back through the existing schema validator and
-  host command. Only a changed commit reaches document Undo. Escape, hidden views
-  and changed revisions discard drafts. Replacing a local form's scalar type or
-  source value cancels its active draft too, even without a Core document edit. On revision cancellation the host also
-  clears the matching ImGui active field and drains its deactivation replay for
-  two frames, so an old text buffer cannot overwrite a concurrent SDK edit.
-- Gizmo transforms still use the existing selection snapshot and one atomic batch.
-  Cancellation and stale document revisions do not commit partial transforms.
-- Animation timeline navigation, image/channel/zoom state, asset presentation and
-  theme/density choices are view state. Image fit-on-resize and the SDK's 5%..800%
-  zoom contract are preserved around the common image navigation state. Key edits retain the existing model
-  commands, validation and one document transaction per completed edit.
-- Every per-document view keeps its own module state/cache. Diagnostics and command
-  requests map back to source identities before navigation/execution. File moves
-  remap the browser selection along with the host path and favorites.
-
-English remains the source/default/fallback, independently of Windows locale.
-The app registers its EN/FR catalogues with CyUI and reapplies the selected locale
-for common controls. User entity names and property captions are registered under
-namespaced literal keys when passed through APIs that translate labels. Authored
-values, paths, IDs and enum members remain unchanged. Explicit preferences survive;
-new density preferences accept `compact` or `comfortable`, with compact fallback.
-Palette roles and `dp()`/style dimensions are used; Core property-table widths
-are now passed in design units rather than being scaled twice.
-
-## Retained adaptations and precise upstream gaps
-
-These are limits of the pinned API, not claimed game-engine capabilities:
-
-- Assets' standard popup emits open/favorite/rename/remove but exposes no custom
-  menu extension callback (`AssetAction::context` is not emitted). The selected
-  asset's **Asset actions** button retains import/reimport, references, material
-  instance, duplicate/move, reload and protected trash workflows. Folder tree,
-  breadcrumbs, recursive/compound queries and folder-move targets remain host
-  domain adapters. The module's quick filter is an additional visible-name/type
-  filter. Common grid/list has no type/size columns or favorite/import badges;
-  selected metadata displays type/size and the actions still expose favorite and
-  import state. The source descriptors retain those fields.
-- Nodes has uniform cards, with no compact reroute shape, editable group-comment
-  object, type-specific pin semantics or breakpoint/debugger model. Reroutes remain
-  functional cards. The host overlays semantic pin colors, authored comment group
-  borders and debugger markers. Existing click-click connections and intersection
-  marquee behavior are bridged alongside common drag connections. No library
-  canvas implementation is copied into the app. The common node/link API uses
-  categorical color indices, so wire tints follow the active accent rather than
-  reproducing the former white execution wires exactly. Semantic pin colors remain
-  explicit host overlays.
-- Inspector supports scalar properties/choices. Vectors, colors, arbitrary JSON,
-  recursive records and nominal enum semantics use the existing schema adapters.
-  Raw enum choices stay in the host because CyUI translates choice captions; user
-  enum members must not become localized values. Record scalar fields use Inspector.
-- Timeline is bound in read-only clip mode: real key-value/interpolation authoring
-  uses the existing model widgets/commands. It is not a replacement animation
-  engine, curve-tangent editor or game retargeting codec.
-- Code/Diff select rows, with copy-line rather than arbitrary character selection.
-  **Copy text** and an explicit **Text selection** mode retain the native read-only
-  text control for that interaction. Editable operation/configuration JSON fields
-  remain bounded native form controls; they are not source-code authoring editors.
-- The legacy Core log supplies plain text and is displayed at info level. Typed
-  graph/shader diagnostics retain their domain severity in the common list.
-- The Sandbox scene viewport projects primitives and implements picking itself.
-  Common Viewport is used for actual model render textures; a game renderer still
-  enters through the documented adapter callback. It does not imply an Unreal
-  runtime, renderer, game parser, material codec or compiler.
-- The Windows SDK's `pascal` macro collides with `CodeLanguage::pascal`. A scoped
-  push/undef/pop around the Code/Diff headers handles it without patching CyUI.
-- Code builds its upstream lexical catalogue as one dependency. The pinned CMake
-  API has no JSON/HLSL-only lexer switch; this app does not fork or trim that
-  catalogue. The unnecessary editor/audio/browser libraries remain disabled.
-
-## Build and verification
-
-From the repository root, with VS2022 C++/Windows SDK, Git and CMake 3.24+:
+The optional CodeEditor backend needs C++20. `editor_source_ui` is a small
+private C++20 bridge containing only that backend; the editor and domain targets
+remain C++17. CodeEditor headers do not enter Core or force the legacy host's
+UTF-8 filesystem/JSON contracts into another language mode. The bridge delegates
+to CyUI rather than copying TextEditor or its implementation.
 
 ```powershell
-.\app\build.ps1
-# Offline alternative, only with the exact clean locked checkout:
-.\app\build.ps1 -CyUIRoot 'C:\src\CyUI'
-# A fresh independent configure/output:
-.\app\build.ps1 -BuildDirectory runtime\build\clean -OutputDirectory runtime\build\clean\output
-.\runtime\python\Scripts\python.exe app\verify_cyui.py --captures
+.\\app\\build.ps1
+# Use only a clean checkout matching the exact dependency lock:
+.\\app\\build.ps1 -CyUIRoot C:\\src\\CyUI
+# Independent configure/output for UI work:
+.\\app\\build.ps1 -CyUIRoot C:\\src\\CyUI -BuildDirectory runtime\\build\\cyui-next -OutputDirectory runtime\\qa-cyui-next
 ```
 
-The test runner writes `data/reports/cyui-*.log`. Graphical tests own isolated roots
-and inject only their own ImGui events. Automated input drains the event queue each
-frame to prevent Win32 physical-pointer samples from being interleaved with a
-synthetic release; normal interactive input keeps ImGui's default queue behavior.
+Alternate outputs contain native binaries and help, not a standalone installer.
+Desktop job checks also need app, CyGameCLI and compute Python beside the binary.
+The local QA candidate reuses the original installation through private junctions;
+no venv is copied or relocated. The default build outputs into the actual project.
 
-Validation includes the native contracts, all existing Python SDK/MCP/worker and
-GUI suites, plus `test_modules.py` in compact English and comfortable French.
-The latter checks scalar commit/Undo/Redo, Escape, concurrent-revision cancellation,
-local scalar-type replacement, keyboard command execution by caption and protocol ID, asset double-click, favorite actions and image wheel/fit.
-`test_interface.py` additionally seeks the common animation timeline and checks
-menus, themes, docking, preferences, real vertex gestures and playback.
+For repeated native-only iterations, configure CMake with
+`-DCYGAME_BUILD_DOCUMENTATION=OFF`: it copies the existing complete reader.
+Fresh/production configurations default to regeneration. Generate the final
+manual through `app/build_documentation.ps1`; do not ship an obsolete copy.
 
-`capture_interface.py`, `capture_3d.py` and `capture_cyui.py` render isolated EN/FR,
-six-theme, density and simulated DPI layouts. Actual release evidence and counts
-are recorded in `data/reports/cyui-validation.json`; source/executable checkpoints
-and baseline hashes are local development artifacts, not Git dependencies.
+## Typed Inspector ownership
 
-Only Windows x64 / MSVC / DX11 is exercised. The application already has no
-Linux/macOS native host; this migration adds no new platform restriction to the
-Core/domain seams. Cross-platform CyUI itself is not evidence that this host has
-been ported. Existing user asset/project files and saved preferences/layout must
-match the preserved baseline hashes before activation. No editor is left running
-in the user's root, and this migration is not pushed automatically.
+`UiPropertyAdapter` converts schema/value snapshots into common property models
+and proposals back into JSON. Empty collections retain their element schema;
+integer arrays never round-trip through double. Record field metadata and
+unknown host metadata remain destination-owned. The validator checks the complete
+proposed value against the original application schema before a commit.
+
+Graph collection schemas retain their actual array/object kind instead of being
+flattened to an untyped JSON text field. The existing graph budgets remain in
+force. Primitive values, vectors, records, arrays, Sets and Maps use the shared
+editors; arbitrary JSON uses a bounded explicit JSON popup and CodeEditor.
+
+Authored enums use a custom one-row selector because CyUI's numeric enum captions
+are localized. Its typed payload preserves the original JSON member and a
+graph-scoped nominal/schema identity. RGB values use a custom three-channel row:
+the shared RGBA editor must not introduce and silently discard an alpha channel.
+These are domain adapters, not copied Inspector implementations.
+
+Escape, hidden fields, changed source types/values and external revisions cancel
+drafts. The existing active-ID/deactivation replay guard remains. JSON popups also
+check their captured source value, schema and revision before accepting Apply.
+A committed field/collection change is one document transaction.
+
+## Scene hierarchy and table
+
+Hierarchy IDs derive from untranslated entity/folder identities, with collision
+checks. Selection maps back to Core selection. Folder rows adapt the existing
+organizational folder strings; they do not introduce entity parenting or ordering.
+A move into another entity is vetoed. Folder rename/delete requests are not
+invented scene operations; supported object actions remain in Core.
+
+The table builds its typed columns from the adapter schema and its rows from the
+same live objects. Locked rows and read-only fields remain protected. CyUI validates
+every proposed paste cell; `property_set_many` then independently validates the
+whole batch, rejects duplicate targets/stale revisions and creates one Undo.
+A failed adapter scene validation rolls back every field through EditorCore.
+
+Hierarchy/table mode and key bindings are view preferences. They are not document
+Undo. `Focus selection`, keyboard navigation and source object IDs survive locale,
+theme and density changes.
+
+## Graph groups and semantic clipboard
+
+Authored comments are common `NodeGroup` objects. Move/resize/rename/removal
+proposals return through `graph_layout_apply`, together with node movements and
+incident-link removals. One completed group movement, including contained nodes,
+is one revision-guarded Undo. Model validation preserves function boundaries and
+unknown comment/node metadata. Cancel/stale gestures do not change the document.
+
+CyUI's generic clipboard contains visual cards and pins, not this editor's node
+types, values or function/type/interface libraries. Copy requests are translated
+through `graph_fragment_copy` and the domain fragment format. Comment groups now
+travel with that format and receive fresh IDs on paste. The host's checked paste
+and duplicate actions remain authoritative.
+
+The common generic Paste/Duplicate actions stay disabled because their allocator
+cannot reconstruct game/graph semantics. Existing toolbar/keyboard actions remain.
+Functional reroutes stay typed graph nodes; generic visual link points must not
+replace execution or nominal pin semantics. Existing intersection marquee and
+click-click wiring are retained alongside common drag wiring.
+
+## Files, commands and source views
+
+The source picker performs no import itself. It consumes cached listings prepared
+outside drawing, limits a directory to 10,000 entries and rejects loading/stale/
+failed snapshots. The host rechecks selected regular files, then uses existing
+provider preparation/import validation. Drive choice, lexical navigation and
+filters are presentation; OS access, symlinks and import destination checks stay
+in the host.
+
+The command registry owns common IDs, metadata, bindings, enablement and typing
+policy. Menus and toolbar tooltips use those bindings. This multi-root docking
+shell performs one host-wide key pass through registry matching. The existing
+Core dispatcher executes actions; the registry does not become a scheduler.
+Bindings persist only with normal view preferences.
+
+Source views use the common code font, syntax palette and per-view zoom. Editable
+operation/class/codec JSON retains its explicit size limit and Execute/Apply
+workflow. The read-only character-selection mode now uses CodeEditor as well.
+Text Undo belongs to a form buffer; document Undo remains in Core. Changing a
+form's source externally replaces its text backend instead of replaying old text.
+
+## Remaining adaptations and upstream limits
+
+- Assets still has no custom context-action callback or type/size/badge columns.
+  The existing Asset actions button, folder/breadcrumb/query adapters and selected
+  metadata retain import/reimport, references, material instances, moves and trash.
+- Timeline remains a bounded clip/track viewer. The host's real animation-key,
+  interpolation, retargeting and motion operations are not replaced by generic
+  clip split/reorder requests. A game animation binding still needs its own adapter.
+- Native Code/Diff row selection remains useful for diagnostics. Character
+  selection uses the optional read-only CodeEditor mode. No source-language
+  compiler, LSP service or paged engine-file editor is implied.
+- Nodes semantic pin colors, breakpoints, debugger traces and runtime meanings
+  remain host overlays/adapters. No Unreal runtime or Blueprint codec is bundled.
+- The selected Code module still builds its upstream lexical catalogue as one
+  dependency; there is no JSON/HLSL-only lexer switch at this revision.
+- Sandbox scene projection/picking and DX11 previews remain host renderers.
+  Common Viewport does not render a game scene.
+- The Windows SDK `pascal` macro is scoped around Code-related headers without
+  patching the dependency.
+
+## Verification
+
+Native contracts cover atomic property batches, duplicate/stale/invalid rejection,
+group-plus-node Undo and fresh comment IDs. `CyGameUIContractsTests` covers exact
+int64 values, empty collection templates, nominal clipboard rejection, retained
+metadata and atomic typed TSV proposals.
+
+The isolated module fixture exercises scalar commits, Undo/Redo, Escape, stale
+SDK drafts, schema replacement, command searches, asset/image gestures, virtual
+array clipping and real keyboard hierarchy selection/F2 rename. Existing graph,
+migration, animation, worker and UI suites remain the regression baseline.
+
+`CYGAME_EDITOR_EXE` selects a candidate executable in tests/capture scripts.
+This permits verification before activation without testing the user's old binary.
+Only Windows x64 / MSVC / DX11 is tested by this host; Linux/macOS native hosts
+remain unimplemented. Actual run results and captures belong in private reports.
+
+## Notices
+
+Retain the original application MIT license, CyUI and third-party notices,
+TextEditor MIT, and JetBrains Mono's SIL OFL 1.1. Bundled code fonts require no
+system installation. CyMCPSDK and Python compute package notices remain independent.

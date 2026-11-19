@@ -1,7 +1,7 @@
 # Build providers — CyGameSDK 0.10
 
 The build SPI separates native target validation, trusted source provider code and
-CyToolsCore job ownership. The delivered Sandbox provider exports a document ZIP.
+CyMCPSDK job ownership. The delivered Sandbox provider exports a document ZIP.
 Game formats, compiler discovery, platform SDKs and engine builds belong to a game adapter.
 
 ## Native target declaration
@@ -44,7 +44,7 @@ second adapter and checks target absence, custom defaults/ranges and scene failu
 ## Python source provider
 
 `app/build_service.py` registers the `build_execute` handler with the official runtime.
-A provider is a fixed argv command using CyToolsCore's `ProcessWorker`:
+A provider is a fixed argv command using the application one-shot `ProcessWorker` supervised by CyMCPSDK:
 
 ```python
 from build_service import BuildProvider
@@ -52,7 +52,7 @@ import tool
 
 provider = BuildProvider('mygame.export', [compiler_python, trusted_worker_script])
 with tool.create_runtime(job_directory, build_providers={provider.id: provider}) as runtime:
-    # Authenticate/create a session/submit using the normal Core SDK.
+    # Authenticate/create a session/submit using the compatibility client.
     ...
 ```
 
@@ -60,7 +60,7 @@ Supply a complete provider map when overriding `build_providers`; omitting it in
 `sandbox.archive`. The native target's `providerId` must match a registered key.
 The desktop bridge uses the default map, so add a trusted default registration to
 connect a new source provider to that interface. There is no external plugin discovery
-or binary ABI here. Do not modify CyToolsCore to add a game provider.
+or binary ABI here. Do not modify CyMCPSDK to add a game provider.
 
 The worker reads one JSON value from stdin, then writes one JSON result to stdout:
 
@@ -91,7 +91,7 @@ and `gameExecutable`. The current Build panel consumes this archive-result shape
 A real compiler with a different output contract needs a corresponding result view.
 The current GUI title/action still describes packaging, rather than a generic IDE.
 
-Core owns subprocess creation, cancellation, descendants and final cleanup. The
+SDK Process owns subprocess trees; the application coordinates cancellation and durable results. The
 service reports progress at validation/snapshot/provider/completion boundaries;
 it does not yet stream compiler output or granular progress from inside the worker.
 Tests use a slow worker fixture to verify cancellation reaches the real process
@@ -110,26 +110,18 @@ the document; this ZIP is not a self-contained migrated project or a cooked game
 It does not compile arbitrary shaders, embed engine binaries or produce a game exe.
 
 `build_request`, `build_status` and `build_cancel` control the desktop SDK client.
-BuildClient launches the fixed `build_bridge.py` script with the private Python runtime,
-without a shell or visible console. The bridge submits one normal Core job, polls
-its state, and maps a cancel request onto `runtime.cancel`. It does not run compilers
-itself or implement another scheduler. Only one desktop build is active at a time.
-The native Operations-panel binding for build_execute also submits through this
-client and opens the Build panel; the SDK handler returns the completed job output.
+BuildClient launches **CyGameCLI.exe desktop --run <owned-run>**, without a shell or
+visible console. The native companion uses SDK Executor/Process and the same trusted
+compute handlers as CLI/MCP. Only one desktop job is active at a time. Mutation rights
+follow the explicit user action; source commands never come from asset JSON.
 
-Transport metadata lives in `data/build-runs/<runId>`. Generated build artifacts live
-under that run's `sdk/Workspaces/<clientId>/<jobId>` and are allocated by Core.
-The status projection contains no client token. Desktop status is shared with the
-editor session; do not treat it as an independently private client job. Standalone
-SDK jobs retain normal per-identity access checks. Each desktop run owns a runtime;
-use Core's existing authenticated service for a shared multi-client scheduler.
+Transport metadata lives under **data/build-runs/<runId>**. Actual artifacts and job
+records live under **data/automation/jobs/<jobId>**. Desktop state becomes terminal
+only after the client runtime has closed; job results remain durable afterward.
+Cancellation requests stop the owned tree and do not prove a persistent commit rolled back.
 
-The desktop session uses `temporary=False`, so archives remain after window/runtime
-closure. Closing the editor requests cancellation of an active job; the UI does not
-claim it stopped before Core completes the cancellation. GUI history/recovery and
-artifact cleanup controls remain future work. The private Python/Core runtime must
-be installed to submit exports, although the native editor can open without Python.
-
-For MCP, call `op_build_execute`, poll `cy_get_job`, consume or explicitly preserve
-outputs with `cy_export_job`, then finish the task with `cy_finish_task`. Temporary
-task closure removes unexported artifacts according to Core. See TaskFiles.md.
+For MCP call build_execute directly, or submit op_build_execute and poll cy_get_job.
+Use job_result_read and job_output_read for recovery across restarts/SDK resource expiry.
+finish_task retains results. Deliberate archival/export replaces implicit deletion.
+The GUI has no complete job-history browser; CLI recovery remains available.
+See [CyMCPSDK integration](CyMCPSDKIntegration.md) for authentication and exact commands.

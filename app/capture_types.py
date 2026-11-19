@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='types-capture-',dir=REPORTS) as tempora
  def capture(name,lang,theme='unreal-dark',phase=144,example=False):
   if requested and name not in requested:return
   output=REPORTS/('types-'+name+'.bmp');output.unlink(missing_ok=True);report=root/'gesture.json';report.unlink(missing_ok=True);marker=root/'ready';marker.unlink(missing_ok=True)
-  args=[str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','45']
+  args=[str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','45']
   if example:args+=['--asset','Examples/Example_BlueprintTypes.cyasset','--capture-ready',str(marker)]
   else:args+=['--test-types',str(report)]
   process=subprocess.Popen(args);previous=tool.ROOT;tool.ROOT=root;proof={}

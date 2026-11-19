@@ -1,5 +1,5 @@
-import {readFile,writeFile,cp,mkdir,rm} from 'node:fs/promises';
-import {dirname,resolve,join,sep} from 'node:path';
+import {readFile,writeFile,cp,mkdir,rm,rename,lstat} from 'node:fs/promises';
+import {dirname,resolve,join,sep,relative,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
@@ -42,8 +42,13 @@ for(const lang of ['en','fr']){
 }
 const packageRoot=join(work,'node_modules/cydoc');
 const pkg=JSON.parse(await readFile(join(packageRoot,'package.json'),'utf8'));
-execFileSync(process.execPath,[join(packageRoot,pkg.bin.cydoc),process.argv.includes('--check')?'check':'build',join(work,'cydoc.config.json')],{cwd:root,stdio:'inherit'});
-const result={output:join(root,'Documentation'),data:JSON.parse(await readFile(join(root,'Documentation/DocData/manifest.json'),'utf8'))};
+// Compile a fresh owned export so a failed generation never truncates the installed reader.
+const stagedOutput=join(root,'runtime','documentation-stage-'+process.pid);
+const stagedConfig=join(work,'build-config-'+process.pid+'.json');
+await writeFile(stagedConfig,JSON.stringify({...config,out:relative(work,stagedOutput)},null,2),{flag:'wx'});
+try{execFileSync(process.execPath,[join(packageRoot,pkg.bin.cydoc),process.argv.includes('--check')?'check':'build',stagedConfig],{cwd:root,stdio:'inherit'});}
+finally{await rm(stagedConfig,{force:true});}
+const result={output:stagedOutput,data:JSON.parse(await readFile(join(stagedOutput,'DocData/manifest.json'),'utf8'))};
 const report=JSON.parse(await readFile(join(result.output,'DocData/translation-report.json'),'utf8'));
 if(report.missing.length||report.outdated.length)throw Error('Incomplete/outdated translations');
 const reviewPath=join(work,'translation-review.json');
@@ -67,9 +72,32 @@ const modules=config.modules;
 for(const name of ['mesh','video','gif'])if(modules.includes(name))throw Error('Unused reader selected');
 await cp(join(root,'app/LICENCES/CyDoc-MIT.txt'),join(result.output,'DocData/CyDoc-MIT.txt'));
 await cp(join(root,'app/LICENCES/README.md'),join(result.output,'DocData/DEPENDENCY-NOTICES.md'));
-// Mirror the complete official export for the static project site, preserving its reader.
-const web=join(root,'docs/manual');await mkdir(web,{recursive:true});await cp(result.output,web,{recursive:true});
+process.env.CYGAME_DOCUMENTATION_OUTPUT=result.output;
 await import('./verify.mjs');
+if(!process.argv.includes('--check')){
+ const runtime=resolve(root,'runtime'),backup=join(runtime,'documentation-backup-'+Date.now()+'-'+process.pid);
+ const webStage=join(runtime,'documentation-web-stage-'+process.pid);
+ await mkdir(backup,{recursive:true});await cp(result.output,webStage,{recursive:true});
+ const moves=[{source:result.output,destination:join(root,'Documentation'),backup:join(backup,'Documentation')},
+              {source:webStage,destination:join(root,'docs/manual'),backup:join(backup,'manual')}];
+ // Only these owned, resolved export directories may be moved. Preserve the old exports.
+ for(const move of moves)for(const path of [move.source,move.destination,move.backup]){
+   const local=relative(root,resolve(path));if(!local||local.startsWith('..')||isAbsolute(local))throw Error('Export path escapes this application');
+ }
+ try{
+   for(const move of moves){
+     const info=await lstat(move.destination).catch(error=>{if(error.code==='ENOENT')return null;throw error;});
+     if(info?.isSymbolicLink())throw Error('Refusing to replace a linked export directory');
+     if(info){await rename(move.destination,move.backup);move.saved=true;}
+     await rename(move.source,move.destination);move.installed=true;
+   }
+ }catch(error){
+   for(const move of [...moves].reverse()){
+     if(move.installed)await rename(move.destination,move.source);
+     if(move.saved)await rename(move.backup,move.destination);
+   }throw error;
+ }
+}
 const hashes=Object.fromEntries(result.data.pages.filter(p=>p.locale==='en').map(p=>[p.id,p.revision]));
 await writeFile(join(work,'internal/compiled-revisions.json'),JSON.stringify(hashes,null,2)+'\n');
-console.log(`CyGameSDK: ${manifest.operations.length} operation references per locale; readers: ${modules.join(', ')}; complete export and website copy.`);
+console.log(`CyGameSDK: ${manifest.operations.length} operation references per locale; readers: ${modules.join(', ')}; ${process.argv.includes('--check')?'staged export checked':'complete export and website copy'}.`);

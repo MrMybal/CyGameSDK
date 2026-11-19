@@ -1,16 +1,23 @@
 # Build and launch troubleshooting
 
-Current source/catalogue version: 0.29.0. See the root [README](../../README.md)
+Current source/catalogue version: 0.31.0. See the root [README](../../README.md)
 for setup and [CompletionMilestones](CompletionMilestones.md) for historical
 feature milestones. Historical local archives are not executable replacements
 for the current source/catalogue.
 
 The human troubleshooting page is in the [local CyDoc manual](../../Documentation/Documentation.html#/en/troubleshooting).
 
+## Portable Windows preview
+
+The v0.31.0 Windows ZIP supplies Editor/CLI and the complete offline manual.
+Extract it into a new writable folder. Native editing, assistant and MCP need no Python
+or library checkout. Install the Microsoft C++ x64 runtime if missing. Compute workers
+need Python 3.11+ and app/setup_mcp.ps1. Do not copy an installed virtual environment.
+
 ## A fresh source checkout
 
 The repository does not include CyGameEditor.exe or the private runtime. Build
-with app/build.ps1 and prepare MCP/worker dependencies with app/setup_mcp.ps1.
+with app/build.ps1 and prepare optional compute-worker dependencies with app/setup_mcp.ps1.
 The native executable is written to the repository root. Verify dependency paths,
 the Visual Studio C++ workload and the Windows SDK when compilation fails.
 

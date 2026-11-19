@@ -3,7 +3,7 @@ import {readFile,readdir,stat} from 'node:fs/promises';
 import {resolve,dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const output=join(root,'Documentation'),data=JSON.parse(await readFile(join(output,'DocData/manifest.json'),'utf8'));
+const output=resolve(root,process.env.CYGAME_DOCUMENTATION_OUTPUT||'Documentation'),data=JSON.parse(await readFile(join(output,'DocData/manifest.json'),'utf8'));
 const ops=JSON.parse(await readFile(join(root,'app/CyTool.json'),'utf8')).operations;
 const en=data.pages.filter(p=>p.locale==='en'),fr=data.pages.filter(p=>p.locale==='fr');
 assert.deepEqual(en.map(p=>p.id).sort(),fr.map(p=>p.id).sort(),'EN/FR page IDs');

@@ -1,10 +1,11 @@
 """Explicit nominal enum/record shape migration through the native owner."""
+import os
 import copy,json,os,shutil,subprocess,sys,tempfile,time,unittest
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import tool,test_integration as integration,test_authoring as authoring,test_graph_interfaces as interfaces
-from cytools_core import CyToolError
+from job_contract import CyToolError
 
 def p(t='float',v=1):return {'type':t,'default':v}
 TEAM={'kind':'enum','members':['A','B','C'],'default':'A','metadata':{'keep':True}}
@@ -88,7 +89,7 @@ class TypeMigrations(unittest.TestCase):
   if not self.gui:self.skipTest('Graphical host required')
   for lang in ('en','fr'):
    with tempfile.TemporaryDirectory(prefix='type-migration-ui-',dir=ROOT/'data/reports') as tmp:
-    root=Path(tmp);(root/'app').mkdir();shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');report=root/'report.json';process=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-type-migration',str(report),'--exit-after','45'],timeout=60);self.assertEqual(process.returncode,0);self.assertTrue(report.exists());result=json.loads(report.read_text('utf-8'));self.assertTrue(result['passed'],result);self.assertEqual(len(result['checks']),12);shutil.copyfile(report,ROOT/'data/reports'/('type-migrations-gestures-'+lang+'.json'));self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())
+    root=Path(tmp);(root/'app').mkdir();shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');report=root/'report.json';process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-type-migration',str(report),'--exit-after','45'],timeout=60);self.assertEqual(process.returncode,0);self.assertTrue(report.exists());result=json.loads(report.read_text('utf-8'));self.assertTrue(result['passed'],result);self.assertEqual(len(result['checks']),12);shutil.copyfile(report,ROOT/'data/reports'/('type-migrations-gestures-'+lang+'.json'));self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())
 
  def test_13_optional_variable_sections_stay_absent_on_noop(self):
   g=self.graph('OptionalVariables');self.types(g);self.function(g,'Empty',{}, {'result':('float',0)});source=self.get(g);source.pop('assetPath',None);source.pop('variables',None);source['functions']['Empty'].pop('variables',None)

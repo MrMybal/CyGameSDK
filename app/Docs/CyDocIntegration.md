@@ -46,7 +46,7 @@ Edit `.CyDocBuild/manual/en` first, then `fr`; preserve IDs and explicit anchors
 Use revision/sourceRevision for prose. Locale defaults to English. The reader
 preserves explicit choices; app Help/F1 supplies the active editor language.
 
-The operation catalogue is the real `app/CyTool.json` (175 operations at 0.29.0).
+The operation catalogue is the real `app/CyTool.json` (177 operations at 0.31.0).
 `build.mjs` converts it into CyDoc's neutral API format, calls the public
 `cydoc/api-import` API and writes disposable `manual/*/api-generated` Markdown
 inputs. This adds an `operations` parent and revision metadata, which the current
@@ -118,3 +118,13 @@ language, URL encoding and fallback without manipulating another app's input.
 Do not rebuild a user's running editor merely to regenerate the manual.
 Browser/file-origin visual tests and platform results belong in private reports,
 not human manual pages; do not claim untested hosts or actual touch hardware.
+
+## Atomic export installation
+
+The application generator compiles a fresh export under the owned runtime directory
+using the official CyDoc CLI and the same config base. It validates translations,
+links, operation coverage and local resources before replacing Documentation and
+the website mirror. Previous export directories are retained under runtime, and a
+failed installation restores both destinations. Check mode validates staging only
+and does not replace either installed reader. This also avoids truncating a reader
+file that is already open during iterative UI development.

@@ -1,3 +1,4 @@
+#include "AssistantSmokeTest.h"
 // CyGameSDK native Win32 / Direct3D 11 host with modular CyUI presentation.
 
 #include "Editor.h"
@@ -198,12 +199,13 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     try {
         wchar_t executable[32768]{};GetModuleFileNameW(nullptr,executable,32768);
         fs::path root=fs::path(executable).parent_path();
-        std::wstring capturePath,captureReadyPath,gizmoTestPath,graphTestPath,functionTestPath,interfaceTestPath,moduleTestPath,helpTestPath,modelTestPath,blueprintTestPath,motionTestPath,typesTestPath,interfacesTestPath,migrationTestPath,collapseTestPath,expandTestPath,typeMigrationTestPath;std::string density,theme,language,panel,workspace,asset,function,modelTab;double captureDpi=0,exitAfter=0,modelTime=-1;int captureAfter=40;
+        std::wstring assistantTestPath,capturePath,captureReadyPath,gizmoTestPath,graphTestPath,functionTestPath,interfaceTestPath,moduleTestPath,helpTestPath,modelTestPath,blueprintTestPath,motionTestPath,typesTestPath,interfacesTestPath,migrationTestPath,collapseTestPath,expandTestPath,typeMigrationTestPath;int moduleStartFrame=0;std::string density,theme,language,panel,workspace,asset,function,modelTab;double captureDpi=0,exitAfter=0,modelTime=-1;int captureAfter=40;
         int count=0;auto** args=CommandLineToArgvW(GetCommandLineW(),&count);
         for(int i=1;i<count;++i){
             const std::wstring arg=args[i];
             const auto next=[&](){return i+1<count?std::wstring(args[++i]):std::wstring();};
             if(arg==L"--root")root=next();
+            else if(arg==L"--test-assistant")assistantTestPath=next();
             else if(arg==L"--test-expand")expandTestPath=next();
             else if(arg==L"--test-collapse")collapseTestPath=next();
             else if(arg==L"--test-type-migration")typeMigrationTestPath=next();
@@ -215,6 +217,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
             else if(arg==L"--test-model")modelTestPath=next();
             else if(arg==L"--test-help")helpTestPath=next();
             else if(arg==L"--test-modules")moduleTestPath=next();
+            else if(arg==L"--test-source-only")moduleStartFrame=700;
+            else if(arg==L"--test-table-only")moduleStartFrame=660;
             else if(arg==L"--test-interface")interfaceTestPath=next();
             else if(arg==L"--test-functions")functionTestPath=next();
             else if(arg==L"--test-graph")graphTestPath=next();
@@ -234,7 +238,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
             else if(arg==L"--panel"){auto t=next();panel=std::string(t.begin(),t.end());}
             else if(arg==L"--exit-after")exitAfter=_wtof(next().c_str());
         }LocalFree(args);
-        root=fs::weakly_canonical(root);failureRoot=root;automated=exitAfter>0||!capturePath.empty()||!gizmoTestPath.empty()||!graphTestPath.empty()||!functionTestPath.empty()||!helpTestPath.empty()||!moduleTestPath.empty()||!interfaceTestPath.empty()||!modelTestPath.empty()||!expandTestPath.empty()||!collapseTestPath.empty()||!typeMigrationTestPath.empty()||!migrationTestPath.empty()||!interfacesTestPath.empty()||!typesTestPath.empty()||!motionTestPath.empty()||!blueprintTestPath.empty();
+        root=fs::weakly_canonical(root);failureRoot=root;automated=!assistantTestPath.empty()||exitAfter>0||!capturePath.empty()||!gizmoTestPath.empty()||!graphTestPath.empty()||!functionTestPath.empty()||!helpTestPath.empty()||!moduleTestPath.empty()||!interfaceTestPath.empty()||!modelTestPath.empty()||!expandTestPath.empty()||!collapseTestPath.empty()||!typeMigrationTestPath.empty()||!migrationTestPath.empty()||!interfacesTestPath.empty()||!typesTestPath.empty()||!motionTestPath.empty()||!blueprintTestPath.empty();
         const std::wstring mutexName=L"Local\\CyGameSDK-"+std::to_wstring(std::hash<std::wstring>{}(root.wstring()));
         HANDLE mutex=CreateMutexW(nullptr,FALSE,mutexName.c_str());
         if(!mutex||GetLastError()==ERROR_ALREADY_EXISTS){if(mutex)CloseHandle(mutex);MessageBoxW(nullptr,L"An editor is already open for this workspace.",L"CyGameSDK",MB_OK);return 1;}
@@ -256,8 +260,9 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
         EditorApp app(core);if(panel.empty())panel=app.startupPanel();if(!capturePath.empty()||!language.empty()||!theme.empty())app.previewSettings(language,theme);
         if(!gizmoTestPath.empty()||!graphTestPath.empty()||!functionTestPath.empty()||!helpTestPath.empty()||!moduleTestPath.empty()||!interfaceTestPath.empty()||!modelTestPath.empty()||!expandTestPath.empty()||!collapseTestPath.empty()||!typeMigrationTestPath.empty()||!migrationTestPath.empty()||!interfacesTestPath.empty()||!typesTestPath.empty()||!motionTestPath.empty()||!blueprintTestPath.empty()){app.persistSettings=false;io.ConfigInputTrickleEventQueue=false;}
         InterfaceSmokeTest interfaceTest(core,app,interfaceTestPath);if(interfaceTest.enabled())app.interfaceProbe=[&](const std::string& id,ImVec2 a,ImVec2 b){interfaceTest.probe(id,a,b);};
+        AssistantSmokeTest assistantTest(core,app,assistantTestPath);
         HelpSmokeTest helpTest(core,app,helpTestPath);
-        ModuleSmokeTest moduleTest(core,app,moduleTestPath);if(moduleTest.enabled())app.interfaceProbe=[&](const std::string& id,ImVec2 a,ImVec2 b){moduleTest.probe(id,a,b);};
+        ModuleSmokeTest moduleTest(core,app,moduleTestPath,moduleStartFrame);if(moduleTest.enabled())app.interfaceProbe=[&](const std::string& id,ImVec2 a,ImVec2 b){moduleTest.probe(id,a,b);};
         GraphSmokeTest graphTest(core,graphTestPath);if(graphTest.enabled())app.graphProbe=[&](const std::string& key,const Json& boxes,const Json& selection){graphTest.probe(key,boxes,selection);};
         GizmoSmokeTest gizmoTest(core,gizmoTestPath);if(gizmoTest.enabled())app.viewportSelectionProbe=[&](const std::string& id,ImVec2 point){gizmoTest.projected(id,point);};
         if(!density.empty())app.previewDensity(density);
@@ -303,7 +308,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
                 if(FAILED(gSwapChain->ResizeBuffers(0,gResizeWidth,gResizeHeight,DXGI_FORMAT_UNKNOWN,0)))throw std::runtime_error("DX11 resize failed");
                 gResizeWidth=gResizeHeight=0;createTarget();
             }
-            ImGui_ImplDX11_NewFrame();ImGui_ImplWin32_NewFrame();gizmoTest.input(io,frames+1);graphTest.input(io,frames+1);functionTest.input(io,frames+1);interfaceTest.input(io,frames+1);moduleTest.input(io,frames+1);helpTest.input(io,frames+1);modelTest.input(io,frames+1);blueprintTest.input(io,frames+1);motionTest.input(io,frames+1);typesTest.input(io,frames+1);interfacesTest.input(io,frames+1);migrationTest.input(io,frames+1);typeMigrationTest.input(io,frames+1);collapseTest.input(io,frames+1);expandTest.input(io,frames+1);ImGui::NewFrame();
+            ImGui_ImplDX11_NewFrame();ImGui_ImplWin32_NewFrame();assistantTest.input(io);gizmoTest.input(io,frames+1);graphTest.input(io,frames+1);functionTest.input(io,frames+1);interfaceTest.input(io,frames+1);moduleTest.input(io,frames+1);helpTest.input(io,frames+1);modelTest.input(io,frames+1);blueprintTest.input(io,frames+1);motionTest.input(io,frames+1);typesTest.input(io,frames+1);interfacesTest.input(io,frames+1);migrationTest.input(io,frames+1);typeMigrationTest.input(io,frames+1);collapseTest.input(io,frames+1);expandTest.input(io,frames+1);ImGui::NewFrame();
             ipc.poll();meshPreview.prune(core.models());++frames;if(frames<=3)app.open(panel);app.frame();moduleTest.draw();
             const auto expandResult=expandTest.finish(frames);if(expandResult>=0){result=expandResult;done=true;}
             const auto collapseResult=collapseTest.finish(frames);if(collapseResult>=0){result=collapseResult;done=true;}
@@ -314,6 +319,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
             const auto motionResult=motionTest.finish();if(motionResult>=0){result=motionResult;done=true;}
             const auto blueprintResult=blueprintTest.finish(frames);if(blueprintResult>=0){result=blueprintResult;done=true;}
             const auto modelResult=modelTest.finish(frames);if(modelResult>=0){result=modelResult;done=true;}
+            const auto assistantResult=assistantTest.tick();if(assistantResult>=0){result=assistantResult;done=true;}
             const auto helpResult=helpTest.finish(frames);if(helpResult>=0){result=helpResult;done=true;}
             const auto moduleResult=moduleTest.finish(frames);if(moduleResult>=0){result=moduleResult;done=true;}
             const auto interfaceResult=interfaceTest.finish(frames);if(interfaceResult>=0){result=interfaceResult;done=true;}
@@ -324,7 +330,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
             gContext->OMSetRenderTargets(1,&gTarget,nullptr);gContext->ClearRenderTargetView(gTarget,clear);
             ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
             ImGui::UpdatePlatformWindows();ImGui::RenderPlatformWindowsDefault();
-            if(!capturePath.empty()&&frames>=(functionTest.enabled()?90:captureAfter)&&(captureReadyPath.empty()||fs::is_regular_file(captureReadyPath))){if(!captureBackBuffer(capturePath.c_str()))result=2;done=true;}
+            if(!capturePath.empty()&&(!assistantTest.enabled()||assistantTest.complete())&&frames>=(functionTest.enabled()?90:captureAfter)&&(captureReadyPath.empty()||fs::is_regular_file(captureReadyPath))){if(!captureBackBuffer(capturePath.c_str()))result=2;done=true;}
             if(exitAfter>0&&std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count()>exitAfter)done=true;
             done|=app.shouldClose;gSwapChain->Present(1,0);
             // Remote/virtual swap chains may ignore vsync. Keep editor idle cost bounded.
@@ -332,7 +338,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
             if(frameMs<16.0)Sleep(static_cast<DWORD>(16.0-frameMs));
         }
         if(app.persistSettings)ImGui::SaveIniSettingsToDisk(ini.c_str());
-        ImGui_ImplDX11_Shutdown();ImGui_ImplWin32_Shutdown();ImGui::DestroyContext();
+        app.shutdownAssistant();ImGui_ImplDX11_Shutdown();ImGui_ImplWin32_Shutdown();ImGui::DestroyContext();
         app.meshRenderer={};app.materialRenderer={};app.materialShaderInstaller={};app.textureRenderer={};app.thumbnailRenderer={};app.clearThumbnails={};
         gContext->ClearState();gContext->Flush();
         }

@@ -2,7 +2,7 @@
 
 This is the starting document for an AI adapting this foundation to another game.
 It covers source development. An AI operating an already-built editor instead
-uses its existing CyToolsCore MCP/SDK catalogue; it does not need a second server.
+uses its existing CyMCPSDK assistant/CLI/MCP registry; it does not need a second server.
 
 ## Read first and identify the active baseline
 
@@ -16,8 +16,8 @@ uses its existing CyToolsCore MCP/SDK catalogue; it does not need a second serve
 4. Copy [GamePortingTemplate](app/Docs/GamePortingTemplate.md) into the new game's
    documentation and fill it with observed facts, unknowns and evidence.
 
-Current baseline: active 0.29.0, 175 editor operations / 196 tools including Core
-controls. Read [CompletionMilestones](app/Docs/CompletionMilestones.md) and
+Current baseline: active 0.31.0, 177 business operations / 364 full tools including 177 job aliases and
+10 service operations; compact discovery exposes five tools. Read [CompletionMilestones](app/Docs/CompletionMilestones.md) and
 [Native3DAssets](app/Docs/Native3DAssets.md) for current implementations and bounds.
 The 0.16.1 UI audit remains historical evidence for the charcoal palette/docking.
 The preserved 0.19 candidate binary is historical; its import source was selectively
@@ -38,7 +38,7 @@ remaining upstream API gaps.
 | Viewport callback and per-view cameras | Engine rendering, coordinate conversion, picking and gizmo integration |
 | Typed logic/material graphs and debugger | Bindings to the game's runtime and supported compilation semantics |
 | Build target/provider seams | Actual compiler, packaging format, diagnostics and validation in the game |
-| CyToolsCore MCP/SDK/jobs/workers | Typed operations and trusted source providers for the integration |
+| CyMCPSDK registry/chat/MCP + app durable jobs | Typed operations and trusted source providers for the integration |
 
 An extension filter is not an importer. A custom node is not an engine binding.
 The DX11 material preview is an editor preview, not a game material compiler.
@@ -49,9 +49,9 @@ Sandbox ZIP packaging contains document data, not a cooked or runnable game.
 Read [CommonAssetFormat](app/Docs/CommonAssetFormat.md) before inventing a game-specific
 interchange mesh/animation format. The independent `portable_assets` 0.1 component
 provides `.cypack` v1 (JSON envelope + unchanged GLB), a conversion capability planner,
-CLI and optional official Core worker handlers. Use it for asset transfer between
+CLI and optional trusted compute worker handlers. Use it for asset transfer between
 derived SDKs. Native 0.21 adds bounded .cy3d documents, mesh/skeleton/animation
-editing and GLB/CyPack import/export through the existing Core workers. Reference-pose retargeting, static LODs/collisions and expanded graph runtime are
+editing and GLB/CyPack import/export through the SDK-owned compute workers. Reference-pose retargeting, static LODs/collisions and expanded graph runtime are
 implemented in [AdvancedAuthoring](app/Docs/AdvancedAuthoring.md). Real game codecs
 and full production authoring remain separate work. The optional
 standalone portable_* operations remain opt-in; native operations use model_* and
@@ -96,7 +96,7 @@ alone is not a finished game SDK.
 | Portable 3D contract | `app/portable_assets`, `app/portable_asset_worker.py`, `app/schemas`, [format guide](app/Docs/CommonAssetFormat.md) |
 | Game build jobs | `app/native/Build.cpp`, `app/build_service.py`, `app/package_worker.py` |
 | AI operation declarations | `app/build_manifest.py`, `app/milestone_contracts.py`, `app/next_contracts.py` |
-| SDK/MCP bridge | `app/tool.py`, `app/build_bridge.py`, `app/mcp.example.json` |
+| Assistant / CLI / MCP | `app/native/automation`, `app/automation_client.py`, `app/mcp.example.json` |
 | Extract pure graph regions | `app/native/GraphCollapse.cpp`, [collapse guide](app/Docs/GraphCollapse.md) |
 | Expand pure calls into editable nodes | `app/native/GraphExpand.cpp`, [expansion guide](app/Docs/GraphExpand.md) |
 | Local enum/record migrations | `app/native/TypeMigration.cpp`, [type migration guide](app/Docs/TypeMigration.md) |
@@ -115,7 +115,7 @@ First useful workflow: <FOR EXAMPLE: OPEN, EDIT AND EXPORT ONE LEVEL>.
 Read <FOUNDATION_ROOT>/AGENTS.md and AI_GUIDE.md first. Follow
 app/Docs/GameAdapterGuide.md and fill app/Docs/GamePortingTemplate.md in the
 new project. Verify the active baseline and its current catalogue; do not copy
-operations or binaries from historical archives. Reuse CyUI and the existing CyToolsCore MCP/SDK/jobs.
+operations or binaries from historical archives. Reuse CyUI and the existing CyMCPSDK registry/transports and application durable jobs.
 Do not modify sibling dependencies or the original game files. Keep English
 as the default UI language and preserve selectable translations.
 
@@ -135,15 +135,14 @@ limitations before implementing new entity types. Build/provider semantics:
 [Workers](app/Docs/Workers.md), [TaskFiles](app/Docs/TaskFiles.md),
 [MultiClient](app/Docs/MultiClient.md), [MCP](app/Docs/MCP.md).
 
-The generic [AgentGuide](app/Docs/AgentGuide.md) describes standalone CyToolsCore
-products. Its model/CUDA/download/mesh requirements are conditional on a real need
-in the target product; they are not additional implemented CyGameSDK features.
+[CyMCPSDK integration](app/Docs/CyMCPSDKIntegration.md) defines current transports,
+permissions, durable jobs and compatibility. No model/CUDA/download engine is bundled.
 
 ## Advanced authoring and codecs
 
 Read [AdvancedAuthoring](app/Docs/AdvancedAuthoring.md) and
 [GameCodecs](app/Docs/GameCodecs.md). Native model_process prepares a bounded
-snapshot, official Core workers compute it, and a hash-guarded commit creates one
+snapshot, SDK-owned compute workers compute it, and a hash-guarded commit creates one
 Undo transaction. Use model_process for static LOD/collision/retarget operations.
 Read exact type/rig/format limits; the implementation is not full Unreal parity.
 For a game export, register GameCodecProvider in the derived SDK's trusted source

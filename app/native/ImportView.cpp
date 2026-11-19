@@ -1,7 +1,8 @@
 #include "Editor.h"
 #include "BuildClient.h"
 #include <windows.h>
-#include <commdlg.h>
+#include <algorithm>
+#include <cctype>
 #include <cstdio>
 namespace cygame {
 namespace {bool active(const Json& state){auto s=state.value("state","Idle");return s!="Idle"&&s!="Completed"&&s!="Failed"&&s!="Cancelled"&&s!="Interrupted";}}
@@ -31,9 +32,13 @@ void EditorApp::importPanel(){
         cyui::property(tr("Destination asset"));ImGui::InputText("##importDestination",importDestination_,sizeof(importDestination_));cyui::endProperties();
     }
     if(!reimport_&&cyui::ghostButton(tr("Browse source..."))){
-        wchar_t path[32768]{};OPENFILENAMEW dialog{};dialog.lStructSize=sizeof(dialog);dialog.hwndOwner=GetActiveWindow();dialog.lpstrFile=path;dialog.nMaxFile=32768;std::wstring filters;auto filter=[&](const char* title,const wchar_t* pattern){filters+=fs::u8path(title).wstring();filters.push_back(0);filters+=pattern;filters.push_back(0);};filter(tr("Supported source files"),L"*.png;*.jpg;*.jpeg;*.bmp;*.glb;*.cypack");filter(tr("Image files"),L"*.png;*.jpg;*.jpeg;*.bmp");filter(tr("3D asset files"),L"*.glb;*.cypack");filter(tr("All files"),L"*.*");filters.push_back(0);dialog.lpstrFilter=filters.c_str();dialog.Flags=OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST|OFN_NOCHANGEDIR;
-        if(GetOpenFileNameW(&dialog)){auto file=fs::path(path);std::snprintf(importSource_,sizeof(importSource_),"%s",file.u8string().c_str());auto filename=file.filename();if(file.extension()==L".glb"||file.extension()==L".cypack")filename.replace_extension(L".cy3d");auto dest=(fs::u8path(assetFolder_.empty()?"Imported":assetFolder_)/filename).generic_u8string();std::snprintf(importDestination_,sizeof(importDestination_),"%s",dest.c_str());}
+        importPickerOpen_=true;assistantAttachmentPicker_=false;
+        auto initial=importSource_[0]?fs::u8path(importSource_).parent_path():core.root();
+        std::error_code initialError;if(!initial.is_absolute())initial=core.root()/initial;if(!fs::is_directory(initial,initialError)||initialError)initial=core.root();
+        importPickerRoot_=initial.root_path().generic_u8string();
+        importPicker_.directory=importPicker_.pathText=initial.generic_u8string();importPicker_.selection.clear();importListing_={};
     }
+    probeInterface("imports/browse");
     Json parameters=reimport_?Json{{"reimport",true},{"path",std::string(importDestination_)}}:Json{{"sourcePath",std::string(importSource_)},{"destination",std::string(importDestination_)}};
     if(!reimport_&&!importProvider_.empty())parameters["importerId"]=importProvider_;
     if(cyui::ghostButton(tr("Validate import")))importReport_=invoke("asset_import_prepare",parameters);
@@ -59,5 +64,63 @@ void EditorApp::importPanel(){
         }
     }
     cyui::sectionTitle(tr("Registered importers"));for(const auto& d:definitions.at("importers")){ImGui::TextUnformatted(tr(d.at("name").get_ref<const std::string&>().c_str()));cyui::textDim("%s",d.at("extensions").dump().c_str());}
+}
+
+void EditorApp::importFilePicker(){
+    if(!importPickerOpen_)return;
+    ImGui::SetNextWindowSize(cyui::dp(760,540),ImGuiCond_FirstUseEver);
+    if(ImGui::Begin(label(tr(assistantAttachmentPicker_?"Choose an attachment":"Choose a source file"),"importSourcePicker").c_str(),&importPickerOpen_)){
+        if(ImGui::BeginCombo("##volume",importPickerRoot_.c_str())){
+            const auto mask=GetLogicalDrives();
+            for(int index=0;index<26;++index)if(mask&(1u<<index)){
+                const std::string root=std::string(1,char('A'+index))+":/";
+                if(ImGui::Selectable(root.c_str(),importPickerRoot_==root)){
+                    importPickerRoot_=root;importPicker_.directory=importPicker_.pathText=root;importPicker_.selection.clear();
+                }
+            }ImGui::EndCombo();
+        }
+        ImGui::SameLine();{cyui::ScopedDisabled disabled(importListingFuture_.valid());if(cyui::ghostButton(tr("Refresh assets")))importListing_.directory.clear();}
+        if(importListingFuture_.valid()&&importListingFuture_.wait_for(std::chrono::seconds(0))==std::future_status::ready){
+            try{auto completed=importListingFuture_.get();if(completed.directory==importPicker_.directory)importListing_=std::move(completed);}
+            catch(const std::exception& e){importListing_={};importListing_.directory=importPicker_.directory;importListing_.error=e.what();}
+        }
+        if(importListing_.directory!=importPicker_.directory&&!importListingFuture_.valid()){
+            const auto directory=importPicker_.directory;importListing_={};importListing_.directory=directory;importListing_.loading=true;
+            importListingFuture_=std::async(std::launch::async,[directory]{
+                cyui::FileListing result;result.directory=directory;std::error_code error;
+                fs::directory_iterator iterator(fs::u8path(directory),error),end;
+                if(error){result.error=error.message();return result;}
+                for(size_t count=0;iterator!=end&&!error;iterator.increment(error)){
+                    if(++count>10000){result.error="Directory exceeds the 10000-entry listing budget";break;}
+                    const auto entry=*iterator;cyui::FileEntry row;row.name=entry.path().filename().u8string();
+                    row.id=EditorApp::uiId("source/"+entry.path().generic_u8string());row.directory=entry.is_directory(error);
+                    if(error)break;if(!row.directory){row.bytes=entry.file_size(error);if(error){error.clear();continue;}}
+                    result.entries.push_back(std::move(row));
+                }
+                if(error)result.error=error.message();
+                return result;
+            });
+        }
+        cyui::FilePickerOptions options;options.root=importPickerRoot_;
+        options.filters={{"Supported source files",{".png",".jpg",".jpeg",".bmp",".glb",".cypack"}},{"Image files",{".png",".jpg",".jpeg",".bmp"}},{"3D asset files",{".glb",".cypack"}},{"All files",{}}};
+        if(assistantAttachmentPicker_)options.filters={{"All files",{}}};
+        cyui::FileListing waiting;waiting.directory=importPicker_.directory;waiting.loading=true;const auto& listing=importListing_.directory==importPicker_.directory?importListing_:waiting;
+        const auto result=cyui::filePicker("##sourceFiles",importPicker_,listing,ImGui::GetContentRegionAvail(),options);
+        if(interfaceProbe){auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();const auto width=cyui::buttonWidth(tr("Open"));b.x=a.x-ImGui::GetStyle().ItemSpacing.x;a.x=b.x-width;interfaceProbe("imports/picker/open",a,b);}
+        if(result.accepted&&!result.paths.empty()){
+            const auto file=fs::u8path(result.paths.front());std::error_code error;
+            const auto source=file.u8string();
+            if(assistantAttachmentPicker_&&fs::is_regular_file(file,error)&&!error){if(assistant_)assistant_->attach(source);assistantAttachmentPicker_=false;importPickerOpen_=false;}
+            else if(source.size()>=sizeof(importSource_)||!fs::is_regular_file(file,error)||error)cyui::notify(tr("Source file is unavailable."),cyui::Tone::error);
+            else{
+                auto filename=file.filename();auto extension=file.extension().u8string();std::transform(extension.begin(),extension.end(),extension.begin(),[](unsigned char c){return char(std::tolower(c));});
+                if(extension==".glb"||extension==".cypack")filename.replace_extension(".cy3d");
+                const auto destination=(fs::u8path(assetFolder_.empty()?"Imported":assetFolder_)/filename).generic_u8string();
+                if(destination.size()>=sizeof(importDestination_))cyui::notify(tr("Text exceeds the field limit."),cyui::Tone::error);
+                else{std::snprintf(importSource_,sizeof(importSource_),"%s",source.c_str());std::snprintf(importDestination_,sizeof(importDestination_),"%s",destination.c_str());importPickerOpen_=false;}
+            }
+        }
+        if(result.cancelled)importPickerOpen_=false;
+    }ImGui::End();
 }
 }

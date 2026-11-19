@@ -13,7 +13,7 @@ void EditorApp::blueprintLibraryUI(){
     if(ImGui::BeginPopup("##classDefinition")){classDefinitionUI();ImGui::EndPopup();}
 }
 void EditorApp::classDefinitionUI(){
-    ImGui::InputText(tr("Name"),className_,sizeof(className_));ImGui::InputText(tr("Parent class"),classParent_,sizeof(classParent_));ImGui::TextUnformatted(tr("Typed fields (JSON)"));ImGui::InputTextMultiline("##classFields",classFields_,sizeof(classFields_),{cyui::dp(340),cyui::dp(120)});ImGui::TextUnformatted(tr("Method to function bindings (JSON)"));ImGui::InputTextMultiline("##classMethods",classMethods_,sizeof(classMethods_),{cyui::dp(340),cyui::dp(70)});
+    ImGui::InputText(tr("Name"),className_,sizeof(className_));ImGui::InputText(tr("Parent class"),classParent_,sizeof(classParent_));ImGui::TextUnformatted(tr("Typed fields (JSON)"));editSource("##classFields",classFields_,sizeof(classFields_),{cyui::dp(340),cyui::dp(150)});ImGui::TextUnformatted(tr("Method to function bindings (JSON)"));editSource("##classMethods",classMethods_,sizeof(classMethods_),{cyui::dp(340),cyui::dp(100)});
     const auto owner=core.graphs().at(activeGraph_),interfaces=owner.value("interfaces",Json::object());
     Json inherited=Json::object(),inheritedInterfaces=Json::array();if(owner.value("classes",Json::object()).contains(classParent_)){const auto parent=blueprintClass(owner.at("classes"),classParent_,owner.value("types",Json::object()));inherited=parent.at("methods");inheritedInterfaces=parent.at("interfaces");}
     if(!interfaces.empty())cyui::sectionTitle(tr("Implemented interfaces"));

@@ -1,4 +1,4 @@
-# Editor architecture — 0.29.0
+# Editor architecture — 0.31.0
 
 ## Layers and ownership
 
@@ -11,18 +11,18 @@
 3. IGameAdapter supplies a descriptor, entity factory, property schemas,
    initial scene, validation and optional build targets. Inject an implementation in EditorCore's constructor.
    Sandbox is the only implementation shipped.
-4. CyToolsCore owns manifest validation, authenticated SDK sessions, private jobs,
-   progress/cancellation infrastructure and MCP/CLI/JSONL/HTTP. tool.py registers
-   declared operations and forwards each short operation to the native owner thread.
-   No competing job scheduler or MCP implementation is introduced.
+4. CyMCPSDK owns the shared Registry, assistant, CLI/JSONL/MCP/HTTP and process trees.
+   The app supplies durable job/identity storage and recovery around SDK Executor.
+   native/automation routes short operations to the owner thread and long operations
+   through trusted one-shot Python compute workers. tool.py is a compatibility client.
 5. EditorIpc is a bounded, length-prefixed local named pipe. It rejects remote
    clients and uses a Windows ACL for the editor's current account. Requests have a
    1 MiB limit; responses 4 MiB. This is an internal transport, not a second AI SDK.
 
 The native GUI uses the same validated command dispatcher as the IPC bridge.
-Immediate document edits are local transactions. The CyToolsCore job envelope is
+Immediate document edits are local transactions. The CyMCPSDK job envelope is
 the AI-facing invocation/lifetime contract. Long builds/imports should execute as
-Core ProcessWorker jobs, then submit a short commit operation to the owner thread.
+SDK-owned compute worker jobs, then submit a short commit operation to the owner thread.
 
 ## Common presentation modules
 
@@ -40,7 +40,7 @@ reload, sandboxing of plugin code or stable binary ABI is claimed. Source plugin
 are trusted application code.
 
 Declare operations in build_manifest.py and regenerate CyTool.json, then use
-EditorCore::bindCommand for native handlers. CyToolsCore discovers those same
+EditorCore::bindCommand for native handlers. CyMCPSDK discovers those same
 descriptors. Do not silently register an AI operation only in a menu.
 
 EditorApp::registerAssetEditor takes an ID, recognized extensions and an open
@@ -64,7 +64,8 @@ Other values can use a JSON field. Dynamic groups are supported.
 This is descriptor-driven editing, not automatic reflection of arbitrary native
 memory or an unknown game's variables. Importing those descriptors belongs to its
 adapter. Native validation implements the subset used by the editor descriptors;
-CyToolsCore validates full Draft 2020-12 at its boundary. Add native validation
+CyMCPSDK validates its supported projected schemas. The host separately enforces
+original regex/UUID constraints; Python compute inputs also use jsonschema. Add native validation
 support when introducing new schema constructs.
 
 ## Nodal foundation
@@ -98,7 +99,7 @@ The registry is process-local and should be populated at startup.
 
 MaterialPreview.cpp provides an analytical sphere/plane, lighting and a fallback
 shader driven by a CPU center sample. A supported graph can replace the pixel shader
-with DXBC compiled in an official CyToolsCore ProcessWorker (see MaterialPipeline.md).
+with DXBC compiled in an SDK-owned compute worker (see MaterialPipeline.md).
 Per-document render targets preserve independent previews; the renderer restores
 the graphics pipeline before the interface renders. This is an editor preview backend.
 
@@ -135,7 +136,7 @@ Sandbox announces game build/play as false and document package as true.
 IGameAdapter::buildTargets declares provider IDs, target/platform/configurations
 and an options schema. Build.cpp validates the live document and returns a bounded,
 revision-stamped snapshot. build_service.py registers build_execute as an official
-CyToolsCore job and dispatches to a trusted source provider using ProcessWorker.
+CyMCPSDK job and dispatches to a trusted source provider using ProcessWorker.
 The delivered sandbox.archive provider writes a document ZIP; it does not compile a game.
 All snapshot, diagnostic and archive outputs use JobContext.path. See BuildProviders.md.
 
@@ -154,8 +155,8 @@ when the drag ends and cancels if the live revision changes. Inspect current sta
 before retrying after disconnect, since the first call may already have committed.
 
 Each standalone stdio bridge owns its runtime/data directory. Separate bridges
-do not share a scheduler automatically. Core's authenticated HTTP service and MCP
-bridge remain the existing solution for shared job scheduling.
+do not share a scheduler automatically. The authenticated native HTTP/MCP endpoint supplies one shared
+registry; project compute is serialized across processes by a host mutex.
 
 ## Workspace and scene modules
 
@@ -204,18 +205,16 @@ the saved/live reference index and referenced-file protections.
 
 ## Desktop build client (0.10)
 
-BuildClient starts a fixed local Python SDK client without a shell or console.
+BuildClient starts CyGameCLI desktop without a shell or console.
 It creates only transport metadata under data/build-runs/<runId>: request.json,
-state.json and cancel.request. build_bridge.py submits and observes one official
-Core job. Core remains responsible for scheduling, state transitions, worker process
-ownership and cancellation. The GUI client does not implement a compiler scheduler.
+state.json and cancel.request. CyGameCLI submits and observes one durable job.
+SDK Executor/Process own execution/child trees; the app persists state and results. The GUI client does not implement a compiler scheduler.
 
-Desktop sessions use temporary=False; generated files remain in the owning Core
-job workspace after the GUI closes. Closing an editor requests cancellation for
+Generated files remain in the owned durable job workspace after the GUI closes. Closing an editor requests cancellation for
 its active job. A process handle is closed without pretending that the worker has
 already stopped. State files retain the job result, but GUI history/recovery after
 restart is not implemented. The desktop job status is shared editor-session state;
-independent SDK jobs retain Core's per-identity access controls.
+independent SDK jobs retain the host's per-identity access controls.
 
 ## Execution functions and debugger frames (0.13)
 
@@ -289,15 +288,15 @@ material_sample carries caller UV coordinates through nested pure function frame
 
 shader_service.py registers material_compile in the existing runtime. The native
 owner thread produces a bounded snapshot; shader_worker.py generates trusted HLSL
-expressions and invokes D3DCompiler inside a Core ProcessWorker. JobContext.path
+expressions and invokes D3DCompiler inside a SDK-owned compute worker. JobContext.path
 owns all intermediate/output files. No asset-supplied source, include or shell command
 is accepted. shader_codegen.py emits contextual node mappings and rejects unsupported
 reachable expressions. The error report is available through error.technicalDetails.
 
-The desktop shares BuildClient/build_bridge.py for build and preview jobs. It adds
-no scheduler: Core owns execution, progress, identity checks and worker cancellation.
-The GUI caps desktop shader requests at two active clients; exclusiveGroups applies
-within each official runtime. An SDK compile does not automatically alter the GUI.
+The desktop shares BuildClient/native/automation/Cli.cpp for build and preview jobs. It adds
+no separate scheduler: SDK Process owns child trees; the host owns durable state and identity checks.
+The GUI caps desktop shader requests at two active clients; a host mutex serializes
+compute work for the same project. An SDK compile does not automatically alter the GUI.
 material_preview_apply validates the current signature, parameter ordering, owned
 paths and source/bytecode hashes, then creates the DX11 shader on the owner thread.
 The source and GPU object remain usable after the caller closes its task files.
@@ -323,10 +322,10 @@ portable_assets is a source library/CLI for a versioned .cypack envelope and
 byte-preserved self-contained GLB. It is independent of the native document and UI.
 The conversion registry checks declared feature/extension support and explicitly
 reports blocked/loss-review/provider-required states. No game codec is inferred.
-Optional service handlers reuse the official Core ProcessWorker, private job paths
+Optional service handlers reuse the SDK-owned compute worker, private job paths
 and task/export lifecycle; shared source inputs are disjoint from runtime storage.
 Native 0.20 now uses that contract through scene3d/model_service and the existing
-Core import/export workers. .cy3d edit documents, MeshPreview, ModelView and JSON
+SDK-owned import/export workers. .cy3d edit documents, MeshPreview, ModelView and JSON
 asset panels extend the shared native dispatcher. Game converters remain provider
 work. See CommonAssetFormat.md and Native3DAssets.md for validation scope, limits
 and tests.
@@ -351,27 +350,27 @@ there is no native UI-thread game converter or replacement Core scheduler.
 
 ModelAuthoring.cpp validates bounded editor metadata and hash-guards worker commits.
 ModelAuthoringView.cpp supplies LOD/collision/retarget controls. model_authoring.py
-contains neutral algorithms; model_process_service/worker use official Core jobs
+contains neutral algorithms; model_process_service/worker use application durable jobs
 and immutable inputs. Source geometry edits mark generated LODs stale and collisions
 for review. scene3d.py carries bulk authoring metadata in glTF extras with a hashed
 CyPack manifest reference. Read AdvancedAuthoring.md before extending this contract.
 
 BlueprintView.cpp renders typed class declarations/runtime fields. Macros.cpp
 expands source macros before GraphExecution with scoped locals/source mappings.
-The simulation clock is separate from Core scheduling and uses a single execution
+The simulation clock is separate from SDK Executor scheduling and uses a single execution
 lane. New GUI smoke input is confined to isolated --test-blueprint roots.
 
 GameCodecView.cpp queries the actual trusted game_codecs.py registry through the
-desktop Core bridge. IGameAdapter::assetCodecs only declares capabilities; register
+native desktop bridge. IGameAdapter::assetCodecs only declares capabilities; register
 matching executable source providers. No real game provider is bundled.
 
 ## Native 0.22 animation authoring
 
 [AnimationTools](AnimationTools.md) documents offline fixed-root chain IK, extracted
 root-motion pairs with sampled reconstruction and trimmed/resampled clips. The
-existing model_process/Core worker/commit path is reused, with real native preview,
+existing model_process/worker/commit path is reused, with real native preview,
 Undo and GLB/CyPack export. MotionToolsView.cpp supplies translated property views.
-The desktop bridge now publishes terminal readiness after Core closes its handles.
+The desktop bridge now publishes terminal readiness after the native SDK runtime closes its handles.
 No joint limits/contact solver or engine movement/physics binding is supplied.
 Evidence: data/reports/motion-validation.json and motion-captures.json.
 
@@ -395,7 +394,7 @@ Blueprint.cpp resolves inherited implementations. GraphExecution shares the inte
 library and object pool across pure/execution children; callTarget selects the actual
 bound function while the debugger retains its concrete function name. Functions.cpp
 adds every potential implementation edge to the bounded recursion check. InterfacesView.cpp
-reuses typed property widgets. CyToolsCore remains the sole MCP/SDK/job runtime.
+reuses typed property widgets. CyMCPSDK supplies the shared transport/runtime; durable job storage belongs to the app.
 See [GraphInterfaces](GraphInterfaces.md) for persistence, limits and tested workflows.
 
 ## 0.25 explicit signature migration
@@ -416,7 +415,7 @@ defaults are converted; it never replaces those authored defaults. Declaration
 normalization precedes dynamic node descriptor resolution, then typed node values,
 references and wires migrate before complete owner validation. A stale/changed hash,
 invalid graph or unaccepted loss cannot commit. The same core dispatcher is used
-by the EN/FR type designer, shared migration review and official Core operations.
+by the EN/FR type designer, shared migration review and application registry operations.
 Read TypeMigration.md for semantics, bounds and verification.
 
 ## Native 0.27 graph region extraction

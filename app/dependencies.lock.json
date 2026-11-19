@@ -1,7 +1,7 @@
 {
   "CyUI": {
     "repository": "https://github.com/MrMybal/CyUI.git",
-    "revision": "ff023e646c6a3038b3dfbfd53f6d2b4a2f5955e3",
+    "revision": "6ef01cfcdb197f3a89d64618ce5ef8818c704728",
     "version": "1.2.0",
     "modules": [
       "Nodes",
@@ -12,7 +12,12 @@
       "Commands",
       "Code",
       "Diagnostics",
-      "Diff"
+      "Diff",
+      "Hierarchy",
+      "DataView",
+      "FilePicker",
+      "CodeEditor",
+      "DocumentViews"
     ],
     "adapters": [
       "ImGuizmo"
@@ -22,7 +27,10 @@
       "Gallery",
       "Demo",
       "WebCEF",
-      "CodeEditor"
+      "DocumentEditor",
+      "OfficeIO",
+      "Media",
+      "Web"
     ]
   },
   "CyDoc": {
@@ -33,6 +41,26 @@
       "image",
       "gallery",
       "graph"
+    ]
+  },
+  "CyMCPSDK": {
+    "repository": "https://github.com/MrMybal/CyMCPSDK.git",
+    "version": "0.7.0",
+    "revision": "791d4d7d7680213b282ec8529d248a10f8494d77",
+    "modules": [
+      "Core",
+      "Platform",
+      "Http",
+      "MCP",
+      "AI",
+      "ChatUI"
+    ],
+    "disabled": [
+      "Local",
+      "Examples",
+      "Tests",
+      "ChatApp",
+      "Benchmarks"
     ]
   }
 }

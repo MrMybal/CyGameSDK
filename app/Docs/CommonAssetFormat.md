@@ -1,6 +1,6 @@
 # Common asset format — portable contract 0.1 / schema v1
 
-Status: working portable Python library/CLI and optional CyToolsCore handlers.
+Status: working portable Python library/CLI and optional CyMCPSDK handlers.
 Native 0.22.0 integrates a bounded editable `.cy3d` profile, mesh/skeleton/animation
 panels and GLB/CyPack import/export. Read [Native3DAssets](Native3DAssets.md) for
 exact supported edits and limits. Conversion planners still are not game codecs.
@@ -127,7 +127,7 @@ its real provider is implemented. The only executable export here is the GLB
 identity path. `app/schemas/converter-profile.schema.json` defines profile metadata.
 There are no asset-supplied commands, executable plugins or automatically loaded codecs.
 
-## Optional SDK/MCP integration through CyToolsCore
+## Optional SDK/MCP integration through CyMCPSDK
 
 `portable_assets.service.operation_descriptors()` supplies three descriptors:
 `portable_pack`, `portable_inspect`, `portable_export_glb`. A derived SDK can append
@@ -143,17 +143,16 @@ register_operations(runtime, dedicated_shared_asset_input_directory)
 ```
 
 Do not register a duplicate handler or create another scheduler/MCP implementation.
-The helper uses the official Core ProcessWorker and `app/portable_asset_worker.py`.
+The helper uses the SDK-owned compute worker and `app/portable_asset_worker.py`.
 The configured shared input root must be disjoint from private runtime storage;
 path traversal and output/report escapes are rejected. Inputs are shared project
 assets for authorized clients; they are not private per-client source directories.
-Outputs/reports are always allocated with `JobContext.path`. Core owns progress,
-cancellation, processes, identities and task cleanup. Export results with Core's
-`export_job` / `cy_export_job` before `finish_task` / `cy_finish_task` if needed.
-A temporary task's unexported results are removed; CLI persistent destinations are
-a different explicit file operation.
+Outputs/reports are allocated with **JobContext.path**. SDK Process owns child trees;
+the host owns durable state, identity checks and recovery. finish_task retains output
+files. Explicit export/archival is separate from document commits; SDK resource TTL
+never removes the original job artifact or replays its producer.
 
-These handlers have been tested with the real Core SDK. They are not installed in
+These handlers use the real compiled native SDK host. They are not installed in
 the native 0.20 catalogue under their standalone portable_* IDs. Native 0.20
 uses the separate bounded model_* and asset_import operations. Before exposing them in a desktop build,
 also bind native GUI requests to the existing SDK client/worker pattern and extend
@@ -206,7 +205,7 @@ and `portable-assets-validation.json`. No game fixture or binary is uploaded by 
 3. Skeleton and Animation editors: hierarchy, pose preview, skin weights, playback,
    timeline, keyframes, clips, root-motion inspection and bounded CPU/GPU evaluation.
 4. Real game codecs: source -> neutral documents -> validated game output, with
-   capability/limit checks and explicit conversion-loss reports through Core jobs.
+   capability/limit checks and explicit conversion-loss reports through durable jobs.
 5. Retargeting: bone mapping, reference-pose and axis/scale correction. A clip can
    transfer with its original rig; applying it to another rig requires this layer.
 

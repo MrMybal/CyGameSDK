@@ -1,10 +1,11 @@
 """Reversible authored call expansion through native commands and official Core."""
+import os
 import copy,json,shutil,subprocess,sys,tempfile,unittest,uuid
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import tool,test_integration as integration,test_authoring as authoring,test_type_migration as typed
-from cytools_core import CyToolError
+from job_contract import CyToolError
 class Expand(unittest.TestCase):
  @classmethod
  def setUpClass(cls):typed.TypeMigrations.setUpClass.__func__(cls)
@@ -92,5 +93,5 @@ class Expand(unittest.TestCase):
   if not self.gui:self.skipTest('Graphical host required')
   for lang in ('en','fr'):
    with tempfile.TemporaryDirectory(prefix='expand-ui-',dir=ROOT/'data/reports') as tmp:
-    root=Path(tmp);(root/'app').mkdir();shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');report=root/'report.json';process=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-expand',str(report),'--exit-after','45'],timeout=60);self.assertEqual(process.returncode,0);self.assertTrue(report.exists());result=json.loads(report.read_text('utf-8'));self.assertTrue(result['passed'],result);self.assertEqual(len(result['checks']),16);shutil.copyfile(report,ROOT/'data/reports'/('expand-gestures-'+lang+'.json'));self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())
+    root=Path(tmp);(root/'app').mkdir();shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');report=root/'report.json';process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-expand',str(report),'--exit-after','45'],timeout=60);self.assertEqual(process.returncode,0);self.assertTrue(report.exists());result=json.loads(report.read_text('utf-8'));self.assertTrue(result['passed'],result);self.assertEqual(len(result['checks']),16);shutil.copyfile(report,ROOT/'data/reports'/('expand-gestures-'+lang+'.json'));self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -1,28 +1,16 @@
-# Licence et redistribution
+# Licenses and redistribution
 
-CyToolsCore 0.10.1 est distribué sous MIT ; le texte applicable est [LICENSE](../LICENSE).
-Le SDK peut être intégré, modifié et redistribué dans un Tool ou un plugin commercial
-sans imposer MIT au code propre du produit. Conserver le texte MIT et la mention
-Copyright (c) 2026 Cyberalien dans toute copie ou portion substantielle du SDK,
-y compris les sources et templates repris. Le scaffold ajoute automatiquement
-LICENSE-CyToolsCore.txt ; conserver ce fichier dans la distribution du Tool.
+CyGameSDK uses the [MIT license](../../LICENSE). Preserve its copyright and license text.
 
-Les dépendances, composants incorporés et poids de modèles conservent leurs propres
-licences. MIT ne remplace pas leurs obligations ni les conditions Unreal/Fab.
-Le changement ne retire pas les droits des copies antérieures distribuées sous GPL.
+CyMCPSDK and CyUI use MIT. Included libraries and fonts retain their respective
+notices under [app/LICENCES](../LICENCES/README.md), including SDK source notices,
+nlohmann/json, cpp-httplib, PicoSHA2, MD4C, ImGui, ImGuizmo, Lexilla/TextEditor and fonts.
+The preserved original scaffolding notice documents provenance; it does not add
+a runtime dependency on the retired package.
 
-Pour migrer une distribution existante, installer le wheel officiel 0.10.1 ou ultérieur,
-reconstruire les bundles et conserver les notices des composants. Modifier seulement
-la licence du dépôt ne met pas à jour un ancien wheel, un ZIP ou un runtime installé.
-Pour Unreal, utiliser CyUEMCPSDK 0.1.8 ou ultérieur et Docs/UpdateAssistantRuntime.md.
-Ne pas modifier une installation partagée active.
+Windows SDK/Direct3D and installed system fonts are subject to their own terms.
+Game assets, codecs, external providers and user-selected AI services have separate
+rights and terms. No game content or model weights are included by this migration.
 
-## Dépôts sources
-
-- CyToolsCore: https://github.com/MrMybal/CyToolsCore
-- CyUEMCPSDK: https://github.com/MrMybal/CyUEMCPSDK
-
-Les dépôts fournissent les sources et les instructions d’intégration. Conserver les
-textes complets des licences livrées avec chaque composant ; les liens ne les remplacent pas.
-
-Pour mettre à jour un produit déjà intégré, suivre [UpdateExistingProducts.md](UpdateExistingProducts.md).
+Build and distribute the exact locked dependencies together with all required notices.
+A hyperlink does not replace the license text shipped with a component.

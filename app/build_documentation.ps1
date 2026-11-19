@@ -46,6 +46,7 @@ if ($stamp.Trim() -ne $lockHash -or -not (Test-Path -LiteralPath (Join-Path $wor
 $buildArgs = @((Join-Path $work 'build.mjs'))
 if ($Check) { $buildArgs += '--check' }
 Invoke-Checked $node $buildArgs
+if ($Check) { return }
 $export = Join-Path $projectRoot 'Documentation'
 $destination = [IO.Path]::GetFullPath($OutputDirectory)
 if ($destination.TrimEnd('\','/') -ne $export.TrimEnd('\','/')) {

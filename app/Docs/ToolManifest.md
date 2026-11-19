@@ -1,28 +1,12 @@
-# Manifest du Tool
+# ToolManifest — current application contract
 
-Source normative : `cytools_core/schemas/tool.schema.json`.
-Chargement : `load_manifest(path)` ; validation CLI : `cytools validate CyTool.json`.
-Exemple complet exécutable : `cytool_test/CyTool.json`.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#ownership-and-entry-points).
 
-Champs obligatoires : schemaVersion, protocolVersion, id, name, version, description,
-operations, platforms, concurrency. Un id commence par une lettre puis contient des
-lettres ASCII, chiffres, `_`, `.` ou `-`, au maximum 128 caractères.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-Champs d'identité optionnels : displayName, vendor, author, categories, tags, executable,
-license, documentation, homepage, repository. Le manifest ne lance pas executable :
-c'est une indication de découverte et d'installation.
-
-Champs de capacités : capabilities, interfaces, backends, runtimeRequirements,
-idleUnloadPolicy. Chaque opération porte ses schémas et ses capacités propres.
-Le runtime vérifie l'unicité des IDs et les références aux backends.
-
-Les champs inconnus sont préservés ; `extensions` permet les ajouts propres à un Tool.
-Les paramètres métier peuvent au contraire refuser les champs inconnus avec
-additionalProperties:false. Version majeure incompatible → IncompatibleVersion.
-Ne pas placer de clés API, jetons, comptes utilisateur ou chemins privés de développeur
-dans un manifest distribuable.
-
-Depuis le SDK 0.10.0, `operations[].exclusiveGroups` est un tableau optionnel d'IDs
-uniques. Les opérations partageant un groupe ne s'exécutent pas simultanément dans
-le même Runtime. Les anciens manifestes sans ce champ gardent leur comportement.
-Voir [Scheduler.md](Scheduler.md) avant de remplacer une file GPU interne.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

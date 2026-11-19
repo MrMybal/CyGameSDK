@@ -4,13 +4,13 @@ title: Native SDK operation reference
 description: Native SDK operation reference
 section: SDK
 order: 51
-revision: 1
+revision: 2
 parent: automation
 ---
 
 ## Use the real catalogue {#catalogue}
 
-The pages below are generated from the shipped CyTool.json catalogue. They retain exact input/output JSON schemas, required/default values and declared async/cancellation/Undo flags. They describe native operations; optional game providers still need real implementation. MCP exposes these IDs through the existing Core transport.
+The pages below are generated from the shipped CyTool.json catalogue. They retain exact input/output JSON schemas, required/default values and declared async/cancellation/Undo flags. They describe native operations; optional game providers still need real implementation. MCP exposes these IDs through the native CyMCPSDK transport.
 
 ## `editor` {#editor}
 

@@ -1,0 +1,3 @@
+# Optional Python end-to-end MCP client and process-lifetime checks.
+mcp==1.30.0
+psutil==7.2.2

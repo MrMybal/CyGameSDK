@@ -1,4 +1,5 @@
 """Graphical interface regression checks; every editor owns an isolated test root."""
+import os
 import ctypes
 import json
 import shutil
@@ -42,7 +43,7 @@ class InterfaceTests(unittest.TestCase):
             workspace=Path(temp);prepare(workspace)
             report=ROOT/"data/reports/completion-interface-gestures.json"
             if report.exists():report.unlink()
-            result=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(workspace),"--test-interface",str(report),"--exit-after","20"],timeout=30)
+            result=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(workspace),"--test-interface",str(report),"--exit-after","20"],timeout=30)
             evidence=json.loads(report.read_text("utf-8"))
             self.assertEqual(result.returncode,0,evidence)
             self.assertTrue(evidence["passed"],evidence)
@@ -55,7 +56,7 @@ class InterfaceTests(unittest.TestCase):
             shutil.copyfile(APP/"examples/AnimatedTriangle.cy3d",assets/"Animated.cy3d")
             report=ROOT/"data/reports/completion-model-gestures.json"
             if report.exists():report.unlink()
-            result=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(workspace),"--asset","Models/Animated.cy3d","--test-model",str(report),"--exit-after","20"],timeout=30)
+            result=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(workspace),"--asset","Models/Animated.cy3d","--test-model",str(report),"--exit-after","20"],timeout=30)
             evidence=json.loads(report.read_text("utf-8"));self.assertEqual(result.returncode,0,evidence);self.assertTrue(evidence["passed"],evidence)
 
     def test_02_restore_preferences_and_every_panel(self):
@@ -64,7 +65,7 @@ class InterfaceTests(unittest.TestCase):
             settings=workspace/"data/settings";settings.mkdir(parents=True)
             prefs={"language":"fr","theme":"unreal-dark","workspace":"Materials","diagnostics":False,"panels":{"material":True,"compiler":True,"logic":False,"viewport":False,"diagnostics":True}}
             (settings/"ui-preferences.json").write_text(json.dumps(prefs),"utf-8")
-            process=subprocess.Popen([str(ROOT/"CyGameEditor.exe"),"--root",str(workspace),"--exit-after","60"])
+            process=subprocess.Popen([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(workspace),"--exit-after","60"])
             previous=tool.ROOT;tool.ROOT=workspace
             try:
                 endpoint=workspace/"data/ipc/editor.json";deadline=time.monotonic()+10

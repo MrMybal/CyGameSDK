@@ -1,19 +1,12 @@
-# Opérations
+# Operations — current application contract
 
-Une opération décrit une capacité, pas un transport. Elle expose id, name, description,
-inputSchema et outputSchema. Elle peut préciser supportedBackends, outputs,
-resourceRequirements, permissions, platforms, estimatedDurationSeconds et les booléens
-canRunAsync, canCancel, supportsProgress, supportsPreview, supportsStreaming.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#ownership-and-entry-points).
 
-Enregistrer `runtime.register(id, handler, estimate=None)` avant `start()`.
-Le handler reçoit `JobContext` et un dictionnaire validé. Il renvoie une valeur JSON
-validée par outputSchema. L'estimateur optionnel reçoit paramètres/backend/modèle ;
-il doit être rapide, sans effets de bord, déterministe pour les mêmes données.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-Toutes les soumissions du runtime actuel sont des jobs asynchrones. `invoke` constitue
-une façade synchrone qui attend un état terminal. `canCancel` autorise la demande
-utilisateur ; l'arrêt du runtime peut toujours demander une annulation.
-
-Une permission déclarée doit être présente dans le Principal. Ce contrôle décide si
-l'opération peut être lancée ; ce n'est pas une sandbox de code Python. Le handler
-reste responsable de contrôler les accès aux chemins et programmes qu'il utilise.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

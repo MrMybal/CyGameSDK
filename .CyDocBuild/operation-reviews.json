@@ -70,7 +70,7 @@
   "graph_function_evaluate": "sha256:3fcadd038e8d23ecd2230dec44571e23d2ae93fdbf7a5534ea6be4ff47020c3f",
   "graph_nodes_move": "sha256:335ecaae81ecd13734d69d750ca6fd39d139a50474f461a94df048c0d8260eb8",
   "graph_nodes_remove": "sha256:7003ca383788176fa51045fc3416d6add9770e6ce1ddc25c565944e014766f0c",
-  "graph_fragment_copy": "sha256:e35170c093b540a2c317fd8df5a78377268392a6a7e5675502b2d17309eb0154",
+  "graph_fragment_copy": "sha256:8bb34858e7efb9847e804753ecc3bc034f1693402c7830fa7703692196d1ebd2",
   "graph_fragment_paste": "sha256:207d086117561da9a42e4093b241cb823b68ee8db3032a999c826b6a239a0154",
   "graph_comment_add": "sha256:32a1b25ad2e4c26c9175c3b75828d34a728ca03554b9bece91b0c8eb2a95ba44",
   "graph_comment_remove": "sha256:879f7b4272c2814a22225965e97acf92b68bdd9d722b4bb6aae6a8d38498b3c7",
@@ -173,5 +173,7 @@
   "graph_collapse_plan": "sha256:729cac270beabc0c2623bd1c3beeb4fe4a1349a7ed4ce149b74edf7b4f6695e6",
   "graph_collapse_apply": "sha256:d574a4f142cdd580cfff246aed9f423cfb8bab75dfafedc3bd87bea8c73ef1b8",
   "graph_expand_plan": "sha256:aa17e02450ff1e965a5a6a3c5d5f307b7df351f3bd30ab17719bcec0e8d2a06f",
-  "graph_expand_apply": "sha256:88ddaf4b6a0b86f5b9158763e31da3671dcfcbcada2a52980c54b7b4b1654ff1"
+  "graph_expand_apply": "sha256:88ddaf4b6a0b86f5b9158763e31da3671dcfcbcada2a52980c54b7b4b1654ff1",
+  "property_set_many": "sha256:722bf7a0abed14cb9498bd348c0d701184935b08eeaec26717955d7f0c89c85e",
+  "graph_layout_apply": "sha256:921854ad9dbe35fdf962c0edbd1afdbe60a8d125c6876b3e1dd0ee7e8915fc73"
 }

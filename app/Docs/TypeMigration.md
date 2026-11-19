@@ -72,7 +72,7 @@ interface signatures keep their nominal types; their nested defaults migrate.
 ## SDK / MCP contract
 
 The active catalogue has 173 editor operations / 194 tools including Core controls.
-Use the existing CyToolsCore authentication, submit and wait path. Both operations
+Use the existing CyMCPSDK authentication, submit and wait path. Both operations
 use the same native implementation as the UI:
 
 ```json
@@ -124,7 +124,7 @@ parent default or value invalidates the candidate before commit.
   nominal type resets, make/break/set references, switch branches, interface/class/
   function/macro contexts, loss acceptance, cycles/maps, stale requests, metadata,
   bounded expansion/details, no-op/optional sections, persistence, debugger Stale,
-  official Core jobs and whole-owner Undo/Redo.
+  application durable jobs and whole-owner Undo/Redo.
 - --test-type-migration seeds previews through native APIs, then uses only its own
   isolated ImGui input for Apply, loss acceptance and Ctrl+Z/Ctrl+Y. EN/FR reports
   each contain twelve checks. It does not control the global desktop or automate

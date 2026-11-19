@@ -4,7 +4,7 @@ title: Graphes logiques et canevas
 description: Graphes logiques et canevas
 section: Graphes
 order: 10
-sourceRevision: 1
+sourceRevision: 2
 ---
 
 ## Créer un graphe {#canvas}
@@ -34,3 +34,11 @@ Cet exemple interactif de documentation explique la connexion initiale entre év
 ```image
 {"id": "logic", "src": "assets/screenshots/logic.png", "alt": "Fonction d’exécution avec connexions typées", "controls": "minimal"}
 ```
+
+## Gestes des groupes et presse-papiers {#native-groups}
+
+Les groupes de commentaires utilisent les gestes communs de Nodes : sélection, déplacement, redimensionnement, renommage et suppression. Déplacer un groupe entraîne les nœuds qu’il contenait au début du geste. L’hôte valide la proposition complète puis applique groupes et nœuds dans une seule transaction `graph_layout_apply`. Échap ou un changement de révision du document annule le geste.
+
+Un fragment générique de CyUI ne contient pas la sémantique d’exécution de cet éditeur. Les demandes de copie repassent donc par l’exporteur sémantique CyGameSDK, qui conserve types de nœuds, valeurs originales, déclarations locales et commentaires sélectionnés. Le collage utilise toujours le contrat vérifié de fragments, avec nouveaux identifiants de nœuds, liens et commentaires, et un Undo. Le collage par la barre d’outils ou le clavier reste le chemin sémantique pris en charge ; les actions génériques Coller/Dupliquer de CyUI ne sont pas activées.
+
+Les reroutes d’exécution restent des nœuds de graphe typés, pas de simples points visuels sur un lien. Ces outils de présentation n’ajoutent ni compilateur de graphes de jeu ni codec Blueprint Unreal.

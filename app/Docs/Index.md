@@ -1,62 +1,25 @@
-# CyGameSDK documentation sources
+# CyGameSDK developer documentation
 
-The human manual is now the complete local [CyDoc reader](../../Documentation/Documentation.html#/en/overview)
-([français](../../Documentation/Documentation.html#/fr/overview)). Open it directly;
-no server or Node.js is needed to read it. Help/F1 in the editor uses the same reader.
+The complete human manual uses the official offline [CyDoc reader](../../Documentation/Documentation.html#/en/overview)
+([French](../../Documentation/Documentation.html#/fr/overview)). Help/F1 opens that reader.
 
-These Markdown files remain source-level contracts, historical evidence and generic
-CyToolsCore references. They are preserved for developers and compatibility; they
-are not a replacement HTML help system. Generic model/CUDA/downloader requirements
-apply only to integrations that actually use those components.
+Start source development with [AI_GUIDE](../../AI_GUIDE.md) and the exact dependency lock.
+Current contracts:
 
-Authoring/build instructions and content disposition:
-[CyDoc integration](CyDocIntegration.md). Start a game adaptation with
-[AI_GUIDE.md](../../AI_GUIDE.md).
+- [CyMCPSDK integration](CyMCPSDKIntegration.md): assistant, native CLI/MCP, permissions,
+  durable jobs, legacy data, optimization settings and tested limits.
+- [CyUI integration](CyUIMigration.md): explicit modules, gestures, ownership and C++ bridges.
+- [CyDoc integration](CyDocIntegration.md): bilingual offline authoring, source review and build.
+- [Game adapter](GameAdapterGuide.md), [porting dossier](GamePortingTemplate.md),
+  [architecture](EditorArchitecture.md) and [capability coverage](CapabilityCoverage.md).
+- [Portable assets](CommonAssetFormat.md), [native 3D](Native3DAssets.md),
+  [animation](AnimationTools.md), [authoring](AdvancedAuthoring.md), [codecs](GameCodecs.md).
+- [Material pipeline](MaterialPipeline.md), [imports](AssetImport.md), [build providers](BuildProviders.md).
+- [Graph types](NamedGraphTypes.md), [interfaces](GraphInterfaces.md), [signatures](SignatureMigration.md),
+  [type migrations](TypeMigration.md), [collapse](GraphCollapse.md), [expand](GraphExpand.md).
+- [Localization](Localization.md), [recipes](GenerationConfigurations.md), [licenses](Licensing.md).
 
----
-
-## Preserved source index
-
-## Pour adapter cet éditeur à un jeu
-
-- [Point d’entrée IA CyGameSDK](../../AI_GUIDE.md).
-- [Guide d’adaptation par jeu](GameAdapterGuide.md) : API et limites réelles du socle.
-- [Dossier de portage à remplir](GamePortingTemplate.md).
-- [Format commun portable](CommonAssetFormat.md) : transferts de meshes, rigs et animations.
-- [Exemple d’adaptateur source](../examples/adapters/README.md).
-- [Audit de l’interface et thème](InterfaceAudit.md).
-- [Architecture éditeur](EditorArchitecture.md), [couverture](CapabilityCoverage.md),
-  [fournisseurs de build](BuildProviders.md), [matériaux](MaterialPipeline.md).
-
-Les guides suivants sont les références générales CyToolsCore. Leurs exigences
-spécifiques aux modèles, CUDA et outils de génération s’appliquent seulement si
-le produit créé utilise réellement ces fonctions.
-
-## Pour créer un Tool
-
-- [Guide IA](AgentGuide.md) : contrat de travail, configuration et définition de terminé.
-- [Prompt prêt à copier](AgentPrompt.md).
-- [Premier CyTool](CreatingYourFirstCyTool.md) : installation et commandes.
-
-## Standard et architecture
-
-- [Vue d'ensemble](Overview.md), [architecture](Architecture.md), [manifest](ToolManifest.md).
-- [Opérations](Operations.md), [paramètres](Parameters.md), [sorties](Outputs.md).
-- [Protocole](Protocol.md), [versions](Versioning.md), [erreurs](ErrorModel.md).
-
-## Exécution
-
-- [Jobs](Jobs.md), [multi-client](MultiClient.md), [scheduler](Scheduler.md), [événements](Events.md).
-- [Ressources](Resources.md), [plateformes](Platforms.md), [modèles](Models.md), [workers](Workers.md).
-- [Dépendances](Dependencies.md), [téléchargements](Downloads.md).
-- [Transports](Transports.md), [MCP](MCP.md).
-
-## Validation et limites
-
-- [Fonctionnalités livrées](ImplementationStatus.md).
-- [Résultats de validation](Validation.md).
-- [Licence MIT et redistribution](Licensing.md).
-
-## Mettre à jour un produit existant
-
-- [Migration des logiciels et plugins utilisant les SDK](UpdateExistingProducts.md).
+[0.31 release notes](Release-0.31.0.md) describe the current local update.
+Earlier releases, milestones and interface audits remain historical evidence.
+Legacy generic guide URLs remain compatibility entry points; they do not require
+the retired runtime, model installers, CUDA or unrelated generation tools.

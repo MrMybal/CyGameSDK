@@ -1,6 +1,6 @@
 # Porting CyGameSDK to a game — source integration guide
 
-This guide describes the active 0.23 C++17/Win32/DX11 implementation. Start at
+This guide describes the active 0.31 C++17/Win32/DX11 implementation. Start at
 [../../AI_GUIDE.md](../../AI_GUIDE.md). Complete [GamePortingTemplate.md](GamePortingTemplate.md)
 for the target game. The checked [example adapter](../examples/adapters/ExampleGameAdapter.h)
 is a starter, not an implementation for an existing game.
@@ -15,8 +15,8 @@ Unknown facts stay explicit. Consult authorized local sources before asking for
 missing information; verify external format/version claims against primary sources.
 
 Derive the source project and notices, then install the private runtime at its final
-location with `app/setup_mcp.ps1` (its `CyToolsCoreRoot` parameter selects the sibling
-Core source). Do not copy `runtime/python`: it is a local virtual environment.
+location with `app/setup_mcp.ps1` for compute dependencies, then compile the pinned
+SDK sources with `app/build.ps1 -CyMCPSDKRoot <checkout>`. Do not copy `runtime/python`: it is a local virtual environment.
 Keep `app`, `data`, `runtime`. Update product/adapter identities and paths in the
 manifest generator, build scripts, launcher and MCP configuration together.
 
@@ -69,7 +69,7 @@ assumptions. Adapt these deliberately instead of changing only an adapter ID:
 | `project_save/load` use `data/projects/Sandbox.cyproject.json` | Replace/configure this path and product labels in a derived project |
 | Project JSON includes format/schemaVersion/adapterId | Preserve identity checks; add explicit migrations instead of loading another game's project implicitly |
 | `propertySchema({})` is used for discovery | Provide a valid general schema or adapt discovery for per-type schemas |
-| Native validator implements a subset of JSON Schema | Extend native checks before using unsupported constraints accepted only by Core's full schema validation |
+| Native validator implements a subset of JSON Schema | Extend native checks before using unsupported constraints accepted only by the full Python schema validation |
 
 Native `validateValue` currently handles primitive type checks, enum, number bounds,
 string byte-length bounds, array bounds/items, and object required/properties/
@@ -173,9 +173,10 @@ mutating `core.entity()` from a worker. Independent view settings are not docume
 mutations. Discover current schemas through `cy_list_operations` /
 `cy_describe_operation`, rather than hardcoding historical tool counts.
 
-CyToolsCore remains the MCP/SDK/job implementation. For long work, use a trusted
+CyMCPSDK supplies the shared assistant/CLI/MCP registry and process supervision.
+The app owns durable jobs and recovery; see [integration](CyMCPSDKIntegration.md). For long work, use a trusted
 ProcessWorker provider and a bounded native snapshot/commit operation. Do not hold
-the ImGui thread while compiling or parsing a large archive. Respect Core task-file
+the ImGui thread while compiling or parsing a large archive. Respect durable task-file
 privacy and lifetime; explicit asset/project saves are persistent user operations.
 After a disconnect, inspect live revision/state before retrying a mutation.
 
@@ -228,7 +229,7 @@ registry used by both SDK and GUI. Optional IGameAdapter::assetCodecs() declarat
 do not register executable handlers. Provide exact game versions/platforms, real
 fixtures, honest losses and target validator evidence. Do not ship the synthetic
 fixture_codec_worker as a game provider. Preserve UUIDs, unknown metadata, source
-hashes, stale LOD/review flags and official Core job ownership/cancellation.
+hashes, stale LOD/review flags and application durable job ownership/cancellation.
 
 Read AnimationTools.md before binding offline IK or root-motion curves to an engine.
 Define coordinate, root lock, scale, movement/physics and loss policies explicitly;

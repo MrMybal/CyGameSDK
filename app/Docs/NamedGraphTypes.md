@@ -8,7 +8,7 @@ The current catalogue has 173 editor operations / 194 tools including Core.
 # Named graph data types — native 0.23.0
 
 The logic editor now supports graph-local named enums and structures. They work
-through the same native dispatcher, Undo, serialization and existing CyToolsCore
+through the same native dispatcher, Undo, serialization and existing CyMCPSDK
 MCP/SDK. The source/default/fallback UI language remains English; French is selectable.
 These types are local declarations inside .cyasset graphs, not standalone Unreal
 assets, engine reflection or a claim of complete Blueprint compatibility.

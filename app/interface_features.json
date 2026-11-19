@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "release": "0.29.0",
+  "release": "0.31.0",
   "adapter": "sandbox",
   "features": [
     {
@@ -183,7 +183,7 @@
       "name": "Native AI access",
       "status": "Available",
       "panel": "operations",
-      "notes": "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs."
+      "notes": "CyMCPSDK ChatUI, native CLI and MCP share 177 business operations; private durable jobs retain results after restart."
     },
     {
       "category": "Integration",
@@ -317,6 +317,48 @@
       "status": "Available",
       "panel": "interface",
       "notes": "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Typed collections and expressions",
+      "status": "Available",
+      "panel": "details",
+      "notes": "Schema-driven arrays, Sets, Maps, records and numeric expressions; existing document budgets still apply."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Hierarchy and scene table",
+      "status": "Available",
+      "panel": "outliner",
+      "notes": "Common hierarchy and typed property table; validated multi-cell paste is one Undo."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Native source picker",
+      "status": "Available",
+      "panel": "imports",
+      "notes": "Cached directory listings and filters. Selection fills import fields without starting an import."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Shared source editing",
+      "status": "Available",
+      "panel": "operations",
+      "notes": "Native JSON editing, text selection, syntax colors, search and local text Undo."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Editable keyboard bindings",
+      "status": "Available",
+      "panel": "options",
+      "notes": "Common command bindings, conflict checks and persisted view preferences."
+    },
+    {
+      "category": "Common editor tools",
+      "name": "Transactional comment groups",
+      "status": "Available",
+      "panel": "logic",
+      "notes": "Shared group gestures carry contained nodes and commit one validated Undo; stale gestures cancel."
     }
   ]
 }

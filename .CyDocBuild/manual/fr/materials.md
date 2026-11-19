@@ -4,7 +4,7 @@ title: Matériaux et aperçus compilés
 description: Matériaux et aperçus compilés
 section: Matériaux
 order: 30
-sourceRevision: 1
+sourceRevision: 3
 ---
 
 ## Construire une surface {#nodes}
@@ -15,7 +15,7 @@ Les instances gardent les surcharges typées séparées de la topologie du paren
 
 ## Compiler et inspecter {#compile}
 
-Choisissez **Compiler l’aperçu** avec Python/Core configuré. Plans natifs et génération Python partagent ordre des paramètres et empreintes. Le ProcessWorker officiel génère/compile le HLSL en DXBC ; un rapport contrôlé installe ensuite le shader dans sa vue DX11. Sphère/plan et paramètres uniformes en direct utilisent ce shader. Les défauts racines sont des uniformes ; les défauts internes aux fonctions sont des données du programme.
+Choisissez **Compiler l’aperçu** avec Python de calcul configuré. Plans natifs et génération Python partagent ordre des paramètres et empreintes. Le worker de calcul possédé par le SDK génère/compile le HLSL en DXBC ; un rapport contrôlé installe ensuite le shader dans sa vue DX11. Sphère/plan et paramètres uniformes en direct utilisent ce shader. Les défauts racines sont des uniformes ; les défauts internes aux fonctions sont des données du programme.
 
 Progression, diagnostics et annulation relèvent du job Core. Signature périmée, empreinte incohérente, sortie absente ou expression non prise en charge refusent l’installation. Les objets GPU conservent leurs données après nettoyage des fichiers. N’envoyez pas de HLSL fourni par l’asset, d’inclusions arbitraires ou de commandes exécutables au compilateur. Déplacer la vue n’invalide pas le shader.
 

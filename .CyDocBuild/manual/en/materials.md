@@ -4,7 +4,7 @@ title: Materials and compiled previews
 description: Materials and compiled previews
 section: Materials
 order: 30
-revision: 1
+revision: 3
 ---
 
 ## Build a surface {#nodes}
@@ -15,9 +15,9 @@ Material instances keep typed overrides separate from parent topology. Resolve l
 
 ## Compile and inspect {#compile}
 
-Choose **Compile preview** with the configured Python/Core environment. Native plans and Python lowering agree on parameter order and hashes. The official ProcessWorker generates/compiles HLSL to DXBC, then a checked report installs the shader in the owning DX11 view. Sphere/plane previews and live uniforms use that shader. Graph root defaults are uniforms; defaults inside functions are program data.
+Choose **Compile preview** with the configured compute-worker Python environment. Native plans and Python lowering agree on parameter order and hashes. The SDK-owned compute worker generates/compiles HLSL to DXBC, then a checked report installs the shader in the owning DX11 view. Sphere/plane previews and live uniforms use that shader. Graph root defaults are uniforms; defaults inside functions are program data.
 
-Progress, diagnostics and cancellation belong to the Core job. A stale signature, mismatched checksum, missing output or unsupported expression rejects installation. GPU objects retain what they need after job files are cleaned. Do not submit asset-provided HLSL, arbitrary includes or executable commands as a compiler request. Presentation edits such as panning do not invalidate a shader.
+Progress, diagnostics and cancellation belong to the durable application job. A stale signature, mismatched checksum, missing output or unsupported expression rejects installation. GPU objects retain what they need after a deliberate archival of job files. Do not submit asset-provided HLSL, arbitrary includes or executable commands as a compiler request. Presentation edits such as panning do not invalidate a shader.
 
 ## Image sampling and boundaries {#sampling}
 

@@ -15,6 +15,7 @@ public:
         check("unsupportedLocaleFallback",documentationUrl(core_.root(),"xx",{"overview","getting-started"}).find("#/en/overview/getting-started")!=std::string::npos);
         check("dynamicModelContext",documentationTopic("model:local").page=="assets-3d");
         check("dynamicFunctionContext",documentationTopic("fn:logic#test").page=="functions");
+        check("assistantContext",documentationTopic("assistant").page=="automation"&&documentationTopic("assistant").section=="assistant");
         check("unknownContextFallback",documentationTopic("extension.unknown").page=="overview");
         app_.previewSettings("en","");app_.openDocumentation(false);
         check("overviewEntry",urls_.size()==1&&urls_.back().get<std::string>().find("#/en/overview/getting-started")!=std::string::npos);

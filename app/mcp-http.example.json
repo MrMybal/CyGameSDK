@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "CyGameSDK": {
+      "url": "http://127.0.0.1:PORT/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_PRIVATE_ENDPOINT_TOKEN"
+      }
+    }
+  }
+}

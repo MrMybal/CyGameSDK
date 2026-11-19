@@ -5,7 +5,7 @@
 The logic editor supports graph-local interface declarations. A declaration names
 pure or execution method signatures; local classes bind ordinary functions to
 those methods. Calls resolve the concrete receiver's implementation. This extends
-the existing native graph interpreter, Undo, debugger and CyToolsCore MCP/SDK.
+the existing native graph interpreter, Undo, debugger and CyMCPSDK MCP/SDK.
 English remains the source/default/fallback UI language; French is selectable.
 
 These are local simulation contracts. They do not provide Unreal Blueprint file

@@ -1,10 +1,11 @@
 """Explicit, hash-guarded, whole-owner graph signature migrations."""
+import os
 import copy,json,os,shutil,subprocess,sys,tempfile,unittest
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import tool,test_integration as integration,test_authoring as authoring,test_graph_interfaces as interfaces
-from cytools_core import CyToolError
+from job_contract import CyToolError
 
 def port(t='float',v=0):return {'type':t,'default':v}
 class Migrations(unittest.TestCase):
@@ -68,7 +69,7 @@ class Migrations(unittest.TestCase):
   for lang in ('en','fr'):
    with tempfile.TemporaryDirectory(prefix='migration-ui-',dir=ROOT/'data/reports') as tmp:
     root=Path(tmp);(root/'app').mkdir();shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copytree(APP/'locales',root/'app/locales');report=root/'report.json'
-    process=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-migration',str(report),'--exit-after','45'],timeout=60)
+    process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--test-migration',str(report),'--exit-after','45'],timeout=60)
     self.assertEqual(process.returncode,0);self.assertTrue(report.exists());result=json.loads(report.read_text('utf-8'));self.assertTrue(result['passed'],result);self.assertEqual(len(result['checks']),12);shutil.copyfile(report,ROOT/'data/reports'/('migrations-gestures-'+lang+'.json'));self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())
  def test_12_callback_extra_argument_migration_and_swap_collision(self):
   g=self.graph('MigrationCallback');self.function(g,'Each',{'item':('float',0),'index':('int',0),'extra':('float',3)},{},mode='execution');text=self.node(g,'convert.float_string',functionName='Each');out=self.node(g,'debug.print',functionName='Each');self.wire(g,'arguments','extra',text,'value','Each');self.wire(g,text,'value',out,'text','Each');self.wire(g,'arguments','then',out,'exec','Each');self.wire(g,out,'then','return','exec','Each');loop=self.node(g,'flow.foreach',functionRef='Each',values=[2],extra=14);self.unlink(g,'start');self.wire(g,'begin','then',loop,'exec');self.wire(g,loop,'then','print','exec');before=self.call('graph_run',{'graphId':g})['messages']

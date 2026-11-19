@@ -32,7 +32,7 @@ The framework validates requested target and options before launching the worker
 
 ## Worker protocol
 
-Use the existing Core one-shot ProcessWorker protocol. Parameters contain owned
+Use the existing application one-shot ProcessWorker protocol. Parameters contain owned
 snapshot/output/report paths, codecId/gameId/gameVersion/platform and options.
 Read the neutral snapshot, perform the real conversion and real validation, write
 only through those job paths and return outputPath/reportPath. A report contains:
@@ -61,11 +61,11 @@ proof, and native capability flags must not be used as substitute evidence.
 ## SDK / MCP
 
 - game_codec_describe: native adapter declarations; no execution guarantee.
-- game_codec_list: executable source registry through the official Core runtime.
+- game_codec_list: executable source registry through the official native SDK runtime.
 - game_codec_export(modelId, codecId, gameVersion, platform, options,
-  acceptedLosses, requireVerified): immutable model snapshot to private Core job.
+  acceptedLosses, requireVerified): immutable model snapshot to private durable job.
 
-Core owns identities, private paths, progress, cancellation, workers and cleanup.
+The host owns identities/private durable paths/progress; SDK Process owns child trees and cancellation.
 Export job outputs using export_job before finish_task if they must survive.
 This operation never overwrites source assets or installed game files. Desktop
 sessions are persistent; their displayed output paths remain beneath data/build-runs.

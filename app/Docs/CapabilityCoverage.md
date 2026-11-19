@@ -1,4 +1,4 @@
-# Capability coverage — CyGameSDK 0.29.0
+# Capability coverage — CyGameSDK 0.31.0
 
 | Capability | Delivered behavior | Validation / limits |
 |---|---|---|
@@ -19,24 +19,24 @@
 | Diagnostics | Missing event/output, disconnected nodes, unused variables; navigate to node | Invalid runtime division yields a visible failure; structural drafts may save |
 | Material preview | UV/procedural expressions, generated HLSL/DXBC, sphere/plane and live uniforms | Official worker compilation, native shader installation, stale/checksum rejection and EN/FR captures; supported editor expression subset, no engine shader export |
 | Procedural material nodes | UV U/V, UV transform, checker/gradient, compose color, sine/fract/saturate | CPU samples, negative coordinates, pure function UV context and real shader compilation checked |
-| Shader job ownership | Core ProcessWorker, private source/DXBC/reports, progress and cancellation | Worker termination, per-identity isolation, hashes and non-mutating GUI apply checked |
+| Shader job ownership | SDK-owned compute worker, private source/DXBC/reports, progress and cancellation | Worker termination, per-identity isolation, hashes and non-mutating GUI apply checked |
 | Custom nodes | Pure source-plugin node registry/evaluator | Native test registers and executes custom.double |
 | Asset browser | Real filesystem, folders, field queries, favorites, tiles/list | Search/filter/file lifecycle tested; bounded decoded image thumbnails |
 | References | Declared .cyasset references, saved/live union, direct/transitive consumers and dependencies, missing targets | Cycles, confinement, incomplete scans and prevention of referenced-file moves/Trash checked; bounded on-demand scan, no game-format decoder |
 | Asset operations | Copy/move/rename, Trash/restore, no overwrite, dirty protection | Disk roundtrip, traversal/collision rejection and references across document Undo checked |
 | Asset editors | Extension registry, independent graph tabs and WIC image editor; metadata fallback | PNG/JPEG/BMP metadata, bounded decode, RGBA/RGB/single channels, pan/zoom/reload; no game texture decoder; importers documented in AssetImport.md |
-| Portable 3D source component | `.cypack` envelope + self-contained GLB, byte-preserving transfer, declarative conversion plans and optional Core worker operations | 22 component tests and two Khronos-validated original fixtures; bounded native .cy3d editing and GLB/CyPack import/export now active; no real game codecs; reference-pose retargeting added in 0.21 |
+| Portable 3D source component | `.cypack` envelope + self-contained GLB, byte-preserving transfer, declarative conversion plans and optional SDK-owned worker operations | 22 component tests and two Khronos-validated original fixtures; bounded native .cy3d editing and GLB/CyPack import/export now active; no real game codecs; reference-pose retargeting added in 0.21 |
 | Persistence | Versioned projects/assets, validated loads, temporary-file replacement | Roundtrip and invalid load tested; startup shows Sandbox, Ctrl+O loads saved project |
 | Editor plugins | Source IEditorPlugin lifecycle and Diagnostics example | Graphical activation/deactivation/panel checks; no ABI-stable DLL loader |
 | Search | Commands, panels, objects, properties, nodes and asset fields | Localized GUI labels plus stable IDs; native API retains protocol IDs |
-| MCP / AI SDK | CyToolsCore 0.10.1 / official MCP 1.30.0; shared native dispatcher | Real stdio initialize/list/call/poll/debug/shader compile/finish; 173 editor operations, 194 tools including Core controls |
-| Jobs / privacy | CyToolsCore runtime owns jobs, sessions and private results | SDK identity isolation and parameter validation checked |
+| MCP / AI SDK | CyMCPSDK 0.7.0 compiled from pinned sources; shared registry and native dispatcher | Real stdio initialize/list/call/poll/debug/shader compile/finish; 177 business operations, 364 full tools or five compact discovery tools |
+| Jobs / privacy | Application durable jobs/identities with SDK Executor and owned process trees | SDK identity isolation and parameter validation checked |
 | Configuration | Versioned recipes, load without execution, optional parameter autosave | Roundtrip and SDK replay checked |
 | Localization/themes | English/French, Unreal-inspired Dark plus five CyUI themes, stable window IDs | Both languages and all six themes rendered; screenshots under data/reports |
 | Local functions | Pure and execution modes, typed signatures, nested calls, isolated locals, cached returns and subgraph tabs | Nested control/data flow, isolation, domain rejection, missing returns, budget failures and official MCP evaluation checked |
 | Graph navigation | Search roots/functions, node comments/values/variables, per-view bookmarks, typed reroutes | Root/function rerouting preserves results; bounds, persistence, debug invalidation and undo checked |
 | Material instances | Parent chain, typed overrides, live inheritance, lit preview | Inheritance, parent isolation, cycles, type/path rejection and stale override recovery tested; eight parent links, manual disk refresh |
-| Build providers | Optional adapter targets/configuration/options; immutable snapshot and official Core ProcessWorker jobs | Sandbox exports document ZIP, checksum and diagnostics; cancellation stops worker; no game compiler |
+| Build providers | Optional adapter targets/configuration/options; immutable snapshot and SDK-owned compute worker jobs | Sandbox exports document ZIP, checksum and diagnostics; cancellation stops worker; no game compiler |
 | Call-stack debugger | F10 over, F11 into, Shift+F11 out, frame arguments/locals/watches and contextual navigation | Nested breakpoints, live breakpoint refresh, semantic invalidation and actual ImGui keyboard path checked; pure calls remain atomic |
 | Graph comparison | Saved/live structured changes, external disk-change detection and presentation filter | Read-only revision/Undo checks, function context, file corruption and Unicode previews tested; bounded details, no visual merge or arbitrary revisions |
 | Blueprint depth | Typed graphs, functions, containers, classes/methods, inline macros, foreach, logical delay/events and runtime object debugger | Bounded interpreter; no complete Unreal parity, engine objects, replication or game compilation |
@@ -106,7 +106,7 @@ Read [AdvancedAuthoring](AdvancedAuthoring.md) and [GameCodecs](GameCodecs.md).
 | LODs | Real reduced buffers, preview/export, stale-derived-data checks | Static vertex clustering; four levels; no automatic screen-distance switching |
 | Collisions | Conservative box/sphere/capsule fit, editable properties and wire preview | Metadata shapes; no engine physics cooking or simulation |
 | Retargeting | Bone mapping, rest-world rotation correction, baked clip and skinning | TRS rigs; 0.22 adds separate chain IK/root-motion tools, without contact solving |
-| Game codecs | Trusted registry, exact target declarations, Core worker export, hash/loss checks and GUI | Empty default registry; synthetic contract fixture is not a game codec |
+| Game codecs | Trusted registry, exact target declarations, SDK-owned worker export, hash/loss checks and GUI | Empty default registry; synthetic contract fixture is not a game codec |
 
 Evidence: data/reports/authoring-{tests,integration,scene3d,interface,portable}.log,
 authoring-native.log, authoring-captures.json, authoring-khronos.json and
@@ -116,9 +116,9 @@ authoring-validation.json. Earlier completion/m15 reports retain historical scop
 
 [AnimationTools](AnimationTools.md) documents offline fixed-root chain IK, extracted
 root-motion pairs with sampled reconstruction and trimmed/resampled clips. The
-existing model_process/Core worker/commit path is reused, with real native preview,
+existing model_process/worker/commit path is reused, with real native preview,
 Undo and GLB/CyPack export. MotionToolsView.cpp supplies translated property views.
-The desktop bridge now publishes terminal readiness after Core closes its handles.
+The desktop bridge now publishes terminal readiness after the native SDK runtime closes its handles.
 No joint limits/contact solver or engine movement/physics binding is supplied.
 Evidence: data/reports/motion-validation.json and motion-captures.json.
 
@@ -163,7 +163,7 @@ operations / 194 tools including Core controls.
 |---|---|---|
 | Expand call | Pure local functions/macros become editable nodes, retain definitions, typed reroutes, wire metadata and original-call provenance; one Undo | Per-output eager function arguments and nested lazy macros checked; execution calls reject; native EN/FR gestures and actual material shader compile |
 
-Current catalogue: 175 editor operations / 196 tools including Core controls.
+Current catalogue: 177 business operations / 364 full tools including compatibility aliases and service operations.
 Read [GraphExpand](GraphExpand.md). Evidence: data/reports/expand-validation.json.
 
 ## Native 0.29 common presentation
@@ -173,3 +173,12 @@ Inspector, Images, Viewport/ImGuizmo, Timeline, Commands, Diagnostics, Code and 
 views. Core remains the validated document/Undo owner. Read
 [CyUIMigration](CyUIMigration.md) for replacements, exact upstream API gaps and
 Windows verification. This release adds no game codec or engine binding.
+
+## Native 0.30 common editor tools
+
+The current CyUI revision adds typed Inspector collections/expressions, common
+hierarchy and scene DataView, native source picking, configurable command bindings,
+shared code editing and transactional graph-comment gestures. property_set_many
+and graph_layout_apply are real validated Core operations with one Undo per batch.
+The shared C++20 text backend is isolated; the host/domain remain C++17. Remaining
+source adapters and exact upstream gaps are documented in CyUIMigration.md.

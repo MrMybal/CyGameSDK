@@ -1,4 +1,4 @@
-"""CyToolsCore remains the sole MCP server, SDK, scheduler and job runtime."""
+"""CyMCPSDK native transport; compatibility Python entry point and editor IPC adapter."""
 import ctypes
 import json
 import os
@@ -6,8 +6,9 @@ import struct
 import sys
 import time
 from pathlib import Path
-from cytools_core import Runtime, load_manifest, CyToolError
-from cytools_core.transports.cli import run_cli
+from automation_client import Runtime, load_manifest
+from job_contract import CyToolError
+from automation_client import run_cli
 
 ROOT = Path(os.environ.get("CYGAME_EDITOR_ROOT", Path(__file__).resolve().parents[1])).resolve()
 MAX_RESPONSE = 4 * 1024**2
@@ -68,39 +69,8 @@ def editor_call(operation, parameters, cancellation=None, *, endpoint=None, time
             raise CyToolError(response["error"]["code"],response["error"]["message"],recoverable=True)
         return response["result"]
 
-def create_runtime(data_dir, *, build_providers=None, shader_worker=None, import_providers=None, game_codecs=None, **options):
-    runtime=Runtime(load_manifest(Path(__file__).with_name("CyTool.json")),data_dir,**options)
-    runtime.configure_inputs(ROOT/"data/inputs",fields={})
-    for operation in runtime.descriptor["operations"]:
-        operation_id=operation["id"]
-        if operation_id in ("build_execute","material_compile","asset_import","asset_reimport","model_export","model_process","game_codec_list","game_codec_export"):continue
-        def handler(context,parameters,operation_id=operation_id):
-            context.cancellation.check()
-            result=editor_call(operation_id,parameters,context.cancellation)
-            # Job-owned diagnostic result; explicit project/asset saves are persistent by design.
-            context.path("outputs/result.json").write_text(json.dumps(result,indent=2,ensure_ascii=False),"utf-8")
-            return result
-        runtime.register(operation_id,handler)
-    from build_service import register_build_operation
-    register_build_operation(runtime,editor_call,build_providers)
-    from shader_service import register_shader_operation
-    register_shader_operation(runtime,editor_call,shader_worker)
-    from import_service import register_import_operations
-    register_import_operations(runtime,editor_call,import_providers)
-    from model_service import register_model_operations
-    register_model_operations(runtime,editor_call)
-    from model_process_service import register_authoring_operations
-    register_authoring_operations(runtime,editor_call)
-    from game_codecs import register_game_codec_operations
-    register_game_codec_operations(runtime,editor_call,game_codecs)
-    return runtime
+def create_runtime(data_dir, **options):
+    return Runtime(load_manifest(Path(__file__).with_name("CyTool.json")),data_dir,editor_root=ROOT,**options)
 
 if __name__=="__main__":
-    argv=sys.argv[1:]
-    if "--data-dir" not in argv:
-        # Each stdio MCP connection owns its runtime; editor mutations are serialized
-        # by the editor thread. Use Core's HTTP service for a shared scheduler.
-        default=ROOT/"data/jobs"
-        if "mcp" in argv or "stdio" in argv:default=default/f"connection-{os.getpid()}"
-        argv=["--data-dir",str(default),*argv]
-    raise SystemExit(run_cli(create_runtime,argv))
+    raise SystemExit(run_cli(create_runtime,sys.argv[1:]))

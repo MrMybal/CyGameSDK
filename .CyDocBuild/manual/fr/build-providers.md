@@ -4,7 +4,7 @@ title: Cibles de compilation et packaging
 description: Cibles de compilation et packaging
 section: Intégration
 order: 61
-sourceRevision: 1
+sourceRevision: 2
 parent: game-adapters
 ---
 
@@ -16,7 +16,7 @@ Ouvrez Compilation et packaging. `buildTargets()` de l’adaptateur déclare ID 
 
 ## Exécuter et consommer {#jobs}
 
-L’interface réutilise son client SDK persistant et le ProcessWorker officiel. Les fournisseurs Python source enregistrés réalisent découverte, compilation et packaging propres au jeu. Fournissez une table complète pour remplacer les valeurs par défaut. Core gère progression, annulation, chemins privés et nettoyage. Exportez les résultats temporaires avant de terminer ; ceux du bureau suivent la session persistante.
+L’interface lance le compagnon natif CyMCPSDK. Les fournisseurs Python de confiance conservent découverte, compilation et packaging réels. Fournissez une table complète pour remplacer les valeurs par défaut. L’application persiste progression, annulation et résultats ; le SDK possède l’arbre de processus. Les sorties survivent à la tâche et au redémarrage ; exportez ou supprimez-les délibérément.
 
 Un ZIP Sandbox réussi contient des documents, pas des contenus de jeu préparés ni les octets des fichiers importés. Un adaptateur réel doit trouver compilateur/SDK plateforme, produire le format attendu et le valider dans le jeu. Des boutons de compilation/lancement ne prouvent pas la compatibilité.
 

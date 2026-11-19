@@ -1,4 +1,4 @@
-"""Integration checks against the real native editor model and CyToolsCore MCP."""
+"""Integration checks against the real native editor model and CyMCPSDK MCP."""
 import asyncio
 import hashlib
 import zipfile
@@ -17,8 +17,8 @@ APP=Path(__file__).resolve().parents[1]
 ROOT=APP.parent
 sys.path.insert(0,str(APP))
 import tool
-from cytools_core import CyToolError
-from cytools_core.schema import load_manifest
+from job_contract import CyToolError
+from automation_client import load_manifest
 from mcp import ClientSession,StdioServerParameters
 from mcp.client.stdio import stdio_client
 
@@ -31,13 +31,16 @@ class EditorIntegration(unittest.TestCase):
         shutil.copyfile(APP/"CyTool.json",cls.workspace/"app/CyTool.json")
         cls.old_root=tool.ROOT;tool.ROOT=cls.workspace
         cls.gui=os.environ.get("CYGAME_TEST_GUI")=="1"
-        native_args=[str(ROOT/"CyGameEditor.exe"),"--root",str(cls.workspace),"--exit-after","240"] if cls.gui else [str(ROOT/"runtime/build/CyGameSDKTests.exe"),"--serve",str(cls.workspace),"240"]
+        native_args=[str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(cls.workspace),"--exit-after","240"] if cls.gui else [str(ROOT/"runtime/build/CyGameSDKTests.exe"),"--serve",str(cls.workspace),"240"]
         cls.native=subprocess.Popen(native_args,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        for _ in range(200):
+        for _ in range(600):
             if (cls.workspace/"data/ipc/editor.json").exists():break
             if cls.native.poll() is not None:raise RuntimeError(cls.native.communicate())
             time.sleep(.02)
-        else:raise RuntimeError("Native editor test host did not start")
+        else:
+            from test_interface import stop_owned
+            stop_owned(cls.native)
+            raise RuntimeError("Native editor test host did not become ready within 12 seconds")
     @classmethod
     def tearDownClass(cls):
         if cls.gui and cls.native.poll() is None:
@@ -126,12 +129,16 @@ class EditorIntegration(unittest.TestCase):
             with self.assertRaises(CyToolError):runtime.submit(alice,session["sessionId"],"scene_create",{"name":""})
     def test_05_official_mcp_stdio_roundtrip(self):
         async def run():
-            env=dict(os.environ,CYGAME_EDITOR_ROOT=str(self.workspace))
+            env=dict(os.environ,CYGAME_EDITOR_ROOT=str(self.workspace),CYGAME_ALLOW_WRITES="1")
             server=StdioServerParameters(command=sys.executable,args=[str(APP/"tool.py"),"--data-dir",str(self.workspace/"mcp-jobs"),"mcp"],env=env)
             async with stdio_client(server) as (reader,writer):
                 async with ClientSession(reader,writer) as client:
                     await client.initialize()
                     catalogue=await client.list_tools()
+                    all_tools=list(catalogue.tools)
+                    while catalogue.nextCursor:
+                        catalogue=await client.list_tools(cursor=catalogue.nextCursor);all_tools.extend(catalogue.tools)
+                    catalogue.tools=all_tools
                     expected={"op_"+op["id"] for op in load_manifest(APP/"CyTool.json")["operations"]}
                     self.assertTrue(expected.issubset({t.name for t in catalogue.tools}))
                     response=await client.call_tool("op_property_set",{"parameters":{"entityId":"hero","propertyId":"position","value":[3,2,1]}})
@@ -176,7 +183,7 @@ class EditorIntegration(unittest.TestCase):
                     self.assertTrue((self.workspace/"data/assets"/imported["path"]).exists())
             return len(catalogue.tools)
         count=asyncio.run(asyncio.wait_for(run(),30))
-        report={"nativeHost":"CyGameEditor.exe graphical host" if self.gui else "same EditorCore and EditorIpc; headless test host","mcp":"official CyToolsCore 0.10.1 / MCP 1.30.0 stdio","toolCount":count,"result":"passed","uiInteraction":"panel/plugin operations exercised" if self.gui else "not exercised by the headless suite"}
+        report={"nativeHost":"CyGameEditor.exe graphical host" if self.gui else "same EditorCore and EditorIpc; headless test host","mcp":"CyMCPSDK 0.7.0 / MCP client 1.30.0 stdio","toolCount":count,"result":"passed","uiInteraction":"panel/plugin operations exercised" if self.gui else "not exercised by the headless suite"}
         (ROOT/"data/reports/integration.json").write_text(json.dumps(report,indent=2),"utf-8")
 
     def test_06_configuration_roundtrip_and_replay(self):
@@ -363,7 +370,7 @@ class EditorIntegration(unittest.TestCase):
         root=self.workspace/"gizmo-smoke";(root/"app").mkdir(parents=True)
         shutil.copyfile(APP/"CyTool.json",root/"app/CyTool.json")
         report=ROOT/"data/reports/gizmo-gesture.json"
-        process=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(root),"--workspace","Level","--test-gizmo",str(report),"--exit-after","15"],timeout=25)
+        process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(root),"--workspace","Level","--test-gizmo",str(report),"--exit-after","15"],timeout=25)
         self.assertEqual(process.returncode,0,report.read_text("utf-8") if report.exists() else "No gesture report")
         self.assertTrue(json.loads(report.read_text("utf-8"))["passed"])
 
@@ -513,7 +520,7 @@ class EditorIntegration(unittest.TestCase):
         root=self.workspace/"graph-smoke";(root/"app").mkdir(parents=True)
         shutil.copyfile(APP/"CyTool.json",root/"app/CyTool.json")
         report=ROOT/"data/reports/graph-gesture.json"
-        process=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(root),"--workspace","Scripting","--test-graph",str(report),"--exit-after","15"],timeout=25)
+        process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(root),"--workspace","Scripting","--test-graph",str(report),"--exit-after","15"],timeout=25)
         self.assertEqual(process.returncode,0,report.read_text("utf-8") if report.exists() else "No graph gesture report")
         self.assertTrue(json.loads(report.read_text("utf-8"))["passed"])
 
@@ -644,7 +651,7 @@ class EditorIntegration(unittest.TestCase):
             runtime.cancel(actor,job["jobId"])
             result=runtime.wait(actor,job["jobId"])
             self.assertEqual(result["state"],"Cancelled",result)
-            self.assertIsNone(provider.worker.process);self.assertFalse(provider.worker.health()["alive"])
+            self.assertTrue(result.get("workerPids"));self.assertFalse(any(__import__("psutil").pid_exists(pid) for pid in result["workerPids"]))
             self.assertFalse(list(Path(result["workspace"]).rglob("*.zip")))
 
     def test_23_graphical_build_client(self):
@@ -799,7 +806,7 @@ class EditorIntegration(unittest.TestCase):
         shutil.copyfile(APP/"CyTool.json",root/"app/CyTool.json")
         shutil.copyfile(APP/"examples/Example_ExecutionFunctions.cyasset",root/"data/assets/Examples/Example_ExecutionFunctions.cyasset")
         report=ROOT/"data/reports/function-gesture.json"
-        process=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(root),"--workspace","Scripting","--asset","Examples/Example_ExecutionFunctions.cyasset","--test-functions",str(report),"--exit-after","15"],timeout=25)
+        process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(root),"--workspace","Scripting","--asset","Examples/Example_ExecutionFunctions.cyasset","--test-functions",str(report),"--exit-after","15"],timeout=25)
         self.assertEqual(process.returncode,0,report.read_text("utf-8") if report.exists() else "No function gesture report")
         self.assertTrue(json.loads(report.read_text("utf-8"))["passed"])
 
@@ -905,7 +912,7 @@ class EditorIntegration(unittest.TestCase):
             self.assertEqual(result["error"]["technicalDetails"]["diagnostics"][0]["nodeId"],call)
 
     def test_31_shader_worker_cancellation(self):
-        from cytools_core.workers import ProcessWorker
+        from job_contract import ProcessWorker
         worker=ProcessWorker([sys.executable,str(APP/"tests/slow_build_worker.py")])
         g=self.uv_example("CancelShader")
         with tool.create_runtime(self.workspace/"cancel-shader-jobs",shader_worker=worker) as runtime:
@@ -915,8 +922,8 @@ class EditorIntegration(unittest.TestCase):
             while not marker.exists() and time.monotonic()<deadline:time.sleep(.02)
             self.assertTrue(marker.exists(),runtime.get_job(actor,job["jobId"]))
             runtime.cancel(actor,job["jobId"]);result=runtime.wait(actor,job["jobId"])
-            self.assertEqual(result["state"],"Cancelled",result);self.assertIsNone(worker.process)
-            self.assertFalse(worker.health()["alive"]);self.assertFalse(list(Path(result["workspace"]).rglob("*.dxbc")))
+            self.assertEqual(result["state"],"Cancelled",result);self.assertTrue(result.get("workerPids"));self.assertFalse(any(__import__("psutil").pid_exists(pid) for pid in result["workerPids"]))
+            self.assertFalse(list(Path(result["workspace"]).rglob("*.dxbc")))
 
     def test_32_graphical_shader_application_live_parameters_and_stale_reports(self):
         if not self.gui:self.skipTest("Native DX11 renderer required")
@@ -1060,8 +1067,8 @@ class EditorIntegration(unittest.TestCase):
             job=runtime.submit(actor,session['sessionId'],'asset_import',{'sourcePath':str(source),'destination':'Imported/Cancelled.png'})
             marker=Path(job['workspace'])/'worker-started.txt';deadline=time.monotonic()+10
             while not marker.exists() and time.monotonic()<deadline:time.sleep(.02)
-            self.assertTrue(marker.exists());runtime.cancel(actor,job['jobId']);self.assertEqual(runtime.wait(actor,job['jobId'])['state'],'Cancelled')
-            self.assertIsNone(provider.worker.process);self.assertFalse((self.workspace/'data/assets/Imported/Cancelled.png').exists())
+            self.assertTrue(marker.exists());runtime.cancel(actor,job['jobId']);result=runtime.wait(actor,job['jobId']);self.assertEqual(result['state'],'Cancelled')
+            self.assertTrue(result.get("workerPids"));self.assertFalse(any(__import__("psutil").pid_exists(pid) for pid in result["workerPids"]));self.assertFalse((self.workspace/'data/assets/Imported/Cancelled.png').exists())
             self.assertFalse((self.workspace/'data/assets/Imported/Cancelled.png.cyimport').exists())
 
     def test_38_graphical_import_job_and_reimport_updates_image_view(self):
@@ -1090,7 +1097,7 @@ class EditorIntegration(unittest.TestCase):
             handle=kernel.CreateFileW(str(asset),0x80000000,3,None,3,0,None);self.assertNotEqual(handle,ctypes.c_void_p(-1).value)
             try:
                 result=run();self.assertEqual(result['state'],'Failed',result);self.assertEqual(result['error']['code'],'EditorCommandFailed')
-                self.assertEqual(asset.read_bytes(),old);self.assertEqual(meta.read_bytes(),oldmeta);self.assertEqual(self.call('editor_status')['adapter']['version'],'0.29.0')
+                self.assertEqual(asset.read_bytes(),old);self.assertEqual(meta.read_bytes(),oldmeta);self.assertEqual(self.call('editor_status')['adapter']['version'],'0.31.0')
             finally:kernel.CloseHandle(handle)
             temporary=Path(str(meta)+'.tmp');temporary.mkdir()
             try:

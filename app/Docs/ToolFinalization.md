@@ -1,14 +1,12 @@
-# Tool delivery checklist
+# ToolFinalization — current application contract
 
-Follow [StandaloneDelivery](StandaloneDelivery.md), [FullOperationAccess](FullOperationAccess.md)
-and [TaskFiles](TaskFiles.md) before delivering a Tool.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#durable-jobs-and-legacy-data).
 
-- Validate the manifest and execute its automated tests.
-- Launch the standalone from outside its installation folder; verify English/French,
-  configuration persistence, copyable logs and every exposed business operation.
-- Exercise CLI and real MCP calls, including external inputs, result export,
-  cancellation and task cleanup after workers stop.
-- Validate real model inference separately from synthetic transport tests.
-- Record the executed platform, model revision, output format and resource measurements.
-- Keep machine-specific reports under the Tool's data/reports directory.
-- State untested platforms and operations explicitly. A scaffold alone is not a delivery.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
+
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

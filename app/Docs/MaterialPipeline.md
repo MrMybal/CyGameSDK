@@ -2,7 +2,7 @@
 
 The Sandbox shader backend generates a DX11 **editor preview**. It is independent
 of game build providers and does not export a material in an external engine format.
-CyToolsCore supplies all scheduling, sessions, identity checks and worker lifetime.
+CyMCPSDK supplies all scheduling, sessions, identity checks and worker lifetime.
 
 ## Desktop workflow
 
@@ -24,7 +24,7 @@ compiler history recovery or automatic compile on every edit is provided.
 ## AI SDK / MCP contracts
 
 All operations are declared in CyTool.json and use the shared native dispatcher.
-The official SDK and op_<operation> MCP tools wrap them in Core jobs as usual.
+The official SDK and op_<operation> MCP tools wrap them in durable jobs as usual.
 
 | Operation | Purpose |
 |---|---|
@@ -118,7 +118,7 @@ and captures both languages and five palettes without modifying user assets/sett
 returns color/alpha. The default image is Examples/Example_Image.png. Connect
 material.uv to u/v and color to surface.baseColor; the supplied
 Examples3D/Example_TexturedMaterial.cyasset demonstrates this path. Compile preview
-uses the existing official Core shader worker and actual DX11 Texture2D bindings.
+uses the existing official SDK-owned shader worker and actual DX11 Texture2D bindings.
 
 CPU and GPU use bilinear repeat addressing and sRGB-to-linear RGB conversion;
 alpha stays linear. PNG/JPEG/BMP decode bounds still apply. The program supports

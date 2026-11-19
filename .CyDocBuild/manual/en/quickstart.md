@@ -4,7 +4,7 @@ title: Your first editing session
 description: Your first editing session
 section: Getting started
 order: 1
-revision: 1
+revision: 2
 ---
 
 ## Open the Sandbox {#open}
@@ -21,7 +21,7 @@ Launch the built editor with `Lancer.cmd`. The startup scene is the Sandbox, not
 
 After `app/setup_examples.py` has installed the examples, use Content Browser to open `StaticTriangle.cy3d`, `AnimatedTriangle.cy3d` or `Example_Data.json` under Examples3D. Graph fixtures are supplied under the Examples and BlueprintExamples folders. Installation never overwrites an existing asset; names and directories depend on the selected example set.
 
-Open `Example_TexturedMaterial.cyasset` and choose **Compile preview** after configuring the Python/Core environment. This produces an editor shader, not a game shader export. [Material workflow](doc:materials#compile).
+Open `Example_TexturedMaterial.cyasset` and choose **Compile preview** after installing the compute-worker Python dependencies. This produces an editor shader, not a game shader export. [Material workflow](doc:materials#compile).
 
 ## Recover a mistake {#recover}
 

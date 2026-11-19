@@ -138,7 +138,7 @@ Json validateGraphBody(const Json& g) {
 }
 Json graphBodyCommand(Json& g,const std::string& op,const Json& p) {
     if(op=="graph_link_reroute"||op=="graph_comment_edit"||op.rfind("graph_bookmark_",0)==0)return graphNavigationCommand(g,op,p);
-    if(op=="graph_nodes_move"||op=="graph_nodes_remove"||op=="graph_fragment_copy"||op=="graph_fragment_paste"||op.rfind("graph_comment_",0)==0)return graphBatchCommand(g,op,p);
+    if(op=="graph_layout_apply"||op=="graph_nodes_move"||op=="graph_nodes_remove"||op=="graph_fragment_copy"||op=="graph_fragment_paste"||op.rfind("graph_comment_",0)==0)return graphBatchCommand(g,op,p);
     if(op.rfind("graph_variable_",0)==0){
         if(!g.contains("variables"))g["variables"]=Json::object();auto& variables=g["variables"];const std::string name=p.at("name");
         if(op=="graph_variable_add"){

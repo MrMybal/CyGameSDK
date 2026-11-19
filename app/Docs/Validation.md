@@ -1,20 +1,12 @@
-# Validation
+# Validation — current application contract
 
-Run from the repository root with Python 3.11 or newer:
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#notices-and-verification).
 
-```powershell
-python -m pip install -e ".[mcp,dev]"
-python -m pytest -q
-python -m build --no-isolation
-```
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-The automated suite covers schemas, authentication and ownership, concurrent scheduling,
-worker cancellation, resource reservations, HTTP/MCP, automatic input staging,
-temporary task cleanup, export, shared downloads, configuration and desktop scaffolding.
-Inspect wheel and source archive contents; schemas, templates and guides are required.
-
-Optional .NET interoperability: `dotnet build Examples/DotNetClient`, followed by
-`python scripts/validate_dotnet.py`. The GitHub workflow defines Windows/Linux/macOS
-and Python 3.11/3.12 jobs. A local Windows pass does not certify the other platforms.
-Resource-capacity tests use fixtures; they do not establish model inference quality
-or GPU capacity for third-party Tools. Those need their own delivery evidence.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

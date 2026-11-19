@@ -153,7 +153,7 @@
   },
   "Focus selection": {
     "en": "Focus selection",
-    "fr": "Cadrer la selection"
+    "fr": "Centrer sur la sélection"
   },
   "RMB orbit | MMB pan | Wheel zoom | F focus": {
     "en": "RMB orbit | MMB pan | Wheel zoom | F focus",
@@ -471,10 +471,6 @@
     "en": "Configuration loaded without execution",
     "fr": "Configuration chargee sans execution"
   },
-  "CyToolsCore provides MCP, SDK, validation, jobs and transports.": {
-    "en": "CyToolsCore provides MCP, SDK, validation, jobs and transports.",
-    "fr": "CyToolsCore fournit MCP, SDK, validation, taches et transports."
-  },
   "Execute": {
     "en": "Execute",
     "fr": "Executer"
@@ -542,10 +538,6 @@
   "EDITOR API READY": {
     "en": "EDITOR API READY",
     "fr": "API EDITEUR PRETE"
-  },
-  "CyToolsCore MCP / SDK": {
-    "en": "CyToolsCore MCP / SDK",
-    "fr": "CyToolsCore MCP / SDK"
   },
   "Unsaved changes": {
     "en": "Unsaved changes",
@@ -2474,10 +2466,6 @@
   "No game runtime bridge is installed.": {
     "en": "No game runtime bridge is installed.",
     "fr": "Aucun pont vers un runtime de jeu installé."
-  },
-  "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs.": {
-    "en": "Existing CyToolsCore MCP/SDK, shared dispatcher and official worker jobs.",
-    "fr": "MCP/SDK CyToolsCore existant, dispatcher commun et jobs officiels sur workers."
   },
   "No Git/Perforce UI, engine profiler, landscape or cinematic editor.": {
     "en": "No Git/Perforce UI, engine profiler, landscape or cinematic editor.",
@@ -4894,5 +4882,265 @@
   "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required.": {
     "en": "Local CyDoc manual, contextual F1 help and complete English/French pages; no documentation server required.",
     "fr": "Manuel CyDoc local, aide F1 contextuelle et pages complètes en anglais/français ; aucun serveur de documentation nécessaire."
+  },
+  "Table view": {
+    "en": "Table view",
+    "fr": "Vue tabulaire"
+  },
+  "Hierarchy": {
+    "en": "Hierarchy",
+    "fr": "Hiérarchie"
+  },
+  "Folder actions apply to scene objects.": {
+    "en": "Folder actions apply to scene objects.",
+    "fr": "Les actions de dossier s’appliquent aux objets de scène."
+  },
+  "Text exceeds the field limit.": {
+    "en": "Text exceeds the field limit.",
+    "fr": "Le texte dépasse la limite du champ."
+  },
+  "Edit JSON...": {
+    "en": "Edit JSON...",
+    "fr": "Modifier le JSON…"
+  },
+  "Choose a source file": {
+    "en": "Choose a source file",
+    "fr": "Choisir un fichier source"
+  },
+  "Source file is unavailable.": {
+    "en": "Source file is unavailable.",
+    "fr": "Le fichier source est indisponible."
+  },
+  "Keyboard shortcuts": {
+    "en": "Keyboard shortcuts",
+    "fr": "Raccourcis clavier"
+  },
+  "Shortcut conflicts with another command.": {
+    "en": "Shortcut conflicts with another command.",
+    "fr": "Ce raccourci entre en conflit avec une autre commande."
+  },
+  "Set properties atomically": {
+    "en": "Set properties atomically",
+    "fr": "Modifier les propriétés atomiquement"
+  },
+  "Apply graph layout atomically": {
+    "en": "Apply graph layout atomically",
+    "fr": "Appliquer la disposition du graphe atomiquement"
+  },
+  "Directory exceeds the 10000-entry listing budget": {
+    "en": "Directory exceeds the 10000-entry listing budget",
+    "fr": "Le dossier dépasse la limite de 10 000 entrées"
+  },
+  "Property is read-only": {
+    "en": "Property is read-only",
+    "fr": "La propriété est en lecture seule"
+  },
+  "Common editor tools": {
+    "en": "Common editor tools",
+    "fr": "Outils d’édition communs"
+  },
+  "Typed collections and expressions": {
+    "en": "Typed collections and expressions",
+    "fr": "Collections typées et expressions"
+  },
+  "Schema-driven arrays, Sets, Maps, records and numeric expressions; existing document budgets still apply.": {
+    "en": "Schema-driven arrays, Sets, Maps, records and numeric expressions; existing document budgets still apply.",
+    "fr": "Tableaux, Sets, Maps, structures et expressions numériques selon les schémas ; les limites documentaires existantes sont conservées."
+  },
+  "Hierarchy and scene table": {
+    "en": "Hierarchy and scene table",
+    "fr": "Hiérarchie et table de scène"
+  },
+  "Common hierarchy and typed property table; validated multi-cell paste is one Undo.": {
+    "en": "Common hierarchy and typed property table; validated multi-cell paste is one Undo.",
+    "fr": "Hiérarchie commune et table de propriétés typées ; un collage multicellule validé correspond à un Undo."
+  },
+  "Native source picker": {
+    "en": "Native source picker",
+    "fr": "Sélecteur de sources natif"
+  },
+  "Cached directory listings and filters. Selection fills import fields without starting an import.": {
+    "en": "Cached directory listings and filters. Selection fills import fields without starting an import.",
+    "fr": "Listes de dossiers en cache et filtres. La sélection remplit les champs sans lancer un import."
+  },
+  "Shared source editing": {
+    "en": "Shared source editing",
+    "fr": "Édition de code partagée"
+  },
+  "Native JSON editing, text selection, syntax colors, search and local text Undo.": {
+    "en": "Native JSON editing, text selection, syntax colors, search and local text Undo.",
+    "fr": "Édition JSON native, sélection de texte, coloration, recherche et annulation textuelle locale."
+  },
+  "Editable keyboard bindings": {
+    "en": "Editable keyboard bindings",
+    "fr": "Raccourcis clavier configurables"
+  },
+  "Common command bindings, conflict checks and persisted view preferences.": {
+    "en": "Common command bindings, conflict checks and persisted view preferences.",
+    "fr": "Raccourcis des commandes communes, contrôle des conflits et préférences d’interface persistantes."
+  },
+  "Transactional comment groups": {
+    "en": "Transactional comment groups",
+    "fr": "Groupes de commentaires transactionnels"
+  },
+  "Shared group gestures carry contained nodes and commit one validated Undo; stale gestures cancel.": {
+    "en": "Shared group gestures carry contained nodes and commit one validated Undo; stale gestures cancel.",
+    "fr": "Les gestes communs des groupes entraînent leurs nœuds et produisent un Undo validé ; les gestes périmés sont annulés."
+  },
+  "AI Assistant": {
+    "en": "AI Assistant",
+    "fr": "Assistant IA"
+  },
+  "CyMCPSDK MCP / AI": {
+    "en": "CyMCPSDK MCP / AI",
+    "fr": "CyMCPSDK MCP / IA"
+  },
+  "Choose an attachment": {
+    "en": "Choose an attachment",
+    "fr": "Choisir une pièce jointe"
+  },
+  "Conversation": {
+    "en": "Conversation",
+    "fr": "Conversation"
+  },
+  "Connection settings": {
+    "en": "Connection settings",
+    "fr": "Paramètres de connexion"
+  },
+  "Allow editor changes": {
+    "en": "Allow editor changes",
+    "fr": "Autoriser les modifications dans l’éditeur"
+  },
+  "Detect providers": {
+    "en": "Detect providers",
+    "fr": "Détecter les fournisseurs"
+  },
+  "Detecting providers...": {
+    "en": "Detecting providers...",
+    "fr": "Détection des fournisseurs..."
+  },
+  "Provider": {
+    "en": "Provider",
+    "fr": "Fournisseur"
+  },
+  "Endpoint": {
+    "en": "Endpoint",
+    "fr": "Adresse du service"
+  },
+  "Executable": {
+    "en": "Executable",
+    "fr": "Exécutable"
+  },
+  "API key environment variable": {
+    "en": "API key environment variable",
+    "fr": "Variable d’environnement de la clé API"
+  },
+  "Model ID": {
+    "en": "Model ID",
+    "fr": "Identifiant du modèle"
+  },
+  "Available models": {
+    "en": "Available models",
+    "fr": "Modèles disponibles"
+  },
+  "Refresh models": {
+    "en": "Refresh models",
+    "fr": "Actualiser les modèles"
+  },
+  "Save conversation history": {
+    "en": "Save conversation history",
+    "fr": "Enregistrer l’historique de conversation"
+  },
+  "History ID": {
+    "en": "History ID",
+    "fr": "Identifiant de l’historique"
+  },
+  "Compact tool discovery": {
+    "en": "Compact tool discovery",
+    "fr": "Découverte compacte des outils"
+  },
+  "Limit API context window": {
+    "en": "Limit API context window",
+    "fr": "Limiter la fenêtre de contexte API"
+  },
+  "Context budget (KiB)": {
+    "en": "Context budget (KiB)",
+    "fr": "Budget de contexte (Kio)"
+  },
+  "Provider options (JSON)": {
+    "en": "Provider options (JSON)",
+    "fr": "Options du fournisseur (JSON)"
+  },
+  "Connect / New chat": {
+    "en": "Connect / New chat",
+    "fr": "Connecter / Nouvelle conversation"
+  },
+  "Restore saved chat": {
+    "en": "Restore saved chat",
+    "fr": "Restaurer la conversation enregistrée"
+  },
+  "Save settings": {
+    "en": "Save settings",
+    "fr": "Enregistrer les paramètres"
+  },
+  "Direct app tools are available for Codex and compatible API providers. Other CLI agents use their own MCP configuration. Credentials stay in the environment or provider account.": {
+    "en": "Direct app tools are available for Codex and compatible API providers. Other CLI agents use their own MCP configuration. Credentials stay in the environment or provider account.",
+    "fr": "Les outils directs de l’application sont disponibles pour Codex et les fournisseurs API compatibles. Les autres agents CLI utilisent leur configuration MCP. Les identifiants restent dans l’environnement ou le compte du fournisseur."
+  },
+  "The local MCP endpoint and token are stored in a private automation.json file under data/ipc. The same permissions apply to chat, CLI and MCP.": {
+    "en": "The local MCP endpoint and token are stored in a private automation.json file under data/ipc. The same permissions apply to chat, CLI and MCP.",
+    "fr": "L’adresse MCP locale et son jeton sont stockés dans le fichier privé automation.json sous data/ipc. Les mêmes autorisations s’appliquent au chat, au CLI et à MCP."
+  },
+  "API key (memory only)": {
+    "en": "API key (memory only)",
+    "fr": "Clé API (en mémoire uniquement)"
+  },
+  "Refresh saved chats": {
+    "en": "Refresh saved chats",
+    "fr": "Actualiser les conversations enregistrées"
+  },
+  "Saved conversations": {
+    "en": "Saved conversations",
+    "fr": "Conversations enregistrées"
+  },
+  "available": {
+    "en": "Available",
+    "fr": "Disponible"
+  },
+  "manual": {
+    "en": "Manual configuration",
+    "fr": "Configuration manuelle"
+  },
+  "needs-endpoint": {
+    "en": "Endpoint required",
+    "fr": "Adresse du service nécessaire"
+  },
+  "needs-key": {
+    "en": "API key required",
+    "fr": "Clé API nécessaire"
+  },
+  "no-models": {
+    "en": "No model installed",
+    "fr": "Aucun modèle installé"
+  },
+  "not-installed": {
+    "en": "Not installed",
+    "fr": "Non installé"
+  },
+  "not-running": {
+    "en": "Not running",
+    "fr": "À l’arrêt"
+  },
+  "unavailable": {
+    "en": "Unavailable",
+    "fr": "Indisponible"
+  },
+  "CyMCPSDK provides the assistant, CLI, MCP and owned worker processes.": {
+    "en": "CyMCPSDK provides the assistant, CLI, MCP and owned worker processes.",
+    "fr": "CyMCPSDK fournit l’assistant, le CLI, le MCP et la supervision des processus de calcul."
+  },
+  "CyMCPSDK ChatUI, native CLI and MCP share 177 business operations; private durable jobs retain results after restart.": {
+    "en": "CyMCPSDK ChatUI, native CLI and MCP share 177 business operations; private durable jobs retain results after restart.",
+    "fr": "ChatUI, CLI natif et MCP CyMCPSDK partagent 177 opérations métier ; les jobs privés conservent leurs résultats après redémarrage."
   }
 }

@@ -1,21 +1,12 @@
-# Erreurs
+# ErrorModel — current application contract
 
-CyToolError sérialise code, message, technicalDetails, recoverable et suggestedAction.
-Les codes restent des strings extensibles ; un client doit conserver un code inconnu.
-Les exceptions métier attendues ne doivent pas devenir des retours de succès ambigus.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#native-cli).
 
-Codes courants : InvalidDescriptor, IncompatibleVersion, InvalidParameters, InvalidOutput,
-MissingImplementation, UnknownOperation, MissingDependency, MissingRuntime, MissingModel,
-UnsupportedPlatform, UnsupportedBackend, InsufficientRAM, InsufficientVRAM,
-InsufficientDisk, UnsupportedCPU, AccessDenied, AuthenticationRequired, Busy, Timeout,
-Cancelled, Interrupted, WorkerCrashed, ProtocolError, DownloadFailed, IntegrityFailure,
-LicenseAcceptanceRequired, InternalError.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-SubmitJob refusé retourne une erreur sans créer un job. Un handler qui échoue donne
-un job Failed avec error. Une lecture GetJob réussie d'un job Failed ne transforme
-pas l'opération en succès. Une exception inattendue du handler est InternalError.
-
-Les détails d'erreur ou logs métier peuvent contenir des données utilisateur : le
-backend doit expurger les secrets avant context.log ou technicalDetails. Le Core ne
-prétend pas détecter tous les secrets arbitraires. L'API HTTP masque les exceptions
-internes du dispatcher en dehors des erreurs structurées connues.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

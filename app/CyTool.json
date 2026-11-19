@@ -3,8 +3,8 @@
   "protocolVersion": "1.0",
   "id": "cy.editor.gamesdk",
   "name": "CyGameEditor",
-  "version": "0.29.0",
-  "description": "Modular game editor foundation. CyUI native desktop and CyToolsCore MCP/SDK.",
+  "version": "0.31.0",
+  "description": "Modular game editor foundation. CyUI native desktop and CyMCPSDK assistant, CLI and MCP.",
   "vendor": "Cyberalien",
   "author": "Cyberalien",
   "executable": "runtime/python/Scripts/python.exe app/tool.py",
@@ -560,6 +560,77 @@
         },
         "required": [
           "entity"
+        ],
+        "additionalProperties": false
+      },
+      "supportedBackends": [],
+      "resourceRequirements": {
+        "ramBytes": 16777216
+      },
+      "permissions": [],
+      "canRunAsync": true,
+      "canCancel": true,
+      "supportsProgress": false,
+      "exclusiveGroups": [
+        "editor"
+      ],
+      "x-editor-undoable": true
+    },
+    {
+      "id": "property_set_many",
+      "name": "Set properties atomically",
+      "description": "Validate and apply a property batch as one Undo transaction. Reject stale revisions, locked objects, duplicate targets and invalid values without changing the document.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "edits": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4096,
+            "items": {
+              "type": "object",
+              "properties": {
+                "entityId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "propertyId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "value": {}
+              },
+              "required": [
+                "entityId",
+                "propertyId",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "edits",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "updatedCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "updatedCount"
         ],
         "additionalProperties": false
       },
@@ -3891,6 +3962,165 @@
       "x-editor-undoable": true
     },
     {
+      "id": "graph_layout_apply",
+      "name": "Apply graph layout atomically",
+      "description": "Apply graph layout atomically. Uses the running editor and its current content root.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "graphId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "functionName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+          },
+          "positions": {
+            "type": "array",
+            "maxItems": 500,
+            "items": {
+              "type": "object",
+              "properties": {
+                "nodeId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "position": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  }
+                }
+              },
+              "required": [
+                "nodeId",
+                "position"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "comments": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "properties": {
+                "commentId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "text": {
+                  "type": "string",
+                  "maxLength": 2048
+                },
+                "position": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  }
+                },
+                "size": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": 40,
+                    "maximum": 10000
+                  }
+                }
+              },
+              "required": [
+                "commentId",
+                "text",
+                "position",
+                "size"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "removeNodes": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 500,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            }
+          },
+          "removeLinks": {
+            "type": "array",
+            "maxItems": 2000,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            }
+          },
+          "removeComments": {
+            "type": "array",
+            "maxItems": 200,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            }
+          },
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "graphId",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "applied": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "applied"
+        ],
+        "additionalProperties": false
+      },
+      "supportedBackends": [],
+      "resourceRequirements": {
+        "ramBytes": 16777216
+      },
+      "permissions": [],
+      "canRunAsync": true,
+      "canCancel": true,
+      "supportsProgress": false,
+      "exclusiveGroups": [
+        "editor"
+      ],
+      "x-editor-undoable": true
+    },
+    {
       "id": "graph_nodes_remove",
       "name": "Remove graph nodes",
       "description": "Remove graph nodes. Uses the running editor and its current content root.",
@@ -3966,8 +4196,18 @@
           },
           "nodeIds": {
             "type": "array",
-            "minItems": 1,
+            "minItems": 0,
             "maxItems": 500,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            }
+          },
+          "commentIds": {
+            "type": "array",
+            "maxItems": 200,
             "uniqueItems": true,
             "items": {
               "type": "string",

@@ -3,7 +3,7 @@
 The native graph editor can extract a region of pure calculations into a new local
 function or inline macro. It derives typed boundary ports, preserves authored data,
 rewires the caller and commits one Undo transaction. The existing interpreter,
-material compiler and CyToolsCore dispatcher remain the execution paths.
+material compiler and CyMCPSDK dispatcher remain the execution paths.
 
 ## Try the editor
 
@@ -122,7 +122,7 @@ The tool does not raise limits, prune unused calculations or implicitly cast typ
 - --test-collapse seeds its fixture via native commands, then uses only its own
   isolated ImGui input for actual canvas Ctrl-selection, function/macro controls,
   previews, Apply and Ctrl+Z/Ctrl+Y. EN/FR reports contain fourteen checks each.
-- capture_collapse.py produces caller/helper examples after official Core jobs,
+- capture_collapse.py produces caller/helper examples after application durable jobs,
   full gesture runs, function/macro previews in EN/FR and previews in six themes.
   Partial frames are distinguished from full runs. Capture entries record native
   executable and source fixture hashes.

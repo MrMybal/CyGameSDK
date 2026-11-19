@@ -1,8 +1,8 @@
-"""Source build providers. Scheduling, cancellation and workers belong to CyToolsCore."""
+"""Source build providers. Scheduling, cancellation and workers belong to CyMCPSDK."""
 import json,sys
 from pathlib import Path
-from cytools_core import CyToolError
-from cytools_core.workers import ProcessWorker
+from job_contract import CyToolError
+from job_contract import ProcessWorker
 
 class BuildProvider:
     def __init__(self,provider_id,command):

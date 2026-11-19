@@ -1,22 +1,12 @@
-# Backends et modèles
+# Models — current application contract
 
-Un backend a id/name, une liste models et éventuellement version, plateformes,
-dépendances et exigences de ressources. Il déclare explicitement shareableModelInstance,
-threadSafe, concurrentInference et maxConcurrentInference.
+This legacy guide URL is preserved for existing links. The old generic runtime guide
+has been superseded by the application-specific [CyMCPSDK integration](CyMCPSDKIntegration.md#assistant).
 
-Un modèle a id/name/version, source, licence, fichiers, tailles de téléchargement et
-d'installation, plateformes, computeBackends, précisions, quantizations, profils de
-ressources et capacités. Local, Remote et Hybrid décrivent son emplacement ;
-runsLocally précise l'exécution et networkRequired le besoin de connexion.
+Use the shared native Registry for ChatUI, CLI and MCP. The application owns validation,
+document Undo, durable jobs/identities and result recovery. SDK Executor/Process own
+execution and process trees; no Python scheduler/server or model downloader is required.
 
-Les fichiers possèdent path, url, sha256, sizeBytes, et éventuellement etag/revision.
-Ils sont des métadonnées, pas une autorisation d'installer des exécutables automatiquement.
-L'adaptateur appelle DownloadManager après les décisions de licence/authentification
-requises par sa source, puis met à jour l'état installé fourni au runtime.
-
-ListModels retourne les modèles déclarés avec backendId. Une sélection modelId
-inconnue ou un modèle local non installé donne MissingModel. Les modèles distants
-ne requièrent pas un fichier local ; le backend doit vérifier son authentification.
-
-CyToolsCore ne télécharge pas un modèle sur la seule base d'une requête de génération
-et n'embarque pas de chargeur PyTorch. La notion de modèle reste facultative.
+Read [architecture](EditorArchitecture.md), [capability coverage](CapabilityCoverage.md)
+and the complete offline [manual](../../Documentation/Documentation.html#/en/automation).
+Historical releases/checkpoints retain their original contracts and evidence.

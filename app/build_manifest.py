@@ -1,4 +1,4 @@
-"""Build the one operation catalogue consumed by CyToolsCore and the native editor."""
+"""Build the one operation catalogue consumed by CyMCPSDK and the native editor."""
 import json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent
@@ -23,6 +23,7 @@ add("scene_select","Select object",entity,["entityId"])
 add("scene_create","Create cube",{"name":string},["name"],True)
 add("scene_delete","Delete object",entity,["entityId"],True)
 add("property_set","Set property",{**entity,"propertyId":string,"value":{}},["entityId","propertyId","value"],True)
+add("property_set_many","Set properties atomically",{"edits":{"type":"array","minItems":1,"maxItems":4096,"items":obj({**entity,"propertyId":string,"value":{}},["entityId","propertyId","value"])},"expectedRevision":{"type":"integer","minimum":0}},["edits","expectedRevision"],True,obj({"updatedCount":{"type":"integer","minimum":0}},["updatedCount"]),"Validate and apply a property batch as one Undo transaction. Reject stale revisions, locked objects, duplicate targets and invalid values without changing the document.")
 add("edit_undo","Undo")
 add("edit_redo","Redo")
 add("project_save","Save project",description="Explicitly save the live editor project to data/projects/Sandbox.cyproject.json. Persistent user project, not a temporary job artifact.")
@@ -85,7 +86,7 @@ for operation in operations:
 from milestone_contracts import extend
 extend(operations,obj)
 manifest=json.loads((ROOT/"CyTool.json").read_text("utf-8"))
-manifest.update(description="Modular game editor foundation. CyUI native desktop and CyToolsCore MCP/SDK.",version="0.29.0",
+manifest.update(description="Modular game editor foundation. CyUI native desktop and CyMCPSDK assistant, CLI and MCP.",version="0.31.0",
     categories=["development"],platforms=[{"os":"Windows","architecture":"x64","status":"Experimental","computeBackends":["CPU"]}],
     executable="runtime/python/Scripts/python.exe app/tool.py",standaloneExecutable="CyGameEditor.exe",
     distributionStatus="Development foundation; Windows DX11; source plugins; Sandbox adapter only",operations=operations)

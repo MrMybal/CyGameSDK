@@ -4,7 +4,7 @@ title: Logic graphs and the canvas
 description: Logic graphs and the canvas
 section: Graphs
 order: 10
-revision: 1
+revision: 2
 ---
 
 ## Author a graph {#canvas}
@@ -34,3 +34,11 @@ This interactive documentation example explains the initial event-to-print conne
 ```image
 {"id": "logic", "src": "assets/screenshots/logic.png", "alt": "Execution function with typed connections", "controls": "minimal"}
 ```
+
+## Comment group gestures and clipboard {#native-groups}
+
+Comment groups use the shared Nodes gestures: select, move, resize, rename and remove them. Moving a group carries the nodes that were inside it at gesture start. The host validates the complete layout proposal and applies group and node changes as one `graph_layout_apply` transaction. Escape or a changed document revision cancels the gesture.
+
+A generic CyUI node fragment does not contain this editor's runtime semantics. Copy requests are translated back through CyGameSDK's semantic graph exporter, retaining node types, authored values, local declarations and selected comments. Paste still uses the application's checked graph-fragment contract, with fresh node, link and comment IDs and one Undo. Existing toolbar/keyboard paste remains the supported semantic path; the generic CyUI Paste/Duplicate actions are not enabled.
+
+Execution reroutes remain typed graph nodes, rather than generic visual link points. No game graph compiler or Unreal Blueprint codec follows from these presentation tools.

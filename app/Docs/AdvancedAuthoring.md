@@ -61,7 +61,7 @@ These are concrete additions to that runtime, not empty compatibility flags.
 
 This simulation is a single execution lane. Waiting functions suspend that lane;
 custom events queue behind its work. There is no engine timer/event/concurrency
-bridge. The graph clock is separate from CyToolsCore job scheduling; Core remains
+bridge. The graph clock is separate from CyMCPSDK job scheduling; Core remains
 the sole MCP/SDK/worker scheduler. Each advance shares 4,096 execution steps and
 10,000 expression operations across nested calls; queues are capped at 4,096,
 call depth at 16 and graph/function total at 2,000 source nodes. Expanded bodies
@@ -86,7 +86,7 @@ The current implementation must not be described as full Blueprint parity.
 
 ## LOD generation and export
 
-LODs > Generate LOD invokes model_process through an official Core ProcessWorker.
+LODs > Generate LOD invokes model_process through an SDK-owned compute worker.
 The bounded static simplifier clusters vertices, preserves source boundary/seam
 vertices, removes collapsed/duplicate faces, rejects flips/non-manifold candidates
 and reports actual triangle count and maximum vertex displacement. This is an
@@ -143,7 +143,7 @@ model_process_commit validates model structure, protected provenance, target/sou
 hashes and the loaded-document budget before one Undo transaction. Changes made
 while a job runs reject its stale result. Cancellation belongs to Core and stops
 the worker; no second process/job scheduler is added. Results and reports are
-private to the Core identity/session. finish_task removes unexported task files;
+private to the authenticated job owner. finish_task retains job files;
 explicit document commits remain user operations.
 
 Short operations: model_lod_remove, model_collision_set/remove and existing model

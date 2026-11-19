@@ -23,6 +23,6 @@ public:
         }
         if(frame>1000){check("jobsCompletedBeforeTimeout",false);done_=true;}
     }
-    int finish(){if(!enabled()||!done_)return -1;writeJson(report_,{{"passed",passed_},{"input","own ImGui mouse events; real desktop Core worker jobs"},{"checks",checks_}});return passed_?0:3;}
+    int finish(){if(!enabled()||!done_)return -1;writeJson(report_,{{"passed",passed_},{"input","own ImGui mouse events; real desktop SDK-owned worker jobs"},{"checks",checks_}});return passed_?0:3;}
 };
 }

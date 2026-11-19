@@ -159,14 +159,14 @@ class PortableContracts(unittest.TestCase):
         code, result = run('plan', self.target); self.assertEqual(code, 0); self.assertTrue(result['result']['executionAvailable'])
 
     def portable_runtime(self):
-        from cytools_core import Runtime
+        from automation_client import Runtime
         from portable_assets.service import operation_descriptors, register_operations
         sources = self.workspace / 'shared-inputs'; sources.mkdir(exist_ok=True)
         manifest = json.loads((APP / 'CyTool.json').read_text('utf-8')); manifest['operations'] = operation_descriptors()
         runtime = Runtime(manifest, self.workspace / 'private-jobs'); register_operations(runtime, sources)
         return runtime, sources
     def test_17_real_core_worker_pack_privacy_export_and_task_cleanup(self):
-        from cytools_core import CyToolError
+        from job_contract import CyToolError
         runtime, sources = self.portable_runtime(); shutil.copyfile(self.source, sources / 'input.glb')
         with runtime:
             actor = runtime.authenticate(runtime.create_client('Portable owner')['token']); other = runtime.authenticate(runtime.create_client('Other client')['token']); session = runtime.create_session(actor)
@@ -180,7 +180,7 @@ class PortableContracts(unittest.TestCase):
                 except CyToolError as error:
                     if error.code != 'Busy' or time.monotonic() > deadline: raise
                     time.sleep(.02)
-            runtime.finish_task(actor, session['sessionId']); self.assertFalse(output.exists())
+            runtime.finish_task(actor, session['sessionId']); self.assertTrue(output.exists()) # Durable results outlive task completion.
             preserved = Path(exported['outputs']['outputPath']); self.assertTrue(preserved.is_file()); self.assertEqual(inspect_package(preserved)['manifest']['name'], 'SDK Mesh')
     def test_18_real_core_inspection_and_glb_export(self):
         runtime, sources = self.portable_runtime(); shutil.copyfile(FIXTURES / 'AnimatedTriangle.cypack', sources / 'input.cypack')
@@ -205,7 +205,7 @@ class PortableContracts(unittest.TestCase):
         self.error('InvalidOutput', lambda: run(payload)); self.assertFalse((self.workspace / 'escape.cypack').exists())
         parameters['outputPath'] = parameters['reportPath']; self.error('InvalidOutput', lambda: run(payload)); self.assertEqual(source.read_bytes(), self.source.read_bytes())
     def test_21_shared_inputs_cannot_expose_private_runtime_storage(self):
-        from cytools_core import Runtime
+        from automation_client import Runtime
         from portable_assets.service import operation_descriptors, register_operations
         manifest = json.loads((APP / 'CyTool.json').read_text('utf-8')); manifest['operations'] = operation_descriptors(); runtime = Runtime(manifest, self.workspace / 'private-jobs')
         try:

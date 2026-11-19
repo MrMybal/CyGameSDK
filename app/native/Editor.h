@@ -1,10 +1,14 @@
 #pragma once
 #include "Core.h"
+#include "AutomationBridge.h"
 #include "MeshPreview.h"
 #include <cyui/Core.h>
 #include <cyui/modules/Nodes.h>
 #include <cyui/modules/Inspector.h>
 #include <cyui/modules/Assets.h>
+#include <cyui/modules/Hierarchy.h>
+#include <cyui/modules/DataView.h>
+#include <cyui/modules/FilePicker.h>
 #include <cyui/modules/Viewport.h>
 #include <cyui/adapters/ImGuizmo.h>
 #include <cyui/modules/Timeline.h>
@@ -14,9 +18,11 @@
 #undef pascal // Windows calling-convention macro collides with CodeLanguage::pascal.
 #include <cyui/modules/Code.h>
 #include <cyui/modules/Diff.h>
+#include "SourceEditorBackend.h"
 #pragma pop_macro("pascal")
 #include <imgui.h>
 #include <set>
+#include <future>
 namespace cygame {
 struct GizmoDraft { cyui::Gizmo3DState ui; bool active=false; uint64_t revision=0; std::string primary;Json original=Json::array(),transforms=Json::array();float matrix[16]{}; };
 struct Camera { float yaw=-0.85f,pitch=0.55f,distance=11.0f,target[3]{0,0,0.4f}; int mode=0,drawMode=0;bool grid=true; };
@@ -46,6 +52,9 @@ public:
     explicit EditorApp(EditorCore& core);
     ~EditorApp();
     void frame();
+    void shutdownAssistant();
+    std::string assistantAction(const std::string&);
+    std::string assistantState();
     bool openDocumentation(bool contextual=true);
     // Optional host opener; defaults to the operating system browser.
     std::function<bool(const std::string&)> documentationLauncher;
@@ -84,12 +93,22 @@ public:
 private:
     friend class HelpSmokeTest;
     std::string helpContext_;
+    std::unique_ptr<AutomationBridge> assistant_;bool assistantAttachmentPicker_=false;uint64_t assistantRevision_=~uint64_t(0);std::vector<std::string> assistantSelection_;
+    void prepareAssistant();void drawAssistant();
     friend class ModuleSmokeTest; // Own-host UI fixture; no public editing bypass.
     std::vector<AssetEditorDefinition> assetEditors_;
     // Presentation state stays per document/view; Core remains the transaction owner.
     cyui::AssetState assetState_;
+    cyui::HierarchyState hierarchyState_;
+    cyui::DataViewState sceneTable_;bool outlinerTable_=false;
+    std::vector<std::string> hierarchySelection_,tableSelection_;
+    struct SourceEditorState{std::unique_ptr<SourceEditor> editor;std::string text;};
+    std::map<std::string,SourceEditorState> sourceEditors_;
+    bool editSource(const std::string&,char*,size_t,ImVec2,cyui::CodeLanguage language=cyui::CodeLanguage::json);
     std::map<std::string,cyui::InspectorState> inspectors_;
     cyui::CommandState commandState_;
+    cyui::CommandRegistry shortcuts_;std::map<cyui::ItemId,std::string> shortcutActions_;bool commandsInitialized_=false;
+    void prepareCommands();void dispatchEditorCommand(cyui::ItemId);void pollEditorCommands();
     cyui::LogBuffer uiLog_;cyui::LogState uiLogState_;
     cyui::DiffDocument uiDiff_;cyui::DiffState uiDiffState_;std::string uiDiffKey_;bool diffRaw_=false;
     struct SourceView{cyui::CodeDocument document;cyui::CodeViewState state;bool selectText=false;};
@@ -174,6 +193,8 @@ private:
     Json importReport_;std::string importCompleted_;
     Json importAction(const std::string& operation,const Json& parameters);
     void importPanel();
+    void importFilePicker();bool importPickerOpen_=false;std::string importPickerRoot_;
+    cyui::FilePickerState importPicker_;cyui::FileListing importListing_;std::future<cyui::FileListing> importListingFuture_;
     std::map<std::string,MaterialViewState> materialViews_;std::string materialParentKey_;char materialParent_[1025]{};
     struct ShaderView {std::shared_ptr<BuildClient> client;Json prepared,installed;uint64_t revision=~uint64_t(0);std::string attemptedJob,error,source;bool plane=false;};
     std::map<std::string,ShaderView> shaderViews_;std::string compilerGraph_;

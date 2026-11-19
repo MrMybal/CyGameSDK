@@ -14,7 +14,7 @@ with tempfile.TemporaryDirectory(prefix='interfaces-capture-',dir=REPORTS) as te
  def capture(name,lang,theme='unreal-dark',phase=136,example=False):
   if requested and name not in requested:return
   output=REPORTS/('interfaces-'+name+'.bmp');output.unlink(missing_ok=True);report=root/'gesture.json';report.unlink(missing_ok=True);marker=root/'ready';marker.unlink(missing_ok=True)
-  args=[str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','40']
+  args=[str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--lang',lang,'--theme',theme,'--capture',str(output),'--capture-after',str(phase),'--exit-after','40']
   if example:args+=['--asset','Examples/Example_BlueprintInterfaces.cyasset','--capture-ready',str(marker)]
   else:args+=['--test-interfaces',str(report)]
   process=subprocess.Popen(args);previous=tool.ROOT;tool.ROOT=root;proof={}

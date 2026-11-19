@@ -5,7 +5,7 @@ This file is for assistants working on the application's documentation. The huma
 ```json
 {
   "application": "CyGameSDK",
-  "version": "0.29.0",
+  "version": "0.31.0",
   "entry": "Documentation.html",
   "manifest": "DocData/manifest.json",
   "defaultLocale": "en",

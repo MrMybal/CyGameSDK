@@ -9,7 +9,7 @@ This release adds a read-only preview and explicit apply for signatures in one
 loaded graph asset. It updates function/macro boundaries and calls, compatible
 fallback values and wires. Linked interface methods, implementations and class
 overrides migrate together. English remains the default/source/fallback language;
-French is selectable. CyToolsCore remains the MCP/AI SDK and job implementation.
+French is selectable. CyMCPSDK remains the MCP/AI SDK and job implementation.
 
 Migration never runs when an asset is opened. It does not migrate enum/structure
 shapes, arbitrary game data or files in another SDK. A menu or operation here does
@@ -153,7 +153,7 @@ these limits or allow recursive calls.
   explicit loss handling, stale/changed request rejection, macro/nested/material
   contexts, interface/override/shared-binding propagation, fixed callback contracts,
   compatible callback extra arguments, swaps, nominal type changes, bounded details,
-  persistence/metadata, no-op behavior, Undo and official Core jobs.
+  persistence/metadata, no-op behavior, Undo and application durable jobs.
 - --test-migration uses native API setup for previews and only its own isolated
   ImGui input for Apply, loss acceptance, Ctrl+Z and Ctrl+Y. EN/FR gesture reports
   contain twelve checks each. It does not control the user's global desktop.

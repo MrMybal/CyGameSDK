@@ -1,8 +1,8 @@
-"""Preview compiler jobs use the installed CyToolsCore scheduler and worker contract."""
+"""Preview compiler jobs use the installed CyMCPSDK scheduler and worker contract."""
 import json,sys
 from pathlib import Path
-from cytools_core import CyToolError
-from cytools_core.workers import ProcessWorker
+from job_contract import CyToolError
+from job_contract import ProcessWorker
 
 def register_shader_operation(runtime,editor_call,worker=None):
     worker=worker or ProcessWorker([sys.executable,str(Path(__file__).with_name('shader_worker.py'))],idle_timeout=120)

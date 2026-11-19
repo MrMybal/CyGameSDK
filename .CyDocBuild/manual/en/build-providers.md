@@ -4,7 +4,7 @@ title: Build targets and packaging
 description: Build targets and packaging
 section: Integration
 order: 61
-revision: 1
+revision: 2
 parent: game-adapters
 ---
 
@@ -16,7 +16,7 @@ Open Build and Package. The adapter's `buildTargets()` declares target ID, provi
 
 ## Run and consume {#jobs}
 
-The GUI uses its persistent SDK client and the existing official ProcessWorker. Registered Python source providers perform real discovery/compilation/packaging for a game. Pass a complete provider map when overriding defaults. Core owns progress, cancellation, private job paths and cleanup. Export temporary-task results before finishing; desktop results follow persistent session lifetime.
+The GUI launches the native CyMCPSDK companion. Trusted Python source providers retain real discovery/compilation/packaging. Pass a complete provider map when overriding defaults. The application persists progress, cancellation and result files, and the SDK owns the child process tree. Results survive task completion and restart; export or remove them deliberately.
 
 A successful Sandbox ZIP contains document data, not cooked content or imported file payloads. A real adapter must identify the actual compiler/platform SDK, produce the real format and validate it with the target game. Build/play buttons alone are not proof of support.
 

@@ -4,7 +4,7 @@ title: Mesh, skeleton and animation editing
 description: Mesh, skeleton and animation editing
 section: Assets
 order: 22
-revision: 1
+revision: 2
 ---
 
 ## Open and edit a neutral document {#edit}
@@ -13,7 +13,7 @@ Import a self-contained GLB/CyPack to a new `.cy3d`, then double-click it. Each 
 
 Mesh selects mesh/primitive/vertex and edits position, normal, UV, joint slots and weights. Normal and weight sums normalize on edit; joint indices remain integers. Skeleton edits node name, parent and TRS. Cycles and zero quaternions fail atomically. Matrix nodes require decomposition before TRS editing; inverse-bind matrices are not automatically rebuilt after rig changes.
 
-Animation selects a clip, plays/pauses/loops/scrubs, creates clips/TRS tracks and inserts/removes keys. Times increase strictly and tracks keep at least one key. Empty clips need a track before GLB export. LINEAR, STEP and CUBICSPLINE are evaluated; cubic tangents survive export but have no tangent-handle UI. All authoring uses document Undo. Save asset is explicit; export GLB/CyPack runs a Core job.
+Animation selects a clip, plays/pauses/loops/scrubs, creates clips/TRS tracks and inserts/removes keys. Times increase strictly and tracks keep at least one key. Empty clips need a track before GLB export. LINEAR, STEP and CUBICSPLINE are evaluated; cubic tangents survive export but have no tangent-handle UI. All authoring uses document Undo. Save asset is explicit; export GLB/CyPack runs a durable application job.
 
 ## LODs, collisions and retargeting {#authoring}
 

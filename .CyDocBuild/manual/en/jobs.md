@@ -1,25 +1,56 @@
 ---
 id: jobs
-title: Jobs, workers and task files
-description: Jobs, workers and task files
+title: Durable jobs, workers and results
+description: Follow native jobs and recover their outputs after restart.
 section: SDK
 order: 50
-revision: 1
+revision: 2
 parent: automation
 ---
 
 ## Follow the job lifecycle {#lifecycle}
 
-CyToolsCore owns identities, authenticated sessions, sequential scheduling, progress, cancellation and ProcessWorker. Use the existing SDK/MCP server, not an extra scheduler. Submit an operation, poll `cy_get_job`, and wait for Completed, Cancelled or Failed. Cancellation is a request, not proof that persistent commit never began.
+CyMCPSDK supplies native execution/cancellation and owned processes. The application
+persists job state and files. Canonical operations return direct results; compatibility
+op_<id> aliases submit asynchronous jobs. Poll job_get or cy_get_job until Completed,
+Cancelled, Failed or Interrupted. A cancelled call may already have crossed a persistent
+commit boundary: inspect current state before deciding to invoke again.
 
-Temporary sessions group producers and consumers. Read or import outputs while the task stays open. `cy_export_job` copies a result bundle outside the runtime into a unique destination; export before `cy_finish_task` if it must survive. Finish deletes task-owned imported copies and entire job workspaces, not original files, model weights or explicit exports. Active workers cause Busy; cancellation/cleanup wait for actual worker shutdown. A local path refers to the tool's host, not another computer.
-
-Idle tasks expire by default after 3600 seconds; keep-alive renews them. Explicit task retention is 1–86400 seconds. Desktop GUI sessions are persistent; do not assume the temporary AI session policy also deletes desktop outputs. Task metadata/history can remain while deleted artifact payloads are marked purged. Old sessions without a temporary flag are preserved.
+Jobs and artifacts are durable application data. Finish-task does not remove results.
+They survive restart and SDK resource TTL. Export deliberately and remove retained data
+only when no longer needed. Recovery marks unfinished work Interrupted when its owner
+has ended; it never replays a job automatically.
 
 ## Implement a provider {#providers}
 
-Allocate generated/intermediate/diagnostic outputs with `JobContext.path`. Configure accepted input roots and real input-file fields before runtime startup; do not declare model weights, executable paths or export destinations as disposable input artifacts. The official one-shot worker reads an owned request, writes owned outputs/reports and returns structured JSON. Preserve exit/error/cancellation semantics and ownership checks. Never accept executable commands from an asset file.
+Use the trusted source factories and bounded JobContext.path outputs. Existing Python
+computations run beneath the SDK-owned process tree, with cooperative cancellation and
+final cleanup before desktop status reports clientClosed. Real game formats/toolchains
+remain adapter work. Never accept executable commands from asset/project JSON.
 
 ## Shared clients and transports {#clients}
 
-The native Windows editor endpoint is local IPC. The bridge supports the existing Core CLI/JSONL/MCP and authenticated HTTP service. For clients sharing a single job runtime, use that service and its MCP bridge instead of separate competing runtimes. Protocol envelopes, parameter validation, error codes and identity boundaries belong to CyToolsCore. Core error codes are machine-readable; do not parse localized UI strings.
+CLI, chat and MCP use the same registry, native command validation and host policy.
+Windows editor calls are serialized on its owning thread. A loopback endpoint represents
+one authenticated identity, with an owner-only token. Isolate endpoints/stores for distinct
+remote identities. The compatibility Python client retains authenticated job ownership.
+Do not parse translated labels for status or errors.
+
+## Recover complete results {#results}
+
+job_list supports state/operation filters and offset/limit pagination; follow nextOffset.
+job_get returns durable output locations. job_result_read returns UTF-8-safe JSON chunks.
+job_output_read returns bounded base64 file chunks across CLI processes. job_output_open
+produces a private SDK resource progressively; follow its manifest and chunk URIs.
+An expired resource never causes an export or mutation to run again.
+
+Completed artifacts are outputs. Partial files from failed/interrupted jobs are diagnostics.
+Permissions and path confinement are checked for every result/file request.
+
+## Existing installations {#legacy}
+
+The compatibility loader reads old SQLite records without the former runtime package.
+It preserves owner IDs, token hashes, unknown metadata, output locations and recipe formats.
+The original database/artifact folders remain unchanged. The explicit legacy_jobs.py
+utility can copy records into the new store; reassignment to the local endpoint identity
+requires its explicit --owner local option.

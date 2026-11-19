@@ -2,8 +2,8 @@
 import hashlib,json,sys
 from pathlib import Path
 from jsonschema import Draft202012Validator
-from cytools_core import CyToolError
-from cytools_core.workers import ProcessWorker
+from job_contract import CyToolError
+from job_contract import ProcessWorker
 
 class GameCodecProvider:
  def __init__(self,descriptor,command):

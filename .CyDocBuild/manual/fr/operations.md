@@ -4,13 +4,13 @@ title: Référence des opérations du SDK natif
 description: Référence des opérations du SDK natif
 section: SDK
 order: 51
-sourceRevision: 1
+sourceRevision: 2
 parent: automation
 ---
 
 ## Utiliser le catalogue réel {#catalogue}
 
-Les pages ci-dessous proviennent du CyTool.json distribué. Elles conservent les schémas exacts, champs requis/défauts et indicateurs déclarés d’asynchronisme, annulation et historique. Elles décrivent les opérations natives ; les fournisseurs de jeux demandent une implémentation réelle. MCP expose ces IDs via le transport Core existant.
+Les pages ci-dessous proviennent du CyTool.json distribué. Elles conservent les schémas exacts, champs requis/défauts et indicateurs déclarés d’asynchronisme, annulation et historique. Elles décrivent les opérations natives ; les fournisseurs de jeux demandent une implémentation réelle. MCP expose ces IDs via le transport natif CyMCPSDK.
 
 ## `editor` {#editor}
 

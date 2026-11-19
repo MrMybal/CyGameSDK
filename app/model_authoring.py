@@ -1,4 +1,4 @@
-"""Bounded neutral authoring algorithms; trusted Core worker code, no engine codec."""
+"""Bounded neutral authoring algorithms; trusted compute worker code, no engine codec."""
 import copy,math,uuid
 NS='org.cygame.editor'
 def require(ok,message):

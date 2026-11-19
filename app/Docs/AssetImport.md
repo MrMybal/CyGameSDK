@@ -10,7 +10,7 @@ bounded profile described in Native3DAssets.md. Neither provider is a game codec
 
 Content Browser > Add > Import source file opens Asset Import. Browse for a source,
 choose the destination and optionally select a registered importer. Validate
-source checks the plan; Import starts an official CyToolsCore job. The panel shows
+source checks the plan; Import starts an official CyMCPSDK job. The panel shows
 progress, errors and cancellation. Imported assets have a badge; PNG/JPEG/BMP tiles
 show decoded thumbnails. Search `imported:true` or `imported:false` to filter them.
 
@@ -32,17 +32,17 @@ independent document with a fresh UUID and no reimport sidecar.
 
 - `asset_importers`: registered native provider descriptors.
 - `asset_import_prepare`: validates source, destination, provider and current hashes.
-- `asset_import` / `asset_reimport`: long SDK/MCP operations with Core job progress.
+- `asset_import` / `asset_reimport`: long SDK/MCP operations with durable job progress.
 - `asset_import_commit`: validates and installs an owned worker report.
 - `asset_import_info` / `asset_import_check`: metadata and explicit source checks.
 - `asset_import_view` / `asset_import_request` / `asset_import_status` /
-  `asset_import_cancel`: desktop panel and its Core SDK client.
+  `asset_import_cancel`: desktop panel and its native SDK client.
 - `asset_browser_settings`: query, category, folder and tile/list presentation.
 
-`import_service.py` registers the long operations in the existing CyToolsCore
+`import_service.py` registers the long operations in the existing CyMCPSDK
 runtime. `ImportProvider` uses the official `ProcessWorker`; the desktop reuses
-`BuildClient` / `build_bridge.py` as a persistent SDK client. There is no additional
-scheduler or MCP implementation. Core owns identities, job files and cancellation.
+`BuildClient` / `native/automation/Cli.cpp` as a persistent SDK client. There is no additional
+scheduler or MCP implementation. The app owns identities/durable job files; SDK Process owns cancellation of child trees.
 
 The worker copies/hashes chunks, detects size/mtime changes while reading, and
 writes a staged file and report through `JobContext.path`. The native owner thread
@@ -53,7 +53,7 @@ root. An SDK runtime placed outside that root cannot commit its reports.
 Cancellation before commit keeps the destination absent or unchanged. Once a
 persistent commit begins, cancellation or an interrupted reply can coexist with a
 completed import: inspect the destination before retrying. Imported files and
-metadata survive job/task cleanup. Staging and reports follow Core task lifetime.
+metadata survive job/task cleanup. Staging and reports are durable job artifacts; explicit archival is required.
 The Sandbox document ZIP export does not yet package imported files.
 
 ## Metadata and rollback

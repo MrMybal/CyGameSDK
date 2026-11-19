@@ -78,6 +78,29 @@ int main(int argc,char** argv){
         const auto source=fs::absolute(fs::u8path(argv[1])/"data/reports"/(uniqueId()+".contract"));fs::create_directories(source.parent_path());{std::ofstream file(source);file<<"contract";}
         auto importPlan=c.execute("asset_import_prepare",{{"sourcePath",source.u8string()},{"destination","Custom/Probe.asset"},{"importerId","test.raw"}});fs::remove(source);
         expect(inspected&&importPlan["info"]["kind"]=="test","Source importer inspector was not called");
+        {
+            EditorCore batch(fs::u8path(argv[1]));const auto before=batch.entities();
+            const auto ids=Json::array({"hero","pillar"});Json edits=Json::array();
+            for(const auto& id:ids)edits.push_back({{"entityId",id},{"propertyId","name"},{"value","Batch "+id.get<std::string>()}});
+            const auto revision=batch.revision();batch.execute("property_set_many",{{"edits",edits},{"expectedRevision",revision}});
+            expect(batch.execute("edit_history").at("undo").size()==1,"Property batch must create exactly one Undo");
+            batch.execute("edit_undo");expect(batch.entities()==before,"Property batch Undo lost data");batch.execute("edit_redo");
+            rejects([&]{batch.execute("property_set_many",{{"edits",edits},{"expectedRevision",revision}});});
+            const auto snapshot=batch.entities();const auto history=batch.execute("edit_history");edits[1]["value"]=false;
+            rejects([&]{batch.execute("property_set_many",{{"edits",edits},{"expectedRevision",batch.revision()}});});
+            expect(batch.entities()==snapshot&&batch.execute("edit_history")==history,"Invalid property batch partially committed");
+            edits[1]=edits[0];rejects([&]{batch.execute("property_set_many",{{"edits",edits},{"expectedRevision",batch.revision()}});});
+            const auto comment=batch.execute("graph_comment_add",{{"graphId","logic"},{"text","Group"},{"position",{10,10}},{"size",{400,240}}}).at("comment");
+            const auto graph=batch.graphs().at("logic");const auto first=graph.at("nodes")[0];const auto undoCount=batch.execute("edit_history").at("undo").size();
+            const auto layout=Json{{"graphId","logic"},{"expectedRevision",batch.revision()},{"positions",Json::array({{{"nodeId",first.at("id")},{"position",{80,90}}}})},{"comments",Json::array({{{"commentId",comment.at("id")},{"text","Moved"},{"position",{40,50}},{"size",{420,260}}}})}};
+            batch.execute("graph_layout_apply",layout);expect(batch.execute("edit_history").at("undo").size()==undoCount+1,"Group movement split its Undo");
+            batch.execute("edit_undo");expect(batch.graphs().at("logic")==graph,"Group Undo did not restore the complete graph");
+            auto invalid=layout;invalid["expectedRevision"]=batch.revision();invalid["comments"][0]["commentId"]="missing";
+            rejects([&]{batch.execute("graph_layout_apply",invalid);});expect(batch.graphs().at("logic")==graph,"Invalid group edit partially moved nodes");
+            const auto copied=batch.execute("graph_fragment_copy",{{"graphId","logic"},{"nodeIds",Json::array()},{"commentIds",Json::array({comment.at("id")})}}).at("fragment");
+            batch.execute("graph_fragment_paste",{{"graphId","logic"},{"fragment",copied}});
+            const auto& groups=batch.graphs().at("logic").at("comments");expect(groups.size()==2&&groups[0].at("id")!=groups[1].at("id"),"Comment paste did not allocate fresh IDs");
+        }
         std::cout<<"Native contracts: passed\n";return 0;
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

@@ -12,7 +12,7 @@ with tempfile.TemporaryDirectory(prefix='completion-captures-',dir=REPORTS) as t
  def capture(name,*args):
   output=REPORTS/((PREFIX+'-')+name+'.bmp')
   if output.exists():output.unlink()
-  process=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--capture',str(output),*args],timeout=30)
+  process=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--capture',str(output),*args],timeout=30)
   if process.returncode or not output.is_file():raise RuntimeError((name,process.returncode))
   results.append({'name':name,'path':str(output),'passed':True});print(name,'passed',flush=True)
  for language in ('en','fr'):
@@ -23,10 +23,10 @@ with tempfile.TemporaryDirectory(prefix='completion-captures-',dir=REPORTS) as t
   capture('import-'+language,'--panel','imports','--lang',language)
  for theme in ('unreal-dark','mid-grey','light-grey','amber-night','violet','navy'):
   capture('3d-theme-'+theme,'--asset','Examples/AnimatedTriangle.cy3d','--model-tab','Animation','--model-time','.5','--theme',theme,'--lang','en')
- # Compile, apply and retain actual image resources after the Core task is finished.
+ # Compile, apply and retain actual image resources after the durable task is finished.
  for language in ('en','fr'):
   output=REPORTS/((PREFIX+'-textured-material-')+language+'.bmp');marker=root/'capture.ready';marker.unlink(missing_ok=True)
-  process=subprocess.Popen([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Materials','--asset','Examples/Example_TexturedMaterial.cyasset','--lang',language,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','45'])
+  process=subprocess.Popen([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Materials','--asset','Examples/Example_TexturedMaterial.cyasset','--lang',language,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','45'])
   previous=tool.ROOT;tool.ROOT=root
   try:
    deadline=time.monotonic()+10

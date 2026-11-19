@@ -6,14 +6,15 @@ requires an adapter, real format/toolchain knowledge and verification against th
 
 - Check `runtime/active-release.json`, `app/CyTool.json` and the running
   `editor_status` before assuming a version or capability. Currently the active
-  source/catalogue/executable is 0.29.0. The preserved 0.19.0 candidate is under
+  source/catalogue/executable is 0.31.0. The preserved 0.19.0 candidate is under
   `runtime/development-0.19.0`; its executable remains historical. Import source
   was adopted and verified in 0.20.0; read `app/Docs/CompletionMilestones.md`.
 - For a new game, follow `app/Docs/GameAdapterGuide.md` and fill in
   `app/Docs/GamePortingTemplate.md`. Use a separate destination authorized by the user.
   Do not overwrite this reusable foundation or the user's installed game files.
-- CyToolsCore provides MCP, the AI SDK, identities, jobs and ProcessWorker.
-  Extend operations/providers; do not implement a replacement MCP server or scheduler.
+- CyMCPSDK supplies the shared Registry, assistant, CLI/MCP transports, Executor and
+  owned process trees. The application owns durable jobs, identities and results.
+  Read app/Docs/CyMCPSDKIntegration.md. Do not restore the retired Python runtime.
 - CyUI supplies modular presentation and the pinned ImGui snapshot. Read
   `app/Docs/CyUIMigration.md`, `app/dependencies.lock.json`, then the locked CyUI
   checkout's `docs/AI_GUIDE.md` and `docs/MODULES.md` before native UI edits.
@@ -27,10 +28,9 @@ requires an adapter, real format/toolchain knowledge and verification against th
 - Keep runtime and manifest/source versions matched. Preserve project/asset data.
   Do not rebuild or replace the user's running editor just to update documentation.
 
-The generic CyToolsCore documents under app/Docs are reference material. Model
-installers, CUDA, mesh generation and other product-specific requirements apply
-only when the requested game integration actually uses those features. The
-CyGameSDK-specific guides above describe this editor's current implementation.
+Legacy generic guide paths redirect to the current application contracts. Model
+installers, CUDA and generation engines are not bundled. Use the application-specific
+guides and exact dependency lock; do not modify sibling libraries.
 
 Include root AGENTS.md and AI_GUIDE.md in future source distributions/checkpoints,
 alongside the app documentation and examples. Historical archives remain unchanged.
@@ -102,3 +102,14 @@ Commit only completed edits and cancel stale/hidden Inspector drafts, including
 ImGui deactivation replay. Preserve authored captions/IDs independently of locale.
 Read app/Docs/CyUIMigration.md for the remaining API gaps and retained adapters.
 --test-modules injects only its own isolated ImGui context, as do the other tests.
+
+Native 0.30 editor tools: keep the exact CyUI lock and the C++20 CodeEditor bridge
+isolated from the C++17 host/domain. Read app/Docs/CyUIMigration.md. Preserve typed
+collection schemas, exact integers, graph-local nominal clipboard identities and
+raw enum/RGB adapters. property_set_many and graph_layout_apply validate whole
+batches and create one Undo. Synchronize hierarchy/table selection only when the
+external ordered selection changes; never reorder SDK selection during drawing.
+Generic CyUI node fragments are not runtime graphs: use the semantic exporter and
+keep local declarations, values and comments. FilePicker listings are cached host
+data; selection is not import. --test-modules and --test-source-only inject only
+the isolated test host's own ImGui events.

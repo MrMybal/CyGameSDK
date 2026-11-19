@@ -1,38 +1,62 @@
 ---
 id: protocol
 title: Transport protocol and events
-description: Transport protocol and events
+description: Native SDK JSON, MCP and compatibility envelopes
 section: SDK
 order: 53
-revision: 1
+revision: 2
 parent: automation
 ---
 
-## CyTools envelopes {#envelopes}
-Core protocol 1.0 uses the same UTF-8 JSON envelopes on JSONL stdio and HTTP POST `/v1`. HTTP V1 requires Content-Length; chunked request bodies are unsupported. This is the CyTools protocol; MCP is a separate official adapter. Correlate response IDs. Responses contain exactly result or error. JSONL commands are handled in order, while submitted jobs may run concurrently. No implicit JSON-RPC batch is supported.
+## Native and compatibility envelopes {#envelopes}
 
-```json
+Native **CyGameCLI jsonl** and authenticated HTTP POST **/v1** use SDK JSON.
+Responses contain result or error. MCP uses its own JSON-RPC protocol at **mcp**
+stdio or **/mcp**; a generic JSONL request is not an MCP packet.
+
+~~~json
+{"method":"invoke","name":"scene_list","arguments":{}}
+~~~
+
+Existing **app/tool.py stdio** preserves supported protocol-1.0 envelopes:
+
+~~~json
 {"protocolVersion":"1.0","id":1,"method":"DescribeTool","params":{}}
-```
+~~~
 
-Python Runtime arguments use snake_case; network fields and LocalClient.call use camelCase. Authenticate HTTP with Authorization: Bearer TOKEN. Client IDs are identities, not credentials. The server creates authenticated sessions/workspaces; SubmitJob does not accept an owner identity or workspace path.
+HTTP requires a private Bearer token and uses one authenticated host identity.
+Owner and workspace paths are assigned by the host. No caller-supplied principal
+is accepted by public MCP/HTTP. Select a matching editor with **--root**.
 
 ## Method families {#methods}
-| Purpose | Methods |
-| --- | --- |
-| Discover | DescribeTool, GetCapabilities, ListOperations, DescribeOperation(operationId), ListBackends, ListModels(backendId?) |
-| Runtime | GetRuntimeStatus, GetSystemResources, EstimateResources, CanRun, Diagnose |
-| Sessions | CreateSession(temporary?, retentionSeconds?), CloseSession(sessionId) |
-| Jobs | SubmitJob(sessionId, operationId, parameters, backendId?, modelId?, priority?, queueTimeout?, executionTimeout?), GetJob(jobId), ListJobs, CancelJob(jobId), ShareJob(jobId, visibility, sharedWith?) |
-| Task files | ImportFile(sessionId, source, companions?), ExportJob(jobId, destination), FinishTask(sessionId, cancelRunning?), KeepTaskAlive(sessionId) |
-| Events/resources | GetEvents(after?), ReleaseResources(level) |
 
-DescribeTool returns the complete manifest. CanRun reports admissibility and waitingForResources/waitingForConcurrency, not a reservation. GetRuntimeStatus returns toolId, activeClients, activeSessions, queuedJobs, runningJobs, runningWorkers, unknownWorkers, resources and acceptingJobs; global counts do not expose another client's job payloads. CloseSession is Busy with active jobs. ReleaseResources requires manageResources permission. See [task lifecycle](doc:jobs).
+Native discovery uses list, describe and invoke. The Python compatibility channel
+supports DescribeTool, GetCapabilities, ListOperations, DescribeOperation,
+ListBackends, ListModels, GetRuntimeStatus, CreateSession, SubmitJob, GetJob,
+ListJobs, CancelJob, ExportJob, FinishTask and CloseSession.
 
-## Events and cursor recovery {#events}
-Events carry sequence, type, timestamp, toolId, data and applicable clientId/sessionId/jobId. GetEvents(after) returns authorized events, cursor and gap. Pass the returned cursor next time. On gap, re-read persistent job state. Reset your cursor if it goes backwards after runtime restart. In-memory events/logs are bounded, not a durable archive.
+Old generic model/resource/download methods are not implemented by this editor.
+They return an explicit UnsupportedMethod error rather than implying a provider.
+The native business registry and durable service schemas are authoritative.
 
-Events include ToolStarted/ToolStopping, SessionCreated/SessionClosed, JobCreated/Queued/WaitingForResources/Preparing/Started/Progress/Cancelling/Cancelled/Completed/Failed, ResourceReservationCreated/Released and Log. `context.log(message, level)` correlates a log with its job; usual levels are Trace, Debug, Info, Warning, Error, Critical. Optional download/model events do not prove that this editor includes such providers.
+## Changes and recovery {#events}
+
+SDK ChangeFeed and compatible MCP subscriptions report catalogue/resource changes.
+TTL and explicit refresh remain available. Scene snapshots refresh after document
+or ordered-selection revisions. Mutations are never cached or automatically replayed.
+Private optional performance JSONL contains metadata only, excluding messages,
+results, keys and sensitive identifiers.
+
+Read durable job state after a disconnect or notification gap. Expired transient
+resources do not repeat their producing operation; recover original artifacts by job ID.
 
 ## Scheduling {#scheduling}
-Admissible jobs are ordered by Interactive, Critical, High, Normal, Background, Low priority, then arrival. Running jobs are not preempted. maxWorkers, backend concurrency, resource budgets and shared exclusiveGroups still apply. A group is a case-sensitive logical identifier, not a GPU device or VRAM reservation. Groups are acquired atomically and kept until the handler and its worker cleanup finish, including cancellation. A conflict remains Queued; memory pressure uses WaitingForResources. Priority does not grant permissions. Groups belong to one shared Runtime, not all processes or Tools; starvation prevention and cross-Tool scheduling are not implemented.
+
+SDK Executor runs application jobs; a host mutex serializes compute for one project.
+Cancellation is cooperative, then terminates the SDK-owned child tree if necessary.
+Terminal desktop readiness follows runtime closure. Durable records/results survive
+process exit; interrupted work is marked Interrupted and never resumed automatically.
+
+This host does not implement the former generic priority/GPU-budget scheduler,
+model downloads or cross-application orchestration. Graph simulation time remains
+independent of compute scheduling. [Job lifecycle](doc:jobs).

@@ -1,11 +1,12 @@
 """Nominal type identity, native execution, persistence, budgets and UI contracts."""
+import os
 import copy,json,os,shutil,sys,unittest
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import tool,test_integration as integration
 import test_authoring as authoring
-from cytools_core import CyToolError
+from job_contract import CyToolError
 ENUM={'kind':'enum','members':['Friendly','Hostile','Neutral'],'default':'Neutral','customMetadata':{'keep':True}}
 FIELDS={'health':{'type':'float','default':100},'faction':{'type':'enum.Faction','default':'Neutral'}}
 VALUE={'health':100,'faction':'Neutral'}
@@ -96,7 +97,7 @@ class NamedTypes(unittest.TestCase):
   import subprocess
   root=self.workspace/'types-gestures';(root/'app').mkdir(parents=True);shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copyfile(APP/'interface_features.json',root/'app/interface_features.json');shutil.copytree(APP/'locales',root/'app/locales')
   report=ROOT/'data/reports/types-gestures.json';report.unlink(missing_ok=True)
-  run=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace','Scripting','--test-types',str(report),'--exit-after','20'],timeout=35)
+  run=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace','Scripting','--test-types',str(report),'--exit-after','20'],timeout=35)
   fatal=root/'data/logs/native-fatal.json'
   if fatal.exists():shutil.copyfile(fatal,ROOT/'data/reports/types-gesture-fatal.json')
   self.assertEqual(run.returncode,0,report.read_text('utf-8') if report.exists() else fatal.read_text('utf-8') if fatal.exists() else 'No gesture report');self.assertTrue(json.loads(report.read_text('utf-8'))['passed']);self.assertFalse((root/'data/settings/ui-preferences.json').exists());self.assertFalse((root/'data/settings/editor.ini').exists())

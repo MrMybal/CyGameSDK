@@ -84,3 +84,11 @@ files, saved preferences and layout retain their baseline hashes.
 Read [CyUIMigration](CyUIMigration.md) for the exact API gaps and retained adapters.
 Evidence: `data/reports/cyui-validation.json`. Catalogue remains 175 editor
 operations / 196 tools including Core. No game codec or engine binding is added.
+
+## Native 0.31 integrated automation
+
+CyMCPSDK 0.7.0 replaces the former Python runtime with one assistant/CLI/MCP registry.
+177 business operations retain their owner-thread validation/Undo and trusted compute
+providers. Durable jobs preserve results past restart, finish-task and SDK resource TTL.
+Read [integration](CyMCPSDKIntegration.md) and [release notes](Release-0.31.0.md).
+Earlier milestone statements above describe their historical versions.

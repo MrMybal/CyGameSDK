@@ -17,7 +17,7 @@ HelpTopic documentationTopic(const std::string& panel){
         {"signatureMigration",{"signature-migration","preview"}},{"typeMigration",{"type-migration","preview"}},
         {"mesh",{"assets-3d","edit"}},{"compiler",{"materials","compile"}},
         {"codecs",{"game-codecs","registry"}},{"build",{"build-providers","targets"}},
-        {"operations",{"operations","catalogue"}},{"modules",{"extensions","contracts"}},
+        {"assistant",{"automation","assistant"}},{"operations",{"operations","catalogue"}},{"modules",{"extensions","contracts"}},
         {"options",{"workspace","layouts"}},{"history",{"quickstart","open"}},
         {"log",{"troubleshooting","launch"}},{"diagnostics",{"troubleshooting","missing"}}
     };

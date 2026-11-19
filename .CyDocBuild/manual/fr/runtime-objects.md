@@ -4,7 +4,7 @@ title: Temps, événements et objets du runtime
 description: Temps, événements et objets du runtime
 section: Graphes
 order: 15
-sourceRevision: 1
+sourceRevision: 2
 parent: graphs
 ---
 
@@ -16,4 +16,4 @@ Inspectez les champs avec `graph_debug_status` et modifiez les valeurs prises en
 
 ## Clarifier les responsabilités {#ownership}
 
-Les jobs Core exécutent import, compilation des matériaux et fournisseurs de build hors de l’interface. Identités, annulation, sessions et durée de vie des sorties appartiennent à CyToolsCore. Les [jobs workers](doc:jobs) décrivent ce cycle séparé. Variables et champs d’objets à l’exécution ne réécrivent pas silencieusement les déclarations ni les assets source enregistrés.
+Les jobs SDK/hôte exécutent import, compilation des matériaux et fournisseurs de build hors de l’interface. L’hôte conserve propriété et résultats durables ; le SDK fournit annulation et processus possédés. Les [jobs workers](doc:jobs) décrivent ce cycle séparé. Variables et champs d’objets à l’exécution ne réécrivent pas silencieusement les déclarations ni les assets source enregistrés.

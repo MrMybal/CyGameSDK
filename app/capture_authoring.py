@@ -14,7 +14,7 @@ with tempfile.TemporaryDirectory(prefix='authoring-capture-',dir=REPORTS) as tem
  def capture(name,language,asset=None,action=None,tab=None,theme=None,workspace='Level',debug=False,codec=False):
   if requested and name not in requested:return
   output=REPORTS/('authoring-'+name+'.bmp');marker=root/'ready';marker.unlink(missing_ok=True);output.unlink(missing_ok=True)
-  args=[str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--workspace',workspace,'--lang',language,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','60']
+  args=[str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--workspace',workspace,'--lang',language,'--capture',str(output),'--capture-after','90','--capture-ready',str(marker),'--exit-after','60']
   if asset:args+=['--asset','Examples/'+asset]
   if tab:args+=['--model-tab',tab]
   if theme:args+=['--theme',theme]

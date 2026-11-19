@@ -43,3 +43,6 @@ Thumbs.db
 .CyDocBuild/internal/
 .CyDocBuild/api/
 .CyDocBuild/manual/*/api-generated/
+
+# Temporary same-base config for atomic CyDoc export generation
+.CyDocBuild/build-config-*.json

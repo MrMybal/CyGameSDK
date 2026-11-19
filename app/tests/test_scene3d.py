@@ -5,7 +5,7 @@ APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import scene3d,tool
 import test_integration as integration
-from cytools_core import CyToolError
+from job_contract import CyToolError
 from portable_assets.package import read_package
 
 class CodecTests(unittest.TestCase):

@@ -4,7 +4,7 @@ title: Édition de maillages, squelettes et animations
 description: Édition de maillages, squelettes et animations
 section: Ressources
 order: 22
-sourceRevision: 1
+sourceRevision: 2
 ---
 
 ## Ouvrir et modifier un document neutre {#edit}
@@ -13,7 +13,7 @@ Importez un GLB/CyPack autonome vers un nouveau `.cy3d`, puis double-cliquez-le.
 
 Maillage sélectionne maillage/primitive/sommet et modifie position, normale, UV, articulations et poids. Normales et sommes de poids sont normalisées ; les indices d’articulations restent entiers. Squelette modifie nom, parent et TRS. Cycles et quaternions nuls échouent atomiquement. Un nœud matriciel demande une décomposition avant TRS ; les matrices de pose inverse ne sont pas reconstruites automatiquement après modification du rig.
 
-Animation choisit le clip, lit/met en pause/boucle/parcourt, crée clips/pistes TRS et insère/retire des clés. Les temps sont strictement croissants et une piste garde au moins une clé. Un clip vide doit recevoir une piste avant export GLB. LINEAR, STEP et CUBICSPLINE sont évalués ; les tangentes cubiques survivent à l’export sans poignées d’édition. L’édition utilise l’annulation du document. Sauvegarde explicite ; export GLB/CyPack par job Core.
+Animation choisit le clip, lit/met en pause/boucle/parcourt, crée clips/pistes TRS et insère/retire des clés. Les temps sont strictement croissants et une piste garde au moins une clé. Un clip vide doit recevoir une piste avant export GLB. LINEAR, STEP et CUBICSPLINE sont évalués ; les tangentes cubiques survivent à l’export sans poignées d’édition. L’édition utilise l’annulation du document. Sauvegarde explicite ; export GLB/CyPack par job durable de l’application.
 
 ## LOD, collisions et retargeting {#authoring}
 

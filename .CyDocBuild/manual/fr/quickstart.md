@@ -4,7 +4,7 @@ title: Votre première séance
 description: Votre première séance
 section: Premiers pas
 order: 1
-sourceRevision: 1
+sourceRevision: 2
 ---
 
 ## Ouvrir le Sandbox {#open}
@@ -21,7 +21,7 @@ Lancez l’éditeur compilé avec `Lancer.cmd`. La scène initiale est le Sandbo
 
 Après installation des exemples avec `app/setup_examples.py`, ouvrez `StaticTriangle.cy3d`, `AnimatedTriangle.cy3d` ou `Example_Data.json` dans Examples3D. Les graphes d’exemple se trouvent dans les dossiers Examples et BlueprintExamples. L’installation n’écrase jamais un asset existant ; les noms et dossiers dépendent du lot d’exemples choisi.
 
-Ouvrez `Example_TexturedMaterial.cyasset` et choisissez **Compiler l’aperçu** après configuration de Python/Core. Le résultat est un shader d’éditeur, pas un export pour un jeu. [Workflow des matériaux](doc:materials#compile).
+Ouvrez `Example_TexturedMaterial.cyasset` et choisissez **Compiler l’aperçu** après installation des dépendances Python de calcul. Le résultat est un shader d’éditeur, pas un export pour un jeu. [Workflow des matériaux](doc:materials#compile).
 
 ## Corriger une erreur {#recover}
 

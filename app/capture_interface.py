@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory(prefix="interface-captures-",dir=REPORTS) as te
     def capture(name,*args):
         path=REPORTS/((PREFIX+"-interface-")+name+".bmp")
         if path.exists():path.unlink()
-        run=subprocess.run([str(ROOT/"CyGameEditor.exe"),"--root",str(workspace),"--capture",str(path),*args],timeout=25)
+        run=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),"--root",str(workspace),"--capture",str(path),*args],timeout=25)
         if run.returncode or not path.exists():raise RuntimeError((name,run.returncode))
         data=path.read_bytes();width,height=struct.unpack_from("<ii",data,18)
         assert width>=1000 and abs(height)>=600 and len(set(data[54::127]))>10,name

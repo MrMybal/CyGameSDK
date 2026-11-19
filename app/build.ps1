@@ -1,5 +1,6 @@
 param(
     [string]$CyUIRoot = '',
+    [string]$CyMCPSDKRoot = '',
     [string]$BuildDirectory = (Join-Path $PSScriptRoot '..\runtime\build\modular'),
     [string]$Configuration = 'Release',
     [string]$OutputDirectory = (Join-Path $PSScriptRoot '..')
@@ -16,6 +17,9 @@ else {
 }
 $arguments = @('-S', $PSScriptRoot, '-B', $BuildDirectory, '-G', 'Visual Studio 17 2022', '-A', 'x64', "-DCYGAME_OUTPUT_DIR=$OutputDirectory")
 if ($CyUIRoot) { $arguments += "-DCYUI_ROOT=$((Resolve-Path -LiteralPath $CyUIRoot).Path)" }
+else { $arguments += "-DCYUI_ROOT=" } # Refresh the locked FetchContent checkout instead of reusing an obsolete override.
+if ($CyMCPSDKRoot) { $arguments += "-DCYMCP_ROOT=$((Resolve-Path -LiteralPath $CyMCPSDKRoot).Path)" }
+else { $arguments += "-DCYMCP_ROOT=" }
 & $cmake @arguments
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 & $cmake --build $BuildDirectory --config $Configuration --parallel 4

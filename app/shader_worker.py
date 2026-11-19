@@ -1,4 +1,4 @@
-"""One-shot D3DCompiler worker, owned by CyToolsCore ProcessWorker."""
+"""One-shot D3DCompiler worker, supervised by CyMCPSDK Process."""
 import ctypes as c,hashlib,json,sys
 from pathlib import Path
 

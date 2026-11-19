@@ -1,7 +1,7 @@
 # Animation tools — native 0.22.0
 
 This release adds offline animation authoring to the existing native document and
-Core worker pipeline. It does not add an engine animation runtime, physics solver,
+SDK-owned worker pipeline. It does not add an engine animation runtime, physics solver,
 Unreal file compatibility or a real game codec. English stays the source/default
 language; French remains selectable, with all existing themes/layouts preserved.
 
@@ -111,8 +111,8 @@ model_view_settings adds tab="Motion tools", motionTool=IK|RootMotion|Clip,
 ikRoot/ikTip/motionRoot and ikTarget/ikPole presentation options. The GUI uses the
 same dispatcher and trusted workers. Immutable snapshots, cancellation, source
 hash guards, protected provenance, bounded commits and document Undo are reused.
-The desktop bridge publishes terminal readiness after the Core runtime has closed
-its database/worker handles. Subsequent requests refresh terminal readiness rather
+The desktop bridge publishes terminal readiness after the native SDK runtime has closed
+its job/worker handles. Subsequent requests refresh terminal readiness rather
 than reusing a cached UI state. Persistent desktop export outputs remain job-owned.
 
 ## Metadata interchange
@@ -130,7 +130,7 @@ The portable component remains version 0.1 / envelope schema v1.
   cases, partial-axis reconstruction, GLB/CyPack transfer, metadata conflict checks,
   native skinning, jobs/privacy, Undo/save and real ImGui button-triggered jobs.
 - capture_motion.py: EN/FR, unreachable diagnostics and all six themes, actual
-  desktop Core jobs and native rendering in isolated roots.
+  desktop durable jobs and native rendering in isolated roots.
 - data/reports/motion-{tests,authoring,integration,scene3d,interface,portable_assets}.log,
   motion-native.log, motion-gestures.json, motion-captures.json, motion-khronos.json
   and motion-validation.json describe the verified scope.

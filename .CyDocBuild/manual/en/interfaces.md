@@ -4,7 +4,7 @@ title: Classes, interfaces and runtime objects
 description: Classes, interfaces and runtime objects
 section: Graphs
 order: 14
-revision: 1
+revision: 2
 parent: graphs
 ---
 
@@ -18,6 +18,6 @@ Function views, inline macros, clipboard merges and runtime children carry the o
 
 Classes declare fields, methods and supported inheritance. Object creation/get/set/call nodes operate on transient handles in the bounded graph interpreter. Inspect live object fields with the runtime debugger; SDK edits use the same type and budget guards. Handles are not persistent asset IDs, engine pointers or multiplayer identities.
 
-Foreach item/index/break contracts, logical simulation time, delay and event dispatch belong to this interpreter. They are distinct from CyToolsCore job scheduling. There is no engine component reflection, replication, game physics binding or JIT compiler.
+Foreach item/index/break contracts, logical simulation time, delay and event dispatch belong to this interpreter. They are distinct from native SDK/host job execution. There is no engine component reflection, replication, game physics binding or JIT compiler.
 
 For linked method changes, use [signature migration](doc:signature-migration). Keep `self`, call mode and foreach contracts unchanged.

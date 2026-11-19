@@ -4,13 +4,13 @@ title: Import and reimport sources
 description: Import and reimport sources
 section: Assets
 order: 21
-revision: 1
+revision: 3
 parent: content-browser
 ---
 
 ## Import explicitly {#import}
 
-Choose **Content Browser > Add > Import source file**. Select an absolute source outside `data/assets`, a new content-relative destination and a registered provider. **Validate source** prepares the plan; **Import** starts an official Core job. `image.copy` preserves PNG/JPEG/BMP bytes and extension; `scene3d.glb` converts a self-contained GLB/CyPack to the bounded .cy3d profile. Neither is a game codec.
+Choose **Content Browser > Add > Import source file**. Select an absolute source outside `data/assets`, a new content-relative destination and a registered provider. **Validate source** prepares the plan; **Import** starts an official durable job. `image.copy` preserves PNG/JPEG/BMP bytes and extension; `scene3d.glb` converts a self-contained GLB/CyPack to the bounded .cy3d profile. Neither is a game codec.
 
 Inspection, current hashes, staged bytes and destination confinement are validated again at commit on the owner thread. The source is checked for size/mtime changes during reading. The configured SDK runtime must keep commit reports beneath the editor root. Import writes assets persistently, outside document Undo; query/import-view settings do not change the document revision.
 
@@ -18,10 +18,16 @@ Inspection, current hashes, staged bytes and destination confinement are validat
 
 Open Import settings from Asset actions. **Check source** compares SHA-256 hashes: up to date, changed source, local changes, missing source or missing asset. Reimport reuses the recorded provider/source and refuses to discard local destination edits. Preserve those edits first. Refresh is explicit; source relinking and filesystem watchers are not implemented.
 
-`<asset>.cyimport` is bounded UTF-8 JSON (64 KiB) with provider, local absolute source, hashes, byte count and import time. It is local project metadata available to authorized editor clients, not a portable dependency. Import artifacts survive task cleanup; staging/reports follow Core job lifetime.
+`<asset>.cyimport` is bounded UTF-8 JSON (64 KiB) with provider, local absolute source, hashes, byte count and import time. It is local project metadata available to authorized editor clients, not a portable dependency. Import artifacts survive task cleanup; staging/reports remain durable job artifacts.
 
 ## Cancellation and recovery {#recovery}
 
 Before commit, cancellation leaves the destination absent/unchanged. Once persistent commit starts, an interrupted or cancelled response can coexist with a completed import: inspect before retrying. Pair replacement is not a filesystem-wide atomic transaction. If rollback fails, keep `data/import-recovery/<id>/transaction.json` and its `a`/`m` backups. Close the editor before restoring the recorded asset and companion. Automatic crash recovery is not implemented. Sandbox document ZIP builds do not package imported files.
 
 WIC limits: 32 MiB source, at most 8192 pixels per side and 4,194,304 decoded pixels. Neutral 3D has [its own profile](doc:assets-3d#limits).
+
+## Local source picker {#file-picker}
+
+**Browse source...** opens the native CyUI file picker inside the editor. Choose a volume or enter a directory, use the supported-file/image/3D filters, search the cached listing and select a source. Directory scanning happens outside drawing; a loading, stale or failed listing cannot be accepted. Listings are bounded to 10,000 entries.
+
+Selecting a file fills the source and suggested destination fields. It does not import the asset until you validate and run the existing import action. The host rechecks that the selected source exists; the existing import provider, size checks, destination confinement and reimport protections remain authoritative.

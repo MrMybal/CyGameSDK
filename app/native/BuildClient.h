@@ -2,7 +2,7 @@
 #include "Core.h"
 #include <windows.h>
 namespace cygame {
-// A client of the official SDK, not a scheduler. One sidecar owns one Core job.
+// A client of the native CyMCPSDK host. One sidecar owns one durable application job.
 class BuildClient {
 public:
     explicit BuildClient(fs::path root):root_(std::move(root)){}

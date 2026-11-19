@@ -1,11 +1,12 @@
 """Independent pose/length/roundtrip checks and real native/Core animation jobs."""
+import os
 import copy,json,math,os,shutil,sys,tempfile,unittest
 from pathlib import Path
 APP=Path(__file__).resolve().parents[1];ROOT=APP.parent
 sys.path.insert(0,str(APP));sys.path.insert(0,str(APP/'tests'))
 import animation_tools as motion,model_authoring as authoring,scene3d,tool
 import test_integration as integration
-from cytools_core import CyToolError
+from job_contract import CyToolError
 
 def fixture():return json.loads((APP/'examples/ChainMotion.cy3d').read_text('utf-8-sig'))
 
@@ -102,7 +103,7 @@ class NativeMotion(unittest.TestCase):
    for time in [0,.4,1,1.8,2]:
     frame=self.call('model_sample',{'modelId':mid,'animation':1,'time':time});self.assertLess(authoring.length(authoring.sub(frame['nodes'][3],[1,1,0])),.0012);self.assertEqual(frame['triangleCount'],4)
    self.call('edit_undo',{});self.assertEqual(self.call('model_get',{'modelId':mid})['model'],before);self.call('edit_redo',{});self.assertEqual(self.call('model_get',{'modelId':mid})['model'],after)
-   path=Path(job['outputs']['reportPath']);self.assertTrue(path.exists());runtime.finish_task(actor,session['sessionId']);self.assertFalse(path.exists())
+   path=Path(job['outputs']['reportPath']);self.assertTrue(path.exists());runtime.finish_task(actor,session['sessionId']);self.assertTrue(path.exists())
  def test_02_motion_pair_native_roundtrip_changed_keys_guard_and_save(self):
   mid=self.fresh()
   with self.runtime() as runtime:
@@ -128,7 +129,7 @@ class NativeMotion(unittest.TestCase):
   import subprocess
   root=self.workspace/'motion-gestures';(root/'app').mkdir(parents=True);shutil.copyfile(APP/'CyTool.json',root/'app/CyTool.json');shutil.copyfile(APP/'interface_features.json',root/'app/interface_features.json');shutil.copytree(APP/'locales',root/'app/locales');(root/'data/assets/Examples').mkdir(parents=True);shutil.copyfile(APP/'examples/ChainMotion.cy3d',root/'data/assets/Examples/ChainMotion.cy3d')
   report=ROOT/'data/reports/motion-gestures.json';report.unlink(missing_ok=True)
-  run=subprocess.run([str(ROOT/'CyGameEditor.exe'),'--root',str(root),'--asset','Examples/ChainMotion.cy3d','--model-tab','Motion tools','--test-motion',str(report),'--exit-after','45'],timeout=60)
+  run=subprocess.run([str(Path(os.environ.get("CYGAME_EDITOR_EXE", str(ROOT / "CyGameEditor.exe")))),'--root',str(root),'--asset','Examples/ChainMotion.cy3d','--model-tab','Motion tools','--test-motion',str(report),'--exit-after','45'],timeout=60)
   fatal=root/'data/logs/native-fatal.json'
   if fatal.exists():shutil.copyfile(fatal,ROOT/'data/reports/motion-gesture-fatal.json')
   states={p.parent.name:json.loads(p.read_text('utf-8')) for p in (root/'data/build-runs').glob('*/state.json')}

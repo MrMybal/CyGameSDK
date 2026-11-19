@@ -1,6 +1,6 @@
 import json,sys
 from pathlib import Path
-from cytools_core.workers import ProcessWorker
+from job_contract import ProcessWorker
 
 def register_model_operations(runtime,editor_call):
     worker=ProcessWorker([sys.executable,str(Path(__file__).with_name('model_worker.py'))],idle_timeout=120)
