@@ -4,12 +4,12 @@ title: CyGameSDK manual
 description: Start with the right expectations
 section: Getting started
 order: 0
-revision: 3
+revision: 4
 ---
 
 ## Using this guide {#getting-started}
 
-CyGameSDK is a native editor foundation in early development. It supplies a Sandbox adapter and reusable UI, document and authoring systems. It does not automatically support an arbitrary game. Version 0.31.0 is a development source update under MIT.
+CyGameSDK is a native editor foundation in early development. It supplies a Sandbox adapter and reusable UI, document and authoring systems. It does not automatically support an arbitrary game. Version 0.32.0 is a development source update under MIT.
 
 - Current graphical host: Windows x64 / Direct3D 11.
 

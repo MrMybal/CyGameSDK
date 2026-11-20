@@ -58,15 +58,31 @@ bool alive(DWORD pid,uint64_t birth=0){HANDLE h=OpenProcess(PROCESS_QUERY_LIMITE
 std::string id(const std::string& value){if(value.empty()||value.size()>128||!std::all_of(value.begin(),value.end(),[](unsigned char c){return std::isalnum(c)||c=='-'||c=='_';}))throw cymcp::Error("InvalidParameters","Invalid job ID");return value;}
 struct JobLock{HANDLE h{};JobLock(const fs::path& root,const CallContext& c){const auto text="Local\\CyGameSDK-Jobs-"+cymcp::sha256(cymcp::path_utf8(root));h=CreateMutexA(nullptr,FALSE,text.c_str());if(!h)throw cymcp::Error("Busy","Cannot open project worker lock");for(;;){c.cancellation.check();auto r=WaitForSingleObject(h,50);if(r==WAIT_OBJECT_0||r==WAIT_ABANDONED)break;if(r==WAIT_FAILED)throw cymcp::Error("Busy","Cannot acquire project worker lock");}}~JobLock(){if(h){ReleaseMutex(h);CloseHandle(h);}}};
 }
-Runtime::Runtime(fs::path root,fs::path install,bool allow,fs::path store,fs::path manifest):root_(fs::weakly_canonical(root)),install_(fs::weakly_canonical(install)),jobStore_(store.empty()?root_/"data/automation/jobs":fs::absolute(store)),permitChanges_(allow){
+cymcp::LocalAccessProfile parseAccessProfile(const std::string& id){
+ for(const auto& option:accessProfiles)if(id==option.id)return option.profile;
+ if(id=="protected_access")return cymcp::LocalAccessProfile::protected_access;
+ throw cymcp::Error("InvalidConfiguration","Unknown local MCP access profile: "+id);
+}
+const char* accessProfileId(cymcp::LocalAccessProfile value){for(const auto& o:accessProfiles)if(value==o.profile)return o.id;throw cymcp::Error("InvalidConfiguration","Unknown access profile");}
+Runtime::Runtime(fs::path root,fs::path install,bool allow,fs::path store,fs::path manifest,std::string profile):root_(fs::weakly_canonical(root)),install_(fs::weakly_canonical(install)),jobStore_(store.empty()?root_/"data/automation/jobs":fs::absolute(store)),permitChanges_(allow){
  cymcp::private_directory(jobStore_);
- try{config_=readJson(root_/"data/settings/automation.json");}catch(...){config_=Json::object();}
- configuredChanges_=config_.value("allowChanges",false);
+ const auto settingsFile=root_/"data/settings/automation.json";
+ config_=fs::exists(settingsFile)?readJson(settingsFile):Json::object();
  if(!config_.is_object())throw cymcp::Error("InvalidConfiguration","Automation settings must be an object");
+ std::string configuredProfile;bool explicitProfile=false;
+ for(const auto* key:{"access_profile","accessProfile","localAccessProfile"})if(config_.contains(key)){
+  const auto value=config_.at(key).get<std::string>();const auto parsed=parseAccessProfile(value);
+  if(explicitProfile&&parseAccessProfile(configuredProfile)!=parsed)throw cymcp::Error("InvalidConfiguration","Conflicting local MCP access profiles");
+  configuredProfile=value;explicitProfile=true;
+ }
+ if(!explicitProfile)configuredProfile="free";
+ accessProfile_=parseAccessProfile(profile.empty()?configuredProfile:profile);access_=cymcp::local_access_settings(accessProfile_);
+ if(!config_.contains("access_profile")){config_["access_profile"]=accessProfileId(parseAccessProfile(configuredProfile));writeJson(settingsFile,config_);}
+ configuredChanges_=config_.value("allowChanges",false);
  manifest_=readJson(manifest.empty()?install_/"app/CyTool.json":manifest);
  changes=std::make_shared<cymcp::ChangeFeed>();
  if(config_.value("performance",false)){cymcp::PerformanceOptions p;p.jsonl_file=root_/"data/automation/metrics"/fs::u8path(cymcp::random_token(16)+".jsonl");performance=std::make_shared<cymcp::PerformanceMonitor>(p);}
- cymcp::Policy policy([this](const CallContext&,const std::string& name,const Json&){return permitted(name)?cymcp::Decision::allow:cymcp::Decision::deny;});
+ cymcp::Policy policy=access_.control_operations?cymcp::Policy([this](const CallContext&,const std::string& name,const Json&){return permitted(name)?cymcp::Decision::allow:cymcp::Decision::deny;}):cymcp::Policy::allow_all();
  operations=std::make_shared<cymcp::Registry>(policy);operations->set_change_feed(changes);operations->set_performance_monitor(performance);
  cymcp::ResourceOptions ro;ro.chunk_bytes=32768;ro.result_ttl=std::chrono::milliseconds(config_.value("resultTtlMs",300000));ro.max_stored_bytes=config_.value("resultMemoryBytes",64ULL*1024*1024);
  if(config_.value("diskSpooling",true)){ro.disk_directory=root_/"data/automation/spool";ro.max_disk_bytes=config_.value("spoolQuotaBytes",1024ULL*1024*1024);ro.spool_threshold=config_.value("spoolThresholdBytes",1024ULL*1024);}
@@ -145,6 +161,7 @@ Json Runtime::runJob(const std::string& name,const Json& args,const CallContext&
 }
 
 bool Runtime::permitted(const std::string& name)const{
+ if(!access_.control_operations)return true;
  if(readOnly(name)||name=="job_cancel"||name=="job_get"||name=="job_list"||name=="automation_info"||name=="job_result_read"||name=="job_output_read"||name=="job_output_open")return true;
  bool configured=false;try{const auto path=root_/"data/settings/automation.json";if(fs::exists(path))configured=readJson(path).value("allowChanges",false);}catch(...){}configuredChanges_=configured;
  return permitChanges_||configured;
@@ -171,7 +188,7 @@ Json Runtime::submit(const std::string& name,const Json& args,const CallContext&
 void Runtime::registerControls(){
  auto add=[&](std::string n,std::string d,Json input,bool ro,auto fn){operations->add({std::move(n),std::move(d),std::move(input),{{"type","object"}},ro,fn});};
  const Json none={{"type","object"},{"additionalProperties",false}},jobInput={{"type","object"},{"properties",{{"jobId",{{"type","string"},{"minLength",1},{"maxLength",128}}}}},{"required",{"jobId"}},{"additionalProperties",false}};
- add("automation_info","Inspect the actual SDK revision, application configuration and available modes.",none,true,[this](const Json&,const CallContext&){return Json{{"sdk","CyMCPSDK"},{"sdkVersion",cymcp::version},{"sdkRevision","791d4d7d7680213b282ec8529d248a10f8494d77"},{"editorVersion",manifest_["version"]},{"operations",manifest_["operations"].size()},{"root",cymcp::path_utf8(root_)}};});
+ add("automation_info","Inspect the actual SDK revision, application configuration and available modes.",none,true,[this](const Json&,const CallContext&){return Json{{"sdk","CyMCPSDK"},{"sdkVersion",cymcp::version},{"sdkRevision","34d4bcae126bc83d1a2925b5047dac36e3d09d92"},{"editorVersion",manifest_["version"]},{"operations",manifest_["operations"].size()},{"accessProfile",accessProfileId(accessProfile_)},{"requireToken",access_.require_token},{"controlOperations",access_.control_operations},{"root",cymcp::path_utf8(root_)}};});
  add("job_get","Recover a durable job state and outputs. Interrupted jobs are never replayed.",jobInput,true,[this](const Json& a,const CallContext& c){return job(a.at("jobId"),c);});
  Json listInput=none;listInput["properties"]={{"offset",{{"type","integer"},{"minimum",0}}},{"limit",{{"type","integer"},{"minimum",1},{"maximum",200}}},{"state",{{"type","string"}}},{"operation",{{"type","string"}}}};
  add("job_list","List owned durable jobs with filtering and pagination. Follow nextOffset; no automatic replay or retention-based deletion.",listInput,true,[this](const Json& a,const CallContext& c){return jobPage(c,a.value("offset",size_t(0)),a.value("limit",size_t(100)),a.value("state",""),a.value("operation",""));});

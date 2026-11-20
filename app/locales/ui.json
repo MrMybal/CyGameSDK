@@ -5087,10 +5087,6 @@
     "en": "Direct app tools are available for Codex and compatible API providers. Other CLI agents use their own MCP configuration. Credentials stay in the environment or provider account.",
     "fr": "Les outils directs de l’application sont disponibles pour Codex et les fournisseurs API compatibles. Les autres agents CLI utilisent leur configuration MCP. Les identifiants restent dans l’environnement ou le compte du fournisseur."
   },
-  "The local MCP endpoint and token are stored in a private automation.json file under data/ipc. The same permissions apply to chat, CLI and MCP.": {
-    "en": "The local MCP endpoint and token are stored in a private automation.json file under data/ipc. The same permissions apply to chat, CLI and MCP.",
-    "fr": "L’adresse MCP locale et son jeton sont stockés dans le fichier privé automation.json sous data/ipc. Les mêmes autorisations s’appliquent au chat, au CLI et à MCP."
-  },
   "API key (memory only)": {
     "en": "API key (memory only)",
     "fr": "Clé API (en mémoire uniquement)"
@@ -5142,5 +5138,61 @@
   "CyMCPSDK ChatUI, native CLI and MCP share 177 business operations; private durable jobs retain results after restart.": {
     "en": "CyMCPSDK ChatUI, native CLI and MCP share 177 business operations; private durable jobs retain results after restart.",
     "fr": "ChatUI, CLI natif et MCP CyMCPSDK partagent 177 opérations métier ; les jobs privés conservent leurs résultats après redémarrage."
+  },
+  "Local MCP": {
+    "en": "Local MCP",
+    "fr": "MCP local"
+  },
+  "Enable local MCP": {
+    "en": "Enable local MCP",
+    "fr": "Activer le MCP local"
+  },
+  "Active access profile": {
+    "en": "Active access profile",
+    "fr": "Profil d’accès actif"
+  },
+  "Access profile on next start": {
+    "en": "Access profile on next start",
+    "fr": "Profil au prochain démarrage"
+  },
+  "Free": {
+    "en": "Free",
+    "fr": "Free"
+  },
+  "Local controlled": {
+    "en": "Local controlled",
+    "fr": "Local contrôlé"
+  },
+  "Token only": {
+    "en": "Token only",
+    "fr": "Jeton seul"
+  },
+  "Protected": {
+    "en": "Protected",
+    "fr": "Protégé"
+  },
+  "Local MCP address": {
+    "en": "Local MCP address",
+    "fr": "Adresse du MCP local"
+  },
+  "Copy MCP address": {
+    "en": "Copy MCP address",
+    "fr": "Copier l’adresse MCP"
+  },
+  "Restart the editor to apply the access profile.": {
+    "en": "Restart the editor to apply the access profile.",
+    "fr": "Redémarrez l’éditeur pour appliquer le profil d’accès."
+  },
+  "Connect using the local MCP address only. No token is required.": {
+    "en": "Connect using the local MCP address only. No token is required.",
+    "fr": "Connectez-vous avec l’adresse MCP locale seule. Aucun jeton n’est requis."
+  },
+  "This profile requires a token from the private endpoint file.": {
+    "en": "This profile requires a token from the private endpoint file.",
+    "fr": "Ce profil nécessite le jeton du fichier privé de connexion."
+  },
+  "The local MCP address and selected profile are stored under data/ipc. Token profiles also store their token in that private endpoint file. Chat, CLI and MCP share the operation policy.": {
+    "en": "The local MCP address and selected profile are stored under data/ipc. Token profiles also store their token in that private endpoint file. Chat, CLI and MCP share the operation policy.",
+    "fr": "L’adresse MCP locale et le profil actif sont enregistrés sous data/ipc. Les profils avec jeton le conservent aussi dans ce fichier privé. Chat, CLI et MCP partagent la politique d’opérations."
   }
 }

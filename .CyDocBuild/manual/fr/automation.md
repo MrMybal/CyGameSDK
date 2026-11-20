@@ -4,13 +4,13 @@ title: Assistant, CLI et MCP
 description: Utiliser l’assistant intégré et le registre natif d’automatisation.
 section: Prise en main
 order: 3
-revision: 3
-sourceRevision: 3
+revision: 4
+sourceRevision: 4
 ---
 
 ## Utiliser ce guide {#getting-started}
 
-CyMCPSDK 0.7.0 fournit l’assistant natif, le registre d’opérations et les transports MCP.
+CyMCPSDK 0.7.1 fournit l’assistant natif, le registre d’opérations et les transports MCP.
 L’éditeur conserve ses validations réelles, ses documents persistants et son Undo.
 Découvrez une commande et consultez son schéma avant de l’exécuter.
 
@@ -22,10 +22,10 @@ et connectez-vous. Les clés API utilisent le champ masqué en mémoire ou la va
 d’environnement indiquée. Elles ne sont pas enregistrées. Les agents CLI installés
 conservent la gestion de leurs comptes.
 
-Activez **Autoriser les modifications dans l’éditeur** pour les écritures. Ce réglage
-s’applique à l’assistant et au point MCP de cette application. Codex et les transports
-API compatibles reçoivent directement les outils de l’éditeur. Les autres agents CLI
-utilisent leur configuration MCP native.
+Free est le profil par défaut et autorise toutes les opérations enregistrées sans
+confirmation d’écriture supplémentaire. Local contrôlé et Protégé conservent
+**Autoriser les modifications dans l’éditeur**. Codex et les API compatibles reçoivent
+directement le registre ; les autres agents CLI utilisent leur configuration MCP native.
 
 Les réponses apparaissent progressivement dans le panneau Markdown commun. **Arrêter**
 annule le tour. Erreurs et réponses partielles interrompues restent visibles. Le sélecteur
@@ -35,6 +35,24 @@ actuel présente les noms des fichiers plutôt qu’un nouvel éditeur d’asset
 L’historique est privé. Choisissez une conversation puis **Restaurer la conversation
 enregistrée** pour reprendre sans renvoyer de message. **Connecter / Nouvelle conversation**
 conserve les historiques précédents.
+
+## Profils d’accès {#access-profiles}
+
+**Paramètres de connexion > MCP local** affiche le profil actif et celui du prochain
+démarrage. Redémarrez l’éditeur après avoir choisi un autre profil. La case MCP local démarre/arrête HTTP immédiatement.
+
+| Profil | Jeton | Opérations enregistrées |
+| --- | --- | --- |
+| Free | Non | Toutes autorisées |
+| Local contrôlé | Non | Politique de lecture/écriture hôte |
+| Jeton seul | Requis | Toutes autorisées |
+| Protégé | Requis | Politique de lecture/écriture hôte |
+
+Les nouvelles configurations et celles sans choix explicite migrent vers **free**.
+Profils déjà choisis et réglages sans rapport sont conservés. L’ancien allowChanges est
+préservé mais ne constitue pas un choix de profil. La validation reste active : arguments
+invalides, objets verrouillés et gardes de révision restent refusés. Le champ est
+**access_profile** dans data/settings/automation.json. **--access-profile** ne remplace le profil que pour un processus CLI.
 
 ## Commandes natives du terminal {#cli}
 
@@ -63,19 +81,18 @@ utilisent le SDK ; app/tool.py stdio conserve les anciennes enveloppes prises en
 
 ## Connecter une IA externe {#mcp}
 
-Adaptez app/mcp.example.json avec CyGameCLI.exe et la racine du projet. Par défaut, le
-serveur stdio expose cinq outils de découverte/ressources. Recherchez, chargez un schéma,
-puis appelez l’opération d’origine. **mcp --full** expose le catalogue complet. Les alias
-de jobs historiques **op_<id>** restent découvrables.
+Ouvrez Assistant IA et activez le MCP local. Copiez son adresse et configurez le client
+avec cette URL seule, par exemple http://127.0.0.1:PORT/mcp. Free utilise un serveur HTTP
+loopback sans jeton et un registre autorisant toutes les opérations. Aucun jeton ni confirmation supplémentaire n’est demandé.
 
-L’ouverture de l’assistant fournit aussi les accès loopback authentifiés **/mcp** et
-**/v1**. Adresse et jeton aléatoires sont conservés dans data/ipc/automation.json, limité
-au propriétaire. Gardez le jeton privé. Un point représente une identité authentifiée ;
-des identités distantes distinctes nécessitent des points/stockages isolés. Stdio natif
-et le pipe Windows utilisent l’identité du processus propriétaire.
+Protégé et Jeton seul demandent toujours un jeton Bearer. Le fichier privé
+data/ipc/automation.json indique URL, profil et requireToken ; seuls les profils avec
+jeton en contiennent un. Désactiver/fermer l’endpoint retire ce fichier.
 
-Un service séparé **serve --port PORT** nécessite la variable privée CYGAME_MCP_TOKEN.
-**--connect URL --token-env NAME** permet d’adresser son interface /v1 depuis le CLI.
+~~~powershell
+.\CyGameCLI.exe --root C:\Editors\MyGame serve --port 8766
+.\CyGameCLI.exe --root C:\Editors\MyGame --connect http://127.0.0.1:8766/v1 invoke scene_list
+~~~
 
 ## Contexte, ressources et confidentialité {#optimizations}
 

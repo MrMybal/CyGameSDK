@@ -28,7 +28,7 @@ Public links:
 - English manual: https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview
 - French manual: https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/overview
 
-Version 0.31.0 is a development preview with a portable Windows x64 folder, sources
+Version 0.32.0 is a development preview with a portable Windows x64 folder, sources
 and an offline documentation ZIP. Real game support requires verified adapters.
 Linux/macOS native hosts and full Unreal/Blueprint compatibility are not supplied.
 See **app/Docs/Releasing.md** for the local packaging/publication procedure.

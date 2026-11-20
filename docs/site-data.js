@@ -1,10 +1,10 @@
 /* Application showcase content. The complete manual is exported by CyDoc. */
 window.CYGAME_SITE = {
   "shared": {
-    "version": "0.31.0",
+    "version": "0.32.0",
     "repo": "https://github.com/MrMybal/CyGameSDK",
-    "release": "https://github.com/MrMybal/CyGameSDK/releases/tag/v0.31.0",
-    "download": "https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-source.zip"
+    "release": "https://github.com/MrMybal/CyGameSDK/releases/tag/v0.32.0",
+    "download": "https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-source.zip"
   },
   "en": {
     "title": "CyGameSDK — A foundation for your game editor.",
@@ -53,7 +53,7 @@ window.CYGAME_SITE = {
         "Get started"
       ]
     ],
-    "status": "Development preview · 0.31.0",
+    "status": "Development preview · 0.32.0",
     "heroLine": "A foundation for your game editor.",
     "heroBody": "Build game-specific SDKs and authoring tools around a native workspace, visual graphs and an AI-ready core.",
     "heroMeta": "Windows x64 · Portable ZIP and source · MIT",
@@ -220,7 +220,7 @@ window.CYGAME_SITE = {
     "automation": {
       "kicker": "05 / MCP & AI SDK",
       "title": "One editor.\nThe same operations for AI.",
-      "body": "The editor, AI Assistant, native CLI and MCP share 177 business operations and EditorCore validation. CyMCPSDK supplies ChatUI and transports; the application retains durable jobs and results after restart.",
+      "body": "The editor, AI Assistant, native CLI and MCP share 177 business operations and EditorCore validation. Free connects by local URL only and allows registered operations without an extra grant. Local controlled, Token only and Protected remain available; the app keeps durable results.",
       "steps": [
         [
           "Discover",
@@ -282,7 +282,7 @@ window.CYGAME_SITE = {
       ],
       [
         "What can I download?",
-        "Version 0.31.0 provides a portable Windows x64 ZIP, source ZIP, offline manual and SHA-256 checksums. Native editing/chat/MCP require no compiler or Python. Compute workers optionally use Python 3.11+."
+        "Version 0.32.0 provides a portable Windows x64 ZIP, source ZIP, offline manual and SHA-256 checksums. Native editing/chat/MCP require no compiler or Python. Compute workers optionally use Python 3.11+."
       ],
       [
         "Is this Unreal Engine Blueprint?",
@@ -298,7 +298,7 @@ window.CYGAME_SITE = {
       ]
     ],
     "downloadTitle": "Build your next editor.",
-    "downloadBody": "Get the 0.31.0 source and start with the Sandbox. Connect your game one verified workflow at a time.",
+    "downloadBody": "Get the 0.32.0 source and start with the Sandbox. Connect your game one verified workflow at a time.",
     "downloadNote": "Development preview · Windows x64 · Portable ZIP and source · MIT",
     "sourceButton": "Download source .zip",
     "releaseButton": "Release notes & checksums",
@@ -353,7 +353,7 @@ window.CYGAME_SITE = {
         "Commencer"
       ]
     ],
-    "status": "Préversion de développement · 0.31.0",
+    "status": "Préversion de développement · 0.32.0",
     "heroLine": "Une base pour votre éditeur de jeu.",
     "heroBody": "Créez des SDK et des outils adaptés à un jeu, autour d’une interface native, de graphes visuels et d’un socle accessible aux IA.",
     "heroMeta": "Windows x64 · ZIP portable et sources · MIT",
@@ -520,7 +520,7 @@ window.CYGAME_SITE = {
     "automation": {
       "kicker": "05 / MCP ET SDK POUR IA",
       "title": "Un seul éditeur.\nLes mêmes opérations pour l’IA.",
-      "body": "Éditeur, Assistant IA, CLI natif et MCP partagent 177 opérations métier et la validation EditorCore. CyMCPSDK fournit ChatUI et les transports ; l’application conserve jobs et résultats après redémarrage.",
+      "body": "Éditeur, Assistant IA, CLI natif et MCP partagent 177 opérations métier et la validation EditorCore. Free se connecte par URL locale seule et autorise les opérations sans validation supplémentaire. Local contrôlé, Jeton seul et Protégé restent disponibles ; les résultats sont durables.",
       "steps": [
         [
           "Découvrir",
@@ -582,7 +582,7 @@ window.CYGAME_SITE = {
       ],
       [
         "Que puis-je télécharger ?",
-        "La version 0.31.0 fournit un ZIP Windows x64 portable, les sources, le manuel hors ligne et les empreintes SHA-256. Édition/chat/MCP natifs ne demandent ni compilateur ni Python. Les calculs utilisent facultativement Python 3.11+."
+        "La version 0.32.0 fournit un ZIP Windows x64 portable, les sources, le manuel hors ligne et les empreintes SHA-256. Édition/chat/MCP natifs ne demandent ni compilateur ni Python. Les calculs utilisent facultativement Python 3.11+."
       ],
       [
         "Est-ce le Blueprint d’Unreal Engine ?",
@@ -598,7 +598,7 @@ window.CYGAME_SITE = {
       ]
     ],
     "downloadTitle": "Construisez votre prochain éditeur.",
-    "downloadBody": "Récupérez les sources 0.31.0 et partez du Sandbox. Raccordez votre jeu un workflow vérifié à la fois.",
+    "downloadBody": "Récupérez les sources 0.32.0 et partez du Sandbox. Raccordez votre jeu un workflow vérifié à la fois.",
     "downloadNote": "Préversion de développement · Windows x64 · ZIP portable et sources · MIT",
     "sourceButton": "Télécharger les sources .zip",
     "releaseButton": "Notes de version et sommes de contrôle",

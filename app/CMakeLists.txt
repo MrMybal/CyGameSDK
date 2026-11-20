@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(CyGameSDK VERSION 0.31.0 LANGUAGES CXX)
+project(CyGameSDK VERSION 0.32.0 LANGUAGES CXX)
 if(NOT WIN32)
     message(FATAL_ERROR "This foundation currently ships a Windows DX11 host.")
 endif()

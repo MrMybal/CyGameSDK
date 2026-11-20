@@ -4,12 +4,15 @@ title: Build and launch on Windows.
 description: Build and launch on Windows
 section: Getting started
 order: 1
-revision: 3
+revision: 5
 ---
+
+The 0.32.0 Windows preview includes the Free access profiles. Extract the folder,
+launch the editor and copy its local MCP address to connect without a token in Free.
 
 ## Windows preview ZIP {#prebuilt}
 
-The 0.31.0 Windows ZIP contains CyGameEditor.exe, CyGameCLI.exe, application
+The 0.32.0 Windows ZIP contains CyGameEditor.exe, CyGameCLI.exe, application
 sources/examples, notices and this complete offline reader. Extract it to a new writable
 folder and launch Lancer.cmd. The Microsoft Visual C++ 2015–2022 x64 runtime is required.
 

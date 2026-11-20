@@ -1,5 +1,6 @@
 #pragma once
 #include <cymcp/mcp.hpp>
+#include <cymcp/http.hpp>
 #include <cymcp/changes.hpp>
 #include <cymcp/performance.hpp>
 #include <filesystem>
@@ -8,8 +9,18 @@
 namespace cygame::automation {
 namespace fs=std::filesystem;using cymcp::Json;using cymcp::CallContext;
 Json readJson(const fs::path&);void writeJson(const fs::path&,const Json&);
+struct AccessProfileOption { cymcp::LocalAccessProfile profile;const char* id;const char* caption; };
+inline constexpr AccessProfileOption accessProfiles[]={
+ {cymcp::LocalAccessProfile::free,"free","Free"},
+ {cymcp::LocalAccessProfile::local_controlled,"local_controlled","Local controlled"},
+ {cymcp::LocalAccessProfile::token_only,"token_only","Token only"},
+ {cymcp::LocalAccessProfile::protected_access,"protected","Protected"}};
+cymcp::LocalAccessProfile parseAccessProfile(const std::string&);
+const char* accessProfileId(cymcp::LocalAccessProfile);
 class Runtime {
     fs::path root_,install_,jobStore_;
+    cymcp::LocalAccessProfile accessProfile_=cymcp::LocalAccessProfile::free;
+    cymcp::LocalAccessSettings access_=cymcp::local_access_settings(cymcp::LocalAccessProfile::free);
     bool permitChanges_=false;mutable std::atomic_bool configuredChanges_{false};
     std::timed_mutex pipe_;
     std::string desktop_;
@@ -27,12 +38,14 @@ public:
     std::shared_ptr<cymcp::ResourceRegistry> resources;
     std::shared_ptr<cymcp::ChangeFeed> changes;
     std::shared_ptr<cymcp::PerformanceMonitor> performance;
-    Runtime(fs::path root,fs::path install,bool permitChanges=false,fs::path store={},fs::path manifest={});
+    Runtime(fs::path root,fs::path install,bool permitChanges=false,fs::path store={},fs::path manifest={},std::string accessProfile={});
     ~Runtime();
     Json submit(const std::string&,const Json&,const CallContext&);
     void workerConfig(Json config){workerConfig_=std::move(config);}
     const fs::path& root()const{return root_;}const fs::path& install()const{return install_;}
     const Json& config()const{return config_;}
+    cymcp::LocalAccessProfile accessProfile()const{return accessProfile_;}
+    const cymcp::LocalAccessSettings& access()const{return access_;}
     bool configuredChanges()const{return configuredChanges_.load();}
     void configuredChanges(bool enabled){configuredChanges_.store(enabled);}
     const Json& manifest()const{return manifest_;}

@@ -25,7 +25,7 @@ struct AutomationBridge::Impl{
  std::unique_ptr<cymcp::ChatPanel> panel;
  std::unique_ptr<cymcp::McpServer> mcp;
  std::unique_ptr<cymcp::LocalHttpServer> server;
- Json catalogue,settings=Json::object();std::string provider="codex",error;bool allow=false,saveHistory=true,compact=true,contextWindow=false,showSettings=true;
+ Json catalogue,settings=Json::object();std::string provider="codex",error,localMcpUrl;bool localMcpEnabled=true,allow=false,saveHistory=true,compact=true,contextWindow=false,showSettings=true;
  std::array<char,256> model{},endpoint{},keyEnv{},historyId{},executable{};
  std::array<char,16384> providerSettings{};std::array<char,2048> apiKey{};SourceEditor settingsEditor;std::string settingsEditorText;int contextKiB=256;
  std::future<std::pair<std::string,Json>> modelDiscovery;cymcp::CallContext modelContext;Json availableModels=Json::array();
@@ -45,12 +45,43 @@ struct AutomationBridge::Impl{
   opts.delete_message=[this](std::uint64_t id){controller->delete_turn(id);};opts.require_editable_history=true;
   panel=std::make_unique<cymcp::ChatPanel>(*controller,std::move(opts));
   mcp=std::make_unique<cymcp::McpServer>(*runtime->tools(compact),"CyGameSDK",runtime->serverOptions());
-  const auto token=cymcp::random_token();server=std::make_unique<cymcp::LocalHttpServer>(token,[this](const Json& r,const cymcp::CallContext& c){auto local=c;local.principal="local";return r.contains("jsonrpc")?mcp->handle(r,local):cymcp::dispatch_app(*runtime->operations,r,local);});
-  const auto port=server->start();endpointFile=runtime->root()/"data/ipc/automation.json";
-  automation::writeJson(endpointFile,{{"url","http://127.0.0.1:"+std::to_string(port)},{"token",token},{"pid",GetCurrentProcessId()},{"sdk","CyMCPSDK 0.7.0"}});
+  endpointFile=runtime->root()/"data/ipc/automation.json";
+  setLocalMcp(settings.value("localMcpEnabled",true));
   refresh=std::thread([this](){while(!closed){runtime->poll();for(int i=0;i<10&&!closed;++i)std::this_thread::sleep_for(std::chrono::milliseconds(25));}});
  }
  ~Impl(){closed=true;discoveryContext.cancellation.cancel();modelContext.cancellation.cancel();if(controller)controller->cancel();if(server)server->stop();if(refresh.joinable())refresh.join();if(discovery.valid())try{discovery.get();}catch(...){}if(modelDiscovery.valid())try{modelDiscovery.get();}catch(...){}if(historyDiscovery.valid())try{historyDiscovery.get();}catch(...){}panel.reset();controller.reset();apiKey.fill(0);mcp.reset();server.reset();std::error_code ec;fs::remove(endpointFile,ec);runtime.reset();}
+ void setLocalMcp(bool enabled){
+  if(server){server->stop();server.reset();}std::error_code ec;fs::remove(endpointFile,ec);localMcpUrl.clear();localMcpEnabled=false;
+  if(!enabled)return;
+  auto handler=[this](const Json& r,const cymcp::CallContext& c){auto local=c;local.principal="local";return r.contains("jsonrpc")?mcp->handle(r,local):cymcp::dispatch_app(*runtime->operations,r,local);};
+  const auto token=runtime->access().require_token?cymcp::random_token():std::string();
+  if(runtime->access().require_token)server=std::make_unique<cymcp::LocalHttpServer>(token,handler);
+  else server=std::make_unique<cymcp::LocalHttpServer>(cymcp::LocalHttpServer::UnauthenticatedLoopback{},handler);
+  try{
+   const auto port=server->start();const auto url="http://127.0.0.1:"+std::to_string(port);
+   Json record={{"url",url},{"mcpUrl",url+"/mcp"},{"jsonUrl",url+"/v1"},{"accessProfile",automation::accessProfileId(runtime->accessProfile())},{"requireToken",runtime->access().require_token},{"pid",GetCurrentProcessId()},{"sdk",std::string("CyMCPSDK ")+cymcp::version}};
+   if(!token.empty())record["token"]=token;
+   automation::writeJson(endpointFile,record);localMcpUrl=url+"/mcp";localMcpEnabled=true;
+  }catch(...){server.reset();throw;}
+ }
+ void persistSettings(){automation::writeJson(runtime->root()/"data/settings/automation.json",settings);}
+ void profileSettings(){
+  if(!cyui::beginSection(tr("Local MCP")))return;
+  if(cyui::beginProperties("##localMcpAccess",160)){
+   cyui::property(tr("Enable local MCP"));bool enabled=localMcpEnabled;
+   if(ImGui::Checkbox("##enableLocalMcp",&enabled))try{setLocalMcp(enabled);settings["localMcpEnabled"]=localMcpEnabled;persistSettings();}catch(const std::exception& e){error=cymcp::redact_error_message(e.what());}
+   cyui::property(tr("Active access profile"));ImGui::TextUnformatted(tr([&](){for(const auto& o:automation::accessProfiles)if(o.profile==runtime->accessProfile())return o.caption;return "Free";}()));
+   cyui::property(tr("Access profile on next start"));
+   const auto requested=automation::parseAccessProfile(settings.at("access_profile").get<std::string>());
+   const char* caption="Free";for(const auto& o:automation::accessProfiles)if(o.profile==requested)caption=o.caption;
+   if(ImGui::BeginCombo("##nextAccessProfile",tr(caption))){for(const auto& o:automation::accessProfiles)if(ImGui::Selectable(label(o.caption),o.profile==requested)){settings["access_profile"]=o.id;settings.erase("accessProfile");settings.erase("localAccessProfile");try{persistSettings();}catch(const std::exception& e){error=cymcp::redact_error_message(e.what());}}ImGui::EndCombo();}
+   if(!localMcpUrl.empty()){cyui::property(tr("Local MCP address"));ImGui::TextUnformatted(localMcpUrl.c_str());if(cyui::ghostButton(label("Copy MCP address")))ImGui::SetClipboardText(localMcpUrl.c_str());}
+   cyui::endProperties();
+   if(requested!=runtime->accessProfile())ImGui::TextWrapped("%s",tr("Restart the editor to apply the access profile."));
+  }
+  ImGui::TextWrapped("%s",tr(runtime->access().require_token?"This profile requires a token from the private endpoint file.":"Connect using the local MCP address only. No token is required."));
+  cyui::endSection();
+ }
  void select(const std::string& id){
   provider=id;discoveredConfig={};apiKey.fill(0);availableModels=Json::array();
   for(const auto& d:catalogue)if(d["id"]==id){
@@ -58,7 +89,7 @@ struct AutomationBridge::Impl{
   }assign(providerSettings,"{}");
  }
  void persistPermissions(){
-  settings["allowChanges"]=allow;automation::writeJson(runtime->root()/"data/settings/automation.json",settings);runtime->configuredChanges(allow);
+  settings["allowChanges"]=allow;persistSettings();runtime->configuredChanges(allow);
  }
  void persist(){
   settings["provider"]=provider;
@@ -66,7 +97,7 @@ struct AutomationBridge::Impl{
   const auto options=cymcp::parse_json(providerSettings.data());Json safe=Json::object();
   for(const auto* key:{"persistent","deferred_tools","tool_discovery_threshold","max_tool_rounds","max_output_tokens","timeout_ms","turn_timeout_ms","approval_policy","sandbox","setting_sources"})if(options.contains(key))safe[key]=options[key];
   settings["providerOptions"]=safe;settings["model"]=model.data();settings["baseUrl"]=endpoint.data();settings["keyEnv"]=keyEnv.data();settings["historyId"]=historyId.data();settings["saveHistory"]=saveHistory;settings["allowChanges"]=allow;settings["compactDiscovery"]=compact;settings["contextWindow"]=contextWindow;settings["contextKiB"]=contextKiB;
-  automation::writeJson(runtime->root()/"data/settings/automation.json",settings);runtime->configuredChanges(allow);
+  persistSettings();runtime->configuredChanges(allow);
  }
  void connect(bool restore=false,const Json& override=Json::object()){
   cymcp::ChatConnection c;c.provider_id=override.value("provider",provider);c.model=override.value("model",std::string(model.data()));c.system_prompt="You are the CyGameSDK editor assistant. Use the app operation registry for editor actions. Inspect schemas before calling, respect permissions, preserve authored IDs and values, use Undo for reversible edits, never claim a game codec exists without verified output. Ask for missing game-specific facts. Do not run shell commands to bypass app tools.";
@@ -93,7 +124,7 @@ struct AutomationBridge::Impl{
  Json state()const{
   const auto& s=controller->state();Json rows=Json::array();
   for(const auto& m:s.messages)rows.push_back({{"role",m.role},{"text",m.markdown},{"interrupted",m.interrupted},{"error",m.error_code},{"attachments",m.attachments.size()}});
-  return {{"phase",s.phase},{"busy",s.busy},{"connected",s.connected},{"provider",s.provider_id},{"model",s.model},{"messages",rows},{"errorCode",s.error_code},{"errorMessage",s.error_message},{"storageError",s.storage_error},{"diagnosticCount",s.diagnostics.size()}};
+  return {{"accessProfile",automation::accessProfileId(runtime->accessProfile())},{"localMcpEnabled",localMcpEnabled},{"phase",s.phase},{"busy",s.busy},{"connected",s.connected},{"provider",s.provider_id},{"model",s.model},{"messages",rows},{"errorCode",s.error_code},{"errorMessage",s.error_message},{"storageError",s.storage_error},{"diagnosticCount",s.diagnostics.size()}};
  }
  Json action(const Json& a){
   const auto op=a.at("action").get<std::string>();
@@ -104,6 +135,8 @@ struct AutomationBridge::Impl{
   else if(op=="save")controller->save();
   else if(op=="disconnect")controller->disconnect();
   else if(op=="reconnect")controller->reconnect();
+  else if(op=="local_mcp"){setLocalMcp(a.at("enabled"));settings["localMcpEnabled"]=localMcpEnabled;persistSettings();}
+  else if(op=="profile"){settings["access_profile"]=automation::accessProfileId(automation::parseAccessProfile(a.at("profile")));settings.erase("accessProfile");settings.erase("localAccessProfile");persistSettings();}
   else if(op=="rights"){allow=a.at("allowChanges");persistPermissions();}
   else if(op=="attach")panel->add_attachments({fs::u8path(a.at("path").get<std::string>())});
   else if(op=="poll")controller->poll();
@@ -126,10 +159,11 @@ struct AutomationBridge::Impl{
   if(historyDiscovery.valid()&&historyDiscovery.wait_for(std::chrono::seconds(0))==std::future_status::ready)try{historyIds=historyDiscovery.get();}catch(const std::exception& e){error=cymcp::redact_error_message(e.what());}
   if(discovery.valid()&&discovery.wait_for(std::chrono::seconds(0))==std::future_status::ready)try{connections=discovery.get();}catch(const std::exception& e){error=cymcp::redact_error_message(e.what());}
   if(cyui::ghostButton(label(showSettings?"Conversation":"Connection settings")))showSettings=!showSettings;
-  ImGui::SameLine();if(ImGui::Checkbox(label("Allow editor changes"),&allow))persistPermissions();
+  if(runtime->access().control_operations){ImGui::SameLine();if(ImGui::Checkbox(label("Allow editor changes"),&allow))persistPermissions();}
   if(controller->state().busy||discovery.valid()||modelDiscovery.valid()){ImGui::SameLine();if(cyui::ghostButton(label("Stop"))){controller->cancel();discoveryContext.cancellation.cancel();modelContext.cancellation.cancel();}}
   if(!error.empty())cyui::callout(cyui::Tone::error,error.c_str());
   if(showSettings){
+   profileSettings();
    if(cyui::ghostButton(label("Detect providers"))&&!discovery.valid()){
     discoveryContext={};auto p=providers;auto ctx=discoveryContext;discovery=std::async(std::launch::async,[p,ctx](){return p->discover({},ctx);});
    }
@@ -156,7 +190,7 @@ struct AutomationBridge::Impl{
     ImGui::SameLine();if(cyui::ghostButton(label("Save settings")))persist();
    }catch(const std::exception& e){error=cymcp::redact_error_message(e.what());}
    ImGui::TextWrapped("%s",tr("Direct app tools are available for Codex and compatible API providers. Other CLI agents use their own MCP configuration. Credentials stay in the environment or provider account."));
-   cyui::divider();ImGui::TextWrapped("%s",tr("The local MCP endpoint and token are stored in a private automation.json file under data/ipc. The same permissions apply to chat, CLI and MCP."));
+   cyui::divider();ImGui::TextWrapped("%s",tr("The local MCP address and selected profile are stored under data/ipc. Token profiles also store their token in that private endpoint file. Chat, CLI and MCP share the operation policy."));
   }else panel->draw("CyGameAssistant");
  }
 };

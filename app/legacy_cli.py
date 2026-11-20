@@ -30,7 +30,7 @@ def main(factory,argv):
                 value=next((x for x in manifest["operations"] if x["id"]==a.operation),None)
                 if value is None:raise CyToolError("UnknownOperation","Unknown operation")
             elif a.command in ("list-backends","list-models"):value=[]
-            elif a.command=="diagnose":value={"sdk":"CyMCPSDK","sdkVersion":"0.7.0","legacyRuntimeInstalled":False,"nativeEditorAvailable":(root/"data/ipc/editor.json").exists()}
+            elif a.command=="diagnose":value={"sdk":"CyMCPSDK","sdkVersion":"0.7.1","legacyRuntimeInstalled":False,"nativeEditorAvailable":(root/"data/ipc/editor.json").exists()}
             else:value={"operation":a.operation,"canRun":allow and (root/"data/ipc/editor.json").exists(),"validation":"The actual invocation validates live state; no automatic retries."}
             print_json(value);return 0
         if a.command=="create-client":print_json(runtime.create_client(a.name,permissions=a.permission));return 0
@@ -38,8 +38,7 @@ def main(factory,argv):
         actor=runtime.authenticate(token) if token and not a.connect else runtime.authenticate(runtime.create_client("Compatibility CLI")["token"])
         def remote(name,args):
             key=os.environ.get("CYGAME_MCP_TOKEN",os.environ.get("CYTOOLS_TOKEN",""))
-            if not key:raise CyToolError("AuthenticationRequired","Set CYGAME_MCP_TOKEN (or legacy CYTOOLS_TOKEN)")
-            request=urllib.request.Request(a.connect,data=json.dumps({"method":"invoke","name":name,"arguments":args}).encode(),headers={"Authorization":"Bearer "+key,"Content-Type":"application/json"})
+            request=urllib.request.Request(a.connect,data=json.dumps({"method":"invoke","name":name,"arguments":args}).encode(),headers={"Content-Type":"application/json",**({"Authorization":"Bearer "+key} if key else {})})
             try:
                 with urllib.request.urlopen(request,timeout=300) as response:value=json.load(response)
             except urllib.error.HTTPError as e:raise CyToolError("TransportError","HTTP "+str(e.code)) from e

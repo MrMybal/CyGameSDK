@@ -1,7 +1,7 @@
 # CyMCPSDK integration
 
-CyGameSDK 0.31 replaces the previous automation runtime with **CyMCPSDK 0.7.0**,
-built from local source revision **791d4d7d7680213b282ec8529d248a10f8494d77**.
+CyGameSDK 0.32 replaces the previous automation runtime with **CyMCPSDK 0.7.1**,
+built from local source revision **34d4bcae126bc83d1a2925b5047dac36e3d09d92**.
 The lock also pins CyUI to **6ef01cfcdb197f3a89d64618ce5ef8818c704728**, required
 by ChatUI's Markdown contract. The native host remains Windows x64 / DX11.
 
@@ -13,7 +13,7 @@ by ChatUI's Markdown contract. The native host remains Windows x64 / DX11.
 | AI Assistant | SDK ChatUI/ChatController and the shared native operation Registry |
 | CyGameCLI.exe | Native discovery, schemas, direct JSON invocation, JSONL and MCP |
 | MCP stdio | SDK McpServer, compact discovery by default; full catalogue with --full |
-| Loopback /mcp and /v1 | SDK authenticated MCP and JSON endpoints; one identity per endpoint |
+| Loopback /mcp and /v1 | Profile-selected MCP/JSON endpoints; one local host identity per endpoint |
 | Existing app/tool.py | Compatibility client delegating execution to the compiled companion |
 | Python SDK helpers | Thin native-host client, with no Python MCP server or scheduler |
 | Compute jobs | Existing trusted computations under SDK Process ownership, with durable host records |
@@ -56,7 +56,9 @@ every component uses the same host-owned ImGui target.
 .\app\setup_mcp.ps1
 ~~~
 
-CMake prefers local sibling SDK source, checks its exact revision and clean state,
+The integrated commit is copied from the local SDK Git objects into a private clean checkout
+when the sibling is changing. No sibling files are modified. CMake prefers local sibling
+SDK source, checks its exact revision and clean state,
 and otherwise fetches the lock. Do not modify a sibling library.
 The Python setup installs only compute-worker dependencies. Basic scene operations,
 CLI/MCP discovery and conversations do not need the former runtime package.
@@ -99,31 +101,57 @@ available to the compatibility Python helper. Commands never come from asset JSO
 
 ## Permissions and MCP
 
-Reads are allowed by default. Writes require **Allow editor changes** or an explicit
---allow-write grant for a local endpoint. That flag cannot override a remote endpoint's
-policy. Locked objects, revisions, confirmations encoded in operations and Undo still apply.
+**Free is the default** for new configurations and existing settings without an
+explicit access profile. The native Registry uses **Policy::allow_all()** and HTTP
+uses **LocalHttpServer::UnauthenticatedLoopback** bound to **127.0.0.1**.
+Clients connect with the MCP URL only and can call all registered operations without
+a token or an additional write confirmation. Argument/schema and business validation,
+locked objects, exact migration hashes and document Undo remain authoritative.
+
+| Setting **access_profile** | HTTP token | Operation policy |
+| --- | --- | --- |
+| free | No | All registered operations |
+| local_controlled | No | Existing read/write policy |
+| token_only | Yes | All registered operations |
+| protected | Yes | Existing read/write policy |
+
+The enum values come from **LocalAccessProfile** and **local_access_settings**;
+**protected_access** is also accepted as an ID. Existing explicit selections are retained.
+Migration inserts **free** only when no profile exists; **allowChanges** is retained and
+does not count as a profile selection. Unknown settings remain intact. Invalid/conflicting
+profile settings fail explicitly instead of falling back to Free. The compatibility keys
+**accessProfile** and **localAccessProfile** are recognized.
+
+In **AI Assistant > Connection settings > Local MCP**, choose the profile for the next
+editor start. The current active profile is displayed separately. Restart the editor to
+apply a different profile. **Enable local MCP** starts/stops the HTTP endpoint immediately;
+it is enabled by default when the assistant is opened. Chat and CLI use the same registry
+policy independently of whether HTTP is enabled.
+
+Controlled profiles retain **Allow editor changes** and local **--allow-write**.
+A local grant cannot bypass the policy of a remote endpoint.
+Free/Token only do not require or display the additional write checkbox.
 
 ~~~powershell
 .\CyGameCLI.exe --root C:\Editors\MyGame mcp
-.\CyGameCLI.exe --root C:\Editors\MyGame mcp --full --allow-write
+.\CyGameCLI.exe --root C:\Editors\MyGame serve --port 8766
+.\CyGameCLI.exe --root C:\Editors\MyGame --connect http://127.0.0.1:8766/v1 invoke scene_list
+.\CyGameCLI.exe --root C:\Editors\MyGame --access-profile protected serve --port 8766 --token-env CYGAME_MCP_TOKEN
 ~~~
 
-Use [mcp.example.json](../mcp.example.json). Stdio uses the owning OS process identity.
-The editor pipe is restricted to the current Windows user and rejects remote callers.
+The CLI override applies only to that process and does not overwrite the saved selection.
+Protected/Token only require a private token of at least 32 characters. A native HTTP
+client sends a token only when supplied; Protected still rejects a missing/incorrect token.
 
-Opening AI Assistant starts a loopback service. Its random port/token are stored in the
-owner-only **data/ipc/automation.json** and removed on shutdown. /mcp serves MCP; /v1
-serves SDK JSON. Never put the real token in a tracked config, screenshot or log.
+Use [mcp.example.json](../mcp.example.json) for stdio,
+[mcp-http.example.json](../mcp-http.example.json) for address-only HTTP, or
+[mcp-http.protected.example.json](../mcp-http.protected.example.json) for token profiles.
 
-A separate service uses **serve --port PORT** and a private **CYGAME_MCP_TOKEN**
-environment variable (32+ characters), or --token-env NAME. Create-client can prepare
-a bootstrap token file. One endpoint represents one authenticated application identity.
-For independent remote identities, use isolated endpoints/stores. The compatibility
-Python client retains authenticated ownership between its clients.
-
-~~~powershell
-.\CyGameCLI.exe --root C:\Editors\MyGame --connect http://127.0.0.1:PORT/v1 --token-env CYGAME_MCP_TOKEN invoke scene_list
-~~~
+The endpoint record **data/ipc/automation.json** contains URL, profile and token requirement.
+Free/Local controlled store no token there; token profiles add a random private token.
+The record is removed when HTTP stops or the editor closes. The UI copies the MCP URL
+without adding credentials. Stdio and the editor pipe retain their OS-local transport;
+the pipe remains restricted to the owning Windows account.
 
 SDK stdio and loopback JSON/finite-SSE responses are used. Journal subscriptions require
 a compatible modern client/transport. Older negotiated clients retain TTL and explicit

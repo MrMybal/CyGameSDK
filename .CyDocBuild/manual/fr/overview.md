@@ -4,12 +4,12 @@ title: Manuel CyGameSDK
 description: Commencer avec les bons repères
 section: Premiers pas
 order: 0
-sourceRevision: 3
+sourceRevision: 4
 ---
 
 ## Utiliser ce guide {#getting-started}
 
-CyGameSDK est une base d’éditeur natif en développement précoce. Il fournit un adaptateur Sandbox et des systèmes réutilisables d’interface, de documents et d’édition. Il ne prend pas automatiquement en charge n’importe quel jeu. La version 0.31.0 est une mise à jour des sources en développement sous MIT.
+CyGameSDK est une base d’éditeur natif en développement précoce. Il fournit un adaptateur Sandbox et des systèmes réutilisables d’interface, de documents et d’édition. Il ne prend pas automatiquement en charge n’importe quel jeu. La version 0.32.0 est une mise à jour des sources en développement sous MIT.
 
 - Hôte graphique actuel : Windows x64 / Direct3D 11.
 

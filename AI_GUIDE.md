@@ -16,7 +16,7 @@ uses its existing CyMCPSDK assistant/CLI/MCP registry; it does not need a second
 4. Copy [GamePortingTemplate](app/Docs/GamePortingTemplate.md) into the new game's
    documentation and fill it with observed facts, unknowns and evidence.
 
-Current baseline: active 0.31.0, 177 business operations / 364 full tools including 177 job aliases and
+Current baseline: active 0.32.0, 177 business operations / 364 full tools including 177 job aliases and
 10 service operations; compact discovery exposes five tools. Read [CompletionMilestones](app/Docs/CompletionMilestones.md) and
 [Native3DAssets](app/Docs/Native3DAssets.md) for current implementations and bounds.
 The 0.16.1 UI audit remains historical evidence for the charcoal palette/docking.

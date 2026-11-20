@@ -1,4 +1,4 @@
-# CyUI integration — native 0.31
+# CyUI integration — native 0.32
 
 CyGameSDK pins CyUI's current modular implementation at
 `6ef01cfcdb197f3a89d64618ce5ef8818c704728`. Upstream still declares version

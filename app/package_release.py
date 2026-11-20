@@ -32,7 +32,7 @@ def write_archive(path,files,prefix):
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
- parser.add_argument("--output",type=Path,default=ROOT/"runtime/release-0.31.0")
+ parser.add_argument("--output",type=Path,default=ROOT/"runtime/release-0.32.0")
  parser.add_argument("--binary-dir",type=Path,default=ROOT)
  args=parser.parse_args()
  version=json.loads((ROOT/"app/CyTool.json").read_text(encoding="utf8"))["version"]

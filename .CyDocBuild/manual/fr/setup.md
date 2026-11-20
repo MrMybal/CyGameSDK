@@ -4,12 +4,15 @@ title: Compiler et lancer sous Windows.
 description: Compiler et lancer sous Windows
 section: Premiers pas
 order: 1
-sourceRevision: 3
+sourceRevision: 5
 ---
+
+La préversion Windows 0.32.0 inclut les profils Free. Extrayez le dossier, lancez
+l’éditeur et copiez son adresse MCP locale pour vous connecter sans jeton en Free.
 
 ## ZIP de préversion Windows {#prebuilt}
 
-Le ZIP Windows 0.31.0 contient CyGameEditor.exe, CyGameCLI.exe, les sources/exemples,
+Le ZIP Windows 0.32.0 contient CyGameEditor.exe, CyGameCLI.exe, les sources/exemples,
 les notices et ce lecteur hors ligne complet. Extrayez-le dans un nouveau dossier
 accessible en écriture et lancez Lancer.cmd. Le runtime Microsoft Visual C++ 2015–2022 x64 est requis.
 

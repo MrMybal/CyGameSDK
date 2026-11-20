@@ -1,4 +1,4 @@
-# Editor architecture — 0.31.0
+# Editor architecture — 0.32.0
 
 ## Layers and ownership
 

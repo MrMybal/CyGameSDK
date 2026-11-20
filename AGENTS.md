@@ -6,7 +6,7 @@ requires an adapter, real format/toolchain knowledge and verification against th
 
 - Check `runtime/active-release.json`, `app/CyTool.json` and the running
   `editor_status` before assuming a version or capability. Currently the active
-  source/catalogue/executable is 0.31.0. The preserved 0.19.0 candidate is under
+  source/catalogue/executable is 0.32.0. The preserved 0.19.0 candidate is under
   `runtime/development-0.19.0`; its executable remains historical. Import source
   was adopted and verified in 0.20.0; read `app/Docs/CompletionMilestones.md`.
 - For a new game, follow `app/Docs/GameAdapterGuide.md` and fill in

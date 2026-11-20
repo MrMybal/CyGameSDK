@@ -1,16 +1,16 @@
 {
-  "version": "0.31.0",
-  "reason": "Source-built CyMCPSDK assistant, native CLI/MCP shared registry, durable jobs and legacy data compatibility",
-  "baseVersion": "0.30.0",
-  "preservedBaseline": "runtime/cymcp-baseline-0.30.0",
-  "preservedBaselineSource": "runtime/cymcp-baseline-0.30.0/active-0.30.0-source.zip",
+  "version": "0.32.0",
+  "reason": "CyMCPSDK 0.7.1 local access profiles: Free default, address-only loopback HTTP and preserved explicit profiles",
+  "baseVersion": "0.31.0",
+  "preservedBaseline": "runtime/cymcp-profile-baseline-0.31.0",
+  "preservedBaselineSource": "runtime/cymcp-profile-baseline-0.31.0/source-0.31.0.zip",
   "preservedCandidate": "runtime/development-0.19.0",
   "candidateStatus": "Historical executable retained; not active",
-  "verification": "data/reports/cymcp-validation.json",
-  "sourceCheckpoint": "runtime/milestones/active-0.31.0-source.zip",
+  "verification": "data/reports/cymcp-free-validation.json",
+  "sourceCheckpoint": "runtime/milestones/active-0.32.0-source.zip",
   "CyMCPSDK": {
-    "version": "0.7.0",
-    "revision": "791d4d7d7680213b282ec8529d248a10f8494d77"
+    "version": "0.7.1",
+    "revision": "34d4bcae126bc83d1a2925b5047dac36e3d09d92"
   },
   "gameCodecs": "No real game codec bundled; trusted executable registry defaults to empty"
 }

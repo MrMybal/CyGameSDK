@@ -19,7 +19,8 @@ Current contracts:
   [type migrations](TypeMigration.md), [collapse](GraphCollapse.md), [expand](GraphExpand.md).
 - [Localization](Localization.md), [recipes](GenerationConfigurations.md), [licenses](Licensing.md).
 
-[0.31 release notes](Release-0.31.0.md) describe the current local update.
+[0.32 release notes](Release-0.32.0.md) describe access profiles;
+[0.31 release notes](Release-0.31.0.md) describe the previous Windows preview.
 Earlier releases, milestones and interface audits remain historical evidence.
 Legacy generic guide URLs remain compatibility entry points; they do not require
 the retired runtime, model installers, CUDA or unrelated generation tools.

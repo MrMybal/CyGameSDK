@@ -4,12 +4,12 @@ title: Assistant, CLI and MCP
 description: Use the integrated assistant and the native automation registry.
 section: Getting started
 order: 3
-revision: 3
+revision: 4
 ---
 
 ## Using this guide {#getting-started}
 
-CyMCPSDK 0.7.0 supplies the native assistant, operation registry and MCP transports.
+CyMCPSDK 0.7.1 supplies the native assistant, operation registry and MCP transports.
 The editor keeps its actual validation, persistent documents and Undo. Discover a
 command and inspect its schema before invoking it.
 
@@ -20,9 +20,9 @@ detect/select a provider, load its real model catalogue and connect. API keys ca
 entered in the masked memory-only field or supplied through the named environment
 variable. They are not saved. Installed CLI agents retain their account management.
 
-Enable **Allow editor changes** to authorize writes. It applies to the assistant and
-the same application's MCP endpoint. Codex and compatible API transports receive editor
-tools directly. Other CLI agents use their native MCP configuration.
+Free is the default and authorizes all registered operations without an additional
+write confirmation. Local controlled and Protected retain **Allow editor changes**.
+Codex and compatible API transports receive tools directly; other CLI agents use their native MCP configuration.
 
 Replies appear progressively in the common Markdown panel. **Stop** cancels a turn.
 Errors and interrupted partial replies stay visible. The shared file picker adds
@@ -31,6 +31,24 @@ filenames rather than a separate asset renderer.
 
 History is private. Choose a saved conversation and **Restore saved chat** to resume
 without replaying a message. **Connect / New chat** preserves earlier saved histories.
+
+## Access profiles {#access-profiles}
+
+**Connection settings > Local MCP** displays the active profile and the profile for the next
+start. Restart the editor after choosing another profile. The local MCP checkbox starts/stops HTTP immediately.
+
+| Profile | Token | Registered operations |
+| --- | --- | --- |
+| Free | No | All authorized |
+| Local controlled | No | Host read/write policy |
+| Token only | Required | All authorized |
+| Protected | Required | Host read/write policy |
+
+New settings and configurations with no explicit profile migrate to **free**.
+Existing profile choices and unrelated settings are retained. Old allowChanges is preserved
+but is not an explicit profile choice. Validation remains enabled: invalid arguments,
+locked objects and revision guards still fail. The setting is **access_profile** in
+data/settings/automation.json. A CLI **--access-profile** override applies to one process.
 
 ## Native terminal commands {#cli}
 
@@ -59,19 +77,18 @@ while app/tool.py stdio preserves supported older protocol envelopes.
 
 ## Connect an external AI {#mcp}
 
-Adapt app/mcp.example.json to the installation's native CyGameCLI.exe and project root.
-The default stdio server exposes five compact discovery/resource tools. Search, load a
-schema, then call the original operation. **mcp --full** exposes the complete catalogue.
-Legacy **op_<id>** job aliases remain discoverable.
+Open AI Assistant and enable local MCP. Copy the MCP address and configure your client
+with that URL only, for example http://127.0.0.1:PORT/mcp. Free uses an unauthenticated
+loopback HTTP server and an allow-all registry. No token or extra operation confirmation is requested.
 
-Opening the assistant also provides authenticated loopback **/mcp** and **/v1** endpoints.
-Their random address/token are stored in owner-only data/ipc/automation.json. Keep the
-token private. One endpoint represents one authenticated application identity; separate
-remote identities need isolated endpoints/stores. Native stdio and the Windows editor
-pipe use the owning OS identity.
+Protected and Token only still require a Bearer token. The private endpoint file
+data/ipc/automation.json contains URLs, profile and requireToken; only token profiles
+include a token. Disabling/closing the endpoint removes this file.
 
-A separate **serve --port PORT** service requires a private CYGAME_MCP_TOKEN environment
-variable. **--connect URL --token-env NAME** addresses its /v1 interface from the CLI.
+~~~powershell
+.\CyGameCLI.exe --root C:\Editors\MyGame serve --port 8766
+.\CyGameCLI.exe --root C:\Editors\MyGame --connect http://127.0.0.1:8766/v1 invoke scene_list
+~~~
 
 ## Context, resources and privacy {#optimizations}
 

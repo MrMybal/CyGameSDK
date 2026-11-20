@@ -14,7 +14,7 @@ this repository's build or packaging scripts.
 4. Build all three archives and checksums:
 
 ~~~powershell
-.\runtime\python\Scripts\python.exe app\package_release.py --output runtime\release-0.31.0
+.\runtime\python\Scripts\python.exe app\package_release.py --output runtime\release-0.32.0
 ~~~
 
 The source ZIP contains distributable sources, examples, documentation and notices.

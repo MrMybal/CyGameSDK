@@ -13,7 +13,7 @@ import tool
 class NativeAutomation(unittest.TestCase):
     def test_01_cli_mcp_live_permissions_and_results(self):
         with tempfile.TemporaryDirectory(prefix="cymcp-live-",dir=REPORTS) as td:
-            root=Path(td);prepare(root);marker=root/"ready"
+            root=Path(td);prepare(root);settings=root/"data/settings";settings.mkdir(parents=True);(settings/"automation.json").write_text('{"access_profile":"protected"}',encoding="utf8");marker=root/"ready"
             process=subprocess.Popen([str(EDITOR),"--root",str(root),"--capture",str(root/"end.bmp"),"--capture-ready",str(marker),"--exit-after","50"])
             previous=tool.ROOT;tool.ROOT=root
             try:
@@ -25,7 +25,7 @@ class NativeAutomation(unittest.TestCase):
                     self.assertEqual(p.returncode,code,p.stderr.decode("utf8",errors="replace"))
                     if code:self.assertTrue(p.stderr);return json.loads(p.stderr)
                     self.assertFalse(p.stderr,p.stderr);return json.loads(p.stdout)
-                self.assertEqual(cli("diagnose")["sdkVersion"],"0.7.0")
+                self.assertEqual(cli("diagnose")["sdkVersion"],"0.7.1")
                 self.assertTrue(cli("describe-operation","property_set")["inputSchema"]["properties"])
                 args=root/"args.json";args.write_text(json.dumps({"entityId":"hero","propertyId":"name","value":"CLI épreuve"}),encoding="utf8")
                 denied=cli("invoke","property_set","--params-file",str(args),code=3);self.assertIn(denied["error"]["code"],("PermissionDenied","AccessDenied"))
@@ -66,7 +66,7 @@ class NativeAutomation(unittest.TestCase):
                                 undone=await client.call_tool("edit_undo",{});self.assertFalse(undone.isError)
                             return {"compact":False,"tools":len(names),"writesAllowed":allow}
                 evidence=asyncio.run(mcp(False,False));allowed=asyncio.run(mcp(False,True))
-                (root/"data/settings/automation.json").write_text(json.dumps({"resultTtlMs":2000,"spoolThresholdBytes":1024}),encoding="utf8")
+                (root/"data/settings/automation.json").write_text(json.dumps({"access_profile":"protected","resultTtlMs":2000,"spoolThresholdBytes":1024}),encoding="utf8")
                 compact=asyncio.run(mcp(True,False))
                 probe=subprocess.run([str(CLI.parent/"CyGameMCPProbe.exe"),str(CLI),str(root)],capture_output=True,timeout=15)
                 self.assertEqual(probe.returncode,0,probe.stderr.decode("utf8",errors="replace"));probe_evidence=json.loads(probe.stdout)
@@ -75,7 +75,7 @@ class NativeAutomation(unittest.TestCase):
     def test_02_integrated_chat_stream_tool_cancel_restore_and_context(self):
         with tempfile.TemporaryDirectory(prefix="cymcp-chat-",dir=REPORTS) as td,ProviderFixture() as fixture:
             root=Path(td);prepare(root);settings=root/"data/settings";settings.mkdir(parents=True)
-            (settings/"automation.json").write_text(json.dumps({"allowChanges":True,"performance":True,"contextWindow":True,"contextKiB":16,"compactDiscovery":True,"saveHistory":True}),encoding="utf8")
+            (settings/"automation.json").write_text(json.dumps({"access_profile":"protected","allowChanges":True,"performance":True,"contextWindow":True,"contextKiB":16,"compactDiscovery":True,"saveHistory":True}),encoding="utf8")
             connection={"action":"connect","provider":"openai-compatible","model":"cygame-fixture","settings":{"base_url":fixture.url}}
             report=REPORTS/"cymcp-chat.json";capture=REPORTS/"cymcp-chat.bmp"
             steps=[connection,{"action":"send","text":"TOOL_EDIT","contains":"EDIT_DONE","streaming":True,"entityName":"Assistant fixture edit"},{"action":"rights","allowChanges":False},{"action":"send","text":"TOOL_DENY","contains":"REFUSED","entityName":"Assistant fixture edit"},{"action":"send","text":"CANCEL_SILENT","cancelAfterMs":220,"cancelled":True}]
@@ -97,7 +97,7 @@ class NativeAutomation(unittest.TestCase):
         import secrets,urllib.request,urllib.error
         with tempfile.TemporaryDirectory(prefix="cymcp-recovery-",dir=REPORTS) as td:
             root=Path(td);prepare(root);settings=root/"data/settings";settings.mkdir(parents=True)
-            (settings/"automation.json").write_text('{"allowChanges":false}',encoding="utf8")
+            (settings/"automation.json").write_text('{"access_profile":"protected","allowChanges":false}',encoding="utf8")
             marker=root/"end";process=subprocess.Popen([str(EDITOR),"--root",str(root),"--panel","assistant","--capture",str(root/"end.bmp"),"--capture-ready",str(marker),"--exit-after","45"])
             try:
                 endpoint_file=root/"data/ipc/automation.json";until=time.monotonic()+12

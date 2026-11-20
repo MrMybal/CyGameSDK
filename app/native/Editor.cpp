@@ -517,7 +517,7 @@ void EditorApp::logPanel(){
 void EditorApp::saveRecipe(){
     auto parameters=Json::parse(operationParams_);bool valid=true;std::string reason;
     for(const auto& d:core.describeCommands())if(d.at("id")==operation_){try{validateValue(parameters,d["inputSchema"]);}catch(const std::exception& e){valid=false;reason=e.what();}}
-    Json recipe={{"format","cytools-generation-config"},{"schemaVersion",1},{"toolId","cy.editor.gamesdk"},{"toolVersion","0.31.0"},{"operationId",operation_},{"parameters",parameters},{"backendId",""},{"modelId",""},{"validParameters",valid},{"validationMessage",reason},{"uiState",Json::object()},{"jobId",nullptr}};
+    Json recipe={{"format","cytools-generation-config"},{"schemaVersion",1},{"toolId","cy.editor.gamesdk"},{"toolVersion","0.32.0"},{"operationId",operation_},{"parameters",parameters},{"backendId",""},{"modelId",""},{"validParameters",valid},{"validationMessage",reason},{"uiState",Json::object()},{"jobId",nullptr}};
     // Parameters only; connection credentials and editor endpoint are not included.
     auto path=core.root()/("data/configurations/"+uniqueId()+".json");writeJson(path,recipe);
     bufferCopy(recipePath_,sizeof(recipePath_),path.u8string());cyui::notify(tr("Configuration saved"),cyui::Tone::success);

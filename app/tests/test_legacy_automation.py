@@ -11,7 +11,7 @@ EDITOR=Path(os.environ.get("CYGAME_EDITOR_EXE",str(ROOT/"CyGameEditor.exe")))
 class LegacyCompatibility(unittest.TestCase):
  def test_legacy_database_ownership_durability_and_script_protocol(self):
   with tempfile.TemporaryDirectory(prefix="cymcp-legacy-",dir=ROOT/"data/reports") as td:
-   root=Path(td);prepare(root);store=root/"data/jobs";store.mkdir(parents=True)
+   root=Path(td);prepare(root);settings=root/"data/settings";settings.mkdir(parents=True);(settings/"automation.json").write_text('{"access_profile":"protected"}',encoding="utf8");store=root/"data/jobs";store.mkdir(parents=True)
    old=store/"artifact.bin";old.write_bytes(b"preserved legacy result")
    token="local-fixture-token-not-an-account";client={"clientId":"legacy-client","name":"Fixture","permissions":[],"tokenHash":hashlib.sha256(token.encode()).hexdigest()}
    session={"sessionId":"legacy-session","clientId":client["clientId"],"closed":False,"temporary":False}
@@ -51,11 +51,11 @@ class LegacyCompatibility(unittest.TestCase):
     while not (root/"data/ipc/editor.json").exists():
      self.assertIsNone(process.poll());self.assertLess(time.monotonic(),until);time.sleep(.03)
     result=script("invoke","editor_status")
-    self.assertEqual(result.returncode,0,result.stderr);job=json.loads(result.stdout);self.assertEqual(job["state"],"Completed");self.assertEqual(job["outputs"]["adapter"]["version"],"0.31.0")
+    self.assertEqual(result.returncode,0,result.stderr);job=json.loads(result.stdout);self.assertEqual(job["state"],"Completed");self.assertEqual(job["outputs"]["adapter"]["version"],"0.32.0")
     result=script("invoke","property_set","--params",'{"entityId":"hero","propertyId":"name","value":"Denied legacy edit"}')
     self.assertEqual(result.returncode,3,result.stdout+result.stderr)
     result=script("--allow-write","invoke","property_set","--params",'{"entityId":"hero","propertyId":"name","value":"Legacy CLI edit"}')
     self.assertEqual(result.returncode,0,result.stderr);self.assertEqual(json.loads(result.stdout)["state"],"Completed")
    finally:stop_owned(process)
-   (ROOT/"data/reports/cymcp-legacy.json").write_text(json.dumps({"passed":True,"originalDatabaseUnchanged":True,"tokenOwnershipRetained":True,"interruptedNotReplayed":True,"resultsRetained":True,"oldCLIAndProtocol":True,"legacyDenialExit":3,"nativeVersion":"0.31.0"},indent=2),encoding="utf8")
+   (ROOT/"data/reports/cymcp-legacy.json").write_text(json.dumps({"passed":True,"originalDatabaseUnchanged":True,"tokenOwnershipRetained":True,"interruptedNotReplayed":True,"resultsRetained":True,"oldCLIAndProtocol":True,"legacyDenialExit":3,"nativeVersion":"0.32.0"},indent=2),encoding="utf8")
 if __name__=="__main__":unittest.main(verbosity=2)

@@ -1,4 +1,4 @@
-# Capability coverage — CyGameSDK 0.31.0
+# Capability coverage — CyGameSDK 0.32.0
 
 | Capability | Delivered behavior | Validation / limits |
 |---|---|---|
@@ -29,7 +29,7 @@
 | Persistence | Versioned projects/assets, validated loads, temporary-file replacement | Roundtrip and invalid load tested; startup shows Sandbox, Ctrl+O loads saved project |
 | Editor plugins | Source IEditorPlugin lifecycle and Diagnostics example | Graphical activation/deactivation/panel checks; no ABI-stable DLL loader |
 | Search | Commands, panels, objects, properties, nodes and asset fields | Localized GUI labels plus stable IDs; native API retains protocol IDs |
-| MCP / AI SDK | CyMCPSDK 0.7.0 compiled from pinned sources; shared registry and native dispatcher | Real stdio initialize/list/call/poll/debug/shader compile/finish; 177 business operations, 364 full tools or five compact discovery tools |
+| MCP / AI SDK | CyMCPSDK 0.7.1 compiled from pinned sources; shared registry and native dispatcher | Real stdio initialize/list/call/poll/debug/shader compile/finish; 177 business operations, 364 full tools or five compact discovery tools |
 | Jobs / privacy | Application durable jobs/identities with SDK Executor and owned process trees | SDK identity isolation and parameter validation checked |
 | Configuration | Versioned recipes, load without execution, optional parameter autosave | Roundtrip and SDK replay checked |
 | Localization/themes | English/French, Unreal-inspired Dark plus five CyUI themes, stable window IDs | Both languages and all six themes rendered; screenshots under data/reports |
@@ -182,3 +182,10 @@ shared code editing and transactional graph-comment gestures. property_set_many
 and graph_layout_apply are real validated Core operations with one Undo per batch.
 The shared C++20 text backend is isolated; the host/domain remain C++17. Remaining
 source adapters and exact upstream gaps are documented in CyUIMigration.md.
+
+## Native 0.32 access profiles
+
+Free defaults to address-only local HTTP and an allow-all registry with full argument/
+business validation. Local controlled, Token only and Protected remain explicit choices.
+HTTP/MCP read/write, token rejection, preserved configuration and CLI/chat are verified
+against isolated native editor hosts. See [integration](CyMCPSDKIntegration.md).

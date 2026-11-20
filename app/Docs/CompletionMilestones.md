@@ -92,3 +92,11 @@ CyMCPSDK 0.7.0 replaces the former Python runtime with one assistant/CLI/MCP reg
 providers. Durable jobs preserve results past restart, finish-task and SDK resource TTL.
 Read [integration](CyMCPSDKIntegration.md) and [release notes](Release-0.31.0.md).
 Earlier milestone statements above describe their historical versions.
+
+## Native 0.32 local access profiles
+
+CyMCPSDK 0.7.1 is compiled from the locally sourced 34d4bca revision. Free becomes
+the default for settings without an explicit profile: allow-all operation Registry,
+argument validation and unauthenticated 127.0.0.1 HTTP. Local controlled, Token only
+and Protected remain available; explicit selections and other settings are retained.
+Read [integration](CyMCPSDKIntegration.md) for the profile table and CLI options.

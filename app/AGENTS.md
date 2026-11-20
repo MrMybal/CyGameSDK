@@ -188,3 +188,11 @@ Apply multi-cell and group/node changes through the atomic Core operations. Keep
 semantic graph clipboard translation; generic visual fragments omit runtime data.
 Use CYGAME_EDITOR_EXE for candidate test/capture runs; the candidate must resolve
 the installed native CLI and compute Python for desktop job checks. Never copy a venv.
+
+Native 0.32 uses source-built CyMCPSDK 0.7.1 / 34d4bca access profiles. Default Free
+uses Policy::allow_all and UnauthenticatedLoopback on 127.0.0.1. Preserve explicit
+profiles and unknown settings; missing profile migrates to free even with old
+allowChanges=false. Controlled profiles retain host grants; token profiles retain
+transport authentication. Keep argument/owner/revision/Undo validation and do not
+reintroduce a second mutation confirmation in Free. Profile changes apply at the
+next editor start and the UI distinguishes active from pending selection.

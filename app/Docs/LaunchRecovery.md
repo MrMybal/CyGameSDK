@@ -1,6 +1,6 @@
 # Build and launch troubleshooting
 
-Current source/catalogue version: 0.31.0. See the root [README](../../README.md)
+Current source/catalogue version: 0.32.0. See the root [README](../../README.md)
 for setup and [CompletionMilestones](CompletionMilestones.md) for historical
 feature milestones. Historical local archives are not executable replacements
 for the current source/catalogue.
@@ -9,7 +9,7 @@ The human troubleshooting page is in the [local CyDoc manual](../../Documentatio
 
 ## Portable Windows preview
 
-The v0.31.0 Windows ZIP supplies Editor/CLI and the complete offline manual.
+The v0.32.0 Windows ZIP supplies Editor/CLI and the complete offline manual.
 Extract it into a new writable folder. Native editing, assistant and MCP need no Python
 or library checkout. Install the Microsoft C++ x64 runtime if missing. Compute workers
 need Python 3.11+ and app/setup_mcp.ps1. Do not copy an installed virtual environment.

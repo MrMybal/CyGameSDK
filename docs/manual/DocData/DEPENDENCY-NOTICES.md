@@ -9,7 +9,7 @@
   Upstream: https://github.com/ocornut/imgui
 - CyDoc 0.1.0 at `e038c474577e1f305df3eba421f2b9c03b0f1d8d`, MIT. CyDoc-MIT.txt.
   Upstream: https://github.com/MrMybal/CyDoc. Reader: image, gallery, graph.
-- CyMCPSDK 0.7.0 at 791d4d7d7680213b282ec8529d248a10f8494d77, MIT. CyMCPSDK-MIT.txt.
+- CyMCPSDK 0.7.1 at 34d4bcae126bc83d1a2925b5047dac36e3d09d92, MIT. CyMCPSDK-MIT.txt.
   CyMCPSDK-THIRD-PARTY-NOTICES.md is retained verbatim.
 - The older CyToolsCore-MIT.txt remains a scaffolding provenance notice; that runtime is not distributed or required.
 - nlohmann/json 3.11.3: vendored single header, MIT. nlohmann-json-MIT.txt.

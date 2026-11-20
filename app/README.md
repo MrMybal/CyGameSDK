@@ -1,6 +1,6 @@
 # Developer entry points
 
-Current local development version: **0.31.0**. See the [root README](../README.md)
+Current local development version: **0.32.0**. See the [root README](../README.md)
 for launch/build and the [AI guide](../AI_GUIDE.md) for adaptation to a game.
 
 - **native/Core.h**: domain state, adapter contract, commands and Undo.

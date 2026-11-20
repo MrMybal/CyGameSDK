@@ -12,8 +12,8 @@
     </td>
     <td width="300" align="right" valign="top">
       <p><sub>Licence de l’application</sub><br><a href="LICENSE"><strong>MIT</strong></a></p>
-      <p><sub>Éditeur / catalogue</sub><br><a href="app/Docs/Release-0.31.0.fr.md"><strong>0.31.0</strong></a><br><strong>PRÉVERSION DE DÉVELOPPEMENT</strong></p>
-      <p><a href="https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-windows-x64.zip"><strong>Télécharger Windows x64</strong></a><br><a href="https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-source.zip">Sources ZIP · v0.31.0</a></p>
+      <p><sub>Éditeur / catalogue</sub><br><a href="app/Docs/Release-0.32.0.fr.md"><strong>0.32.0</strong></a><br><strong>PRÉVERSION DE DÉVELOPPEMENT</strong></p>
+      <p><a href="https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-windows-x64.zip"><strong>Télécharger Windows x64</strong></a><br><a href="https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-source.zip">Sources ZIP · v0.32.0</a></p>
     </td>
   </tr>
 </table>
@@ -25,11 +25,13 @@ un outil d’édition propre à un jeu. Partez d’un espace de travail ancrable
 graphes visuels, d’éditeurs de ressources et d’un SDK MCP/IA commun, puis reliez
 les formats, le rendu et la chaîne d’outils du jeu choisi.
 
-> **PRÉVERSION DE DÉVELOPPEMENT · 0.31.0**
+> **PRÉVERSION DE DÉVELOPPEMENT · 0.32.0**
+>
+> CyMCPSDK 0.7.1 · Accès Free par défaut · Préversion Windows x64.
 >
 > Outils expérimentaux avec un adaptateur Sandbox. Les fonctionnalités suivent des
 > limites documentées ; la compatibilité d’un jeu nécessite un adaptateur vérifié.
-> Consultez les [notes de version, le contenu du téléchargement et les limites connues](app/Docs/Release-0.31.0.fr.md).
+> Consultez les [notes de version, le contenu du téléchargement et les limites connues](app/Docs/Release-0.32.0.fr.md).
 
 [![Espace Sandbox de CyGameSDK avec viewport, gizmo de transformation, hiérarchie, propriétés et navigateur de ressources](app/Docs/images/editor-workspace.png)](app/Docs/images/editor-workspace.png)
 
@@ -77,8 +79,7 @@ défaut ; la compatibilité complète Unreal Engine/Blueprint n’est pas fourni
 ### Assistant intégré
 
 Choisissez un fournisseur/modèle, suivez les réponses en streaming, joignez des fichiers
-et restaurez vos conversations privées. Les écritures nécessitent une autorisation
-explicite ; assistant, CLI et MCP partagent validation et annulation des documents.
+et restaurez vos conversations privées. Le profil sélectionné contrôle l’accès aux opérations ; assistant, CLI et MCP partagent validation et annulation des documents.
 Les résultats des jobs restent récupérables après redémarrage.
 
 [![Paramètres de connexion de l’assistant dans l’éditeur anglais](app/Docs/images/assistant-settings.png)](app/Docs/images/assistant-settings.png)
@@ -106,9 +107,9 @@ Les résultats des jobs restent récupérables après redémarrage.
 
 ## Installation
 
-La version **0.31.0** est une préversion Windows x64 / Direct3D 11.
+La version **0.32.0** est une préversion Windows x64 / Direct3D 11.
 
-1. [Téléchargez le ZIP Windows](https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-windows-x64.zip)
+1. [Téléchargez le ZIP Windows](https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-windows-x64.zip)
    et extrayez-le dans un nouveau dossier accessible en écriture. Il contient
    l’éditeur, le CLI natif, les sources/exemples, les notices et le manuel bilingue hors ligne.
 2. Installez le runtime Microsoft Visual C++ 2015–2022 x64 s’il manque.
@@ -122,13 +123,13 @@ Le ZIP est une distribution portable en dossier, sans installateur. Python, poid
 de modèles et identifiants ne sont pas inclus. Configurez votre fournisseur/compte
 dans Assistant IA. Les hôtes natifs Linux/macOS ne sont pas implémentés.
 
-[Sources ZIP](https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-source.zip) ·
-[Manuel hors ligne ZIP](https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/CyGameSDK-0.31.0-documentation.zip) ·
-[Empreintes SHA-256](https://github.com/MrMybal/CyGameSDK/releases/download/v0.31.0/SHA256SUMS.txt)
+[Sources ZIP](https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-source.zip) ·
+[Manuel hors ligne ZIP](https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/CyGameSDK-0.32.0-documentation.zip) ·
+[Empreintes SHA-256](https://github.com/MrMybal/CyGameSDK/releases/download/v0.32.0/SHA256SUMS.txt)
 
 Pour compiler les sources, suivez les prérequis ci-dessous. L’accès Git aux dépendances
 privées peut être nécessaire ; les exécutables précompilés n’en ont pas besoin.
-Le manuel embarqué correspond à 0.31.0 ; celui de Pages suit son dernier déploiement.
+Le manuel embarqué correspond à 0.32.0 ; celui de Pages suit son dernier déploiement.
 
 Au premier lancement, la scène est une démonstration Sandbox. Ctrl+S sauvegarde
 le projet ; Ctrl+O le recharge. Projets, ressources de travail et préférences se
@@ -153,7 +154,7 @@ accompagné de son dossier `DocData/` complet. La lecture ne nécessite ni Node.
 - Les [révisions exactes de CyUI, CyMCPSDK et CyDoc](app/dependencies.lock.json), récupérées
   depuis leurs dépôts source. Une compilation hors ligne nécessite les dépendances
   et chaînes d’outils entièrement en cache, pas seulement un dossier de sources.
-- CyMCPSDK 0.7.0 est compilé depuis ses sources C++ verrouillées. Python 3.11+
+- CyMCPSDK 0.7.1 est compilé depuis ses sources C++ verrouillées. Python 3.11+
   sert uniquement aux calculs d’import, shaders, packaging et traitement 3D.
 
 ### Récupérer les sources
@@ -200,7 +201,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File app/build_documentation.ps1
 ### Assistant, CLI et clients MCP
 
 Ouvrez **Assistant IA**, choisissez un fournisseur configuré et son modèle réel, puis
-connectez-vous. **Autoriser les modifications dans l’éditeur** permet les écritures.
+connectez-vous. Free est le profil par défaut : adresse MCP seule et toutes les opérations enregistrées,
+sans autorisation d’écriture supplémentaire. Local contrôlé, Jeton seul et Protégé
+restent sélectionnables ; les profils contrôlés conservent l’autorisation des écritures.
 Les clés restent en mémoire/environnement ; l’historique privé est restaurable.
 Consultez [l’intégration assistant/CLI/MCP](app/Docs/CyMCPSDKIntegration.md).
 
@@ -244,7 +247,7 @@ Les bibliothèques tierces gardent leurs propres conditions.
 | [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) | [MIT](app/LICENCES/ImGuizmo-MIT.txt) | Gizmos de transformation du viewport ; sources verrouillées. |
 | [nlohmann/json 3.11.3](https://github.com/nlohmann/json) | [MIT](app/LICENCES/nlohmann-json-MIT.txt) | JSON des documents et opérations natifs. |
 | [Lexilla, Scintilla et données SciTE](https://github.com/ScintillaOrg/lexilla) | [Notice permissive](app/LICENCES/Lexilla.txt) · [Scintilla](app/LICENCES/Scintilla.txt) · [SciTE](app/LICENCES/SciTE-Properties.txt) | Moteurs syntaxiques, en-têtes d’interface et propriétés via Code/Diff ; aucune interface d’éditeur Scintilla. |
-| [CyMCPSDK 0.7.0](https://github.com/MrMybal/CyMCPSDK) | [MIT](app/LICENCES/CyMCPSDK-MIT.txt) | Registre natif, CLI/MCP, fournisseurs et ChatUI ; révision exacte verrouillée. |
+| [CyMCPSDK 0.7.1](https://github.com/MrMybal/CyMCPSDK) | [MIT](app/LICENCES/CyMCPSDK-MIT.txt) | Registre natif, CLI/MCP, fournisseurs et ChatUI ; révision exacte verrouillée. |
 | [MD4C](https://github.com/mity/md4c) | [MIT](app/LICENCES/MD4C-MIT.txt) | Markdown via CyUI DocumentViews / ChatUI. |
 | Dépendances SDK | [Notices](app/LICENCES/CyMCPSDK-THIRD-PARTY-NOTICES.md) · [nlohmann/json 3.12](app/LICENCES/CyMCPSDK-nlohmann-3.12-MIT.txt) · [cpp-httplib](app/LICENCES/cpp-httplib-MIT.txt) · [PicoSHA2](app/LICENCES/PicoSHA2-MIT.txt) | JSON, transports et utilitaires du SDK, distincts du JSON hôte. |
 | [CPython et paquets Python](https://github.com/python/cpython) | [Conditions Python](app/LICENCES/Python.txt) · [licences/notices des paquets](app/licenses-python.json) | Environnement de calcul facultatif ; chaque paquet conserve sa licence. |
@@ -269,7 +272,7 @@ de licence livrés avec la documentation générée et les paquets d’outils.
 
 - [Manuel français](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/overview) · [English manual](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/en/overview).
 - [Présentation](https://mrmybal.github.io/CyGameSDK/?lang=fr) · [Dépôt des sources](https://github.com/MrMybal/CyGameSDK).
-- [Release Windows et sources](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.31.0) · [Suivi des problèmes](https://github.com/MrMybal/CyGameSDK/issues).
+- [Release Windows et sources](https://github.com/MrMybal/CyGameSDK/releases/tag/v0.32.0) · [Suivi des problèmes](https://github.com/MrMybal/CyGameSDK/issues).
 - [Contrat des ressources portables](https://mrmybal.github.io/CyGameSDK/manual/Documentation.html#/fr/portable-assets) · [Exemple d’adaptateur source](app/examples/adapters/ExampleGameAdapter.h).
 
 <details>
